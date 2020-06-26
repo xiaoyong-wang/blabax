@@ -1,0 +1,104 @@
+<?php
+$log_users=''; $banned_users='';
+
+neutral_query('DELETE FROM '.$dbss['prfx']."_ban WHERE timestamp<$timestamp");
+$backpoint2del=$timestamp-604800; // 7 days to keep failed login/recoverPassword attempts
+neutral_query('DELETE FROM '.$dbss['prfx']."_bflog WHERE timestamp<$backpoint2del");
+$backpoint2del=(int)$settings['keepiplg']; $backpoint2del=$timestamp-$backpoint2del; // period to keep IP log
+neutral_query('DELETE FROM '.$dbss['prfx']."_iplog WHERE timestamp<$backpoint2del");
+
+$res=neutral_query('SELECT * FROM '.$dbss['prfx']."_ban WHERE timestamp>$timestamp ORDER BY timestamp DESC LIMIT 100");
+while($row=neutral_fetch_array($res)){
+$stamp=gmdate('Y-m-d H:i',$row['timestamp']+$settings['acp_offset']*60);
+$ip=$row['ipaddr'];
+$banned_users.='<tr class="x_bcolor_bg"><td style="text-align:right">'.$row['name'].'</td><td>'.$ip.'</td>';
+$banned_users.='<td style="text-align:center">'.$stamp.'</td><td>';
+$banned_users.='[+ <span class="pointer x_accent_fg" onclick="self.location.href=\'admin.php?ban='.$row['id'].'&period=86400\'">'.$lang['day'].'</span>/';
+$banned_users.='<span class="pointer x_accent_fg" onclick="self.location.href=\'admin.php?ban='.$row['id'].'&period=604800\'">'.$lang['week'].'</span>/';
+$banned_users.='<span class="pointer x_accent_fg" onclick="self.location.href=\'admin.php?ban='.$row['id'].'&period=2592000\'">'.$lang['month'].'</span>]';
+$banned_users.=' &nbsp;&nbsp;&nbsp; <span class="pointer x_accent_fg" onclick="self.location.href=\'admin.php?unban='.$row['id'].'\'">'.$lang['unban'].'</span> ';
+"</td></tr>\n";
+}
+
+$where=''; $filterid=''; $filterip='';
+if(isset($_GET['filterid'])){$filterid=neutral_escape($_GET['filterid'],16,'str');if(strlen($filterid)>0){$where="WHERE name LIKE('%$filterid%')";}}
+if(isset($_GET['filterip'])){$filterip=neutral_escape($_GET['filterip'],45,'str');if(strlen($filterip)>0){$where="WHERE ipaddr LIKE('%$filterip%')";}}
+
+$filterid=htmlspecialchars($filterid);
+$filterip=htmlspecialchars($filterip);
+
+// no duplicates...
+//neutral_query('SET sql_mode = \'\'');
+//$res=neutral_query('SELECT id,ANY_VALUE(name) AS name,ANY_VALUE(ipaddr) AS ipaddr,ANY_VALUE(timestamp) AS timestamp,ANY_VALUE(country) AS country FROM '.$dbss['prfx']."_iplog $where GROUP BY id ORDER BY timestamp DESC LIMIT 100 OFFSET 0");
+
+$res=neutral_query('SELECT * FROM '.$dbss['prfx']."_iplog $where ORDER BY timestamp DESC LIMIT 100 OFFSET 0");
+while($row=neutral_fetch_array($res)){
+$stamp=gmdate('Y-m-d H:i',$row['timestamp']+$settings['acp_offset']*60);
+$ip=$row['ipaddr'];
+$cc=htmlspecialchars($row['country']);
+if($row['id']<500000000){$name='<span class="pointer x_accent_fg" onclick="self.location.href=\'admin.php?q=user&amp;id='.$row['id'].'\'">'.$row['name'].'</span>';}else{$name=$row['name'];}
+$log_users.='<tr class="x_bcolor_bg"><td style="text-align:right">'.$name.'</td><td>'.$stamp.'</td><td>'.$ip.'</td><td>'.$cc.'</td></tr>';
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['logs'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php'" class="pointer svg_logs">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['logs'];?></h2>
+<hr />
+
+<form action="admin.php" style="float:left" autocomplete="off">
+<input type="hidden" name="q" value="logs" />
+<input type="text" class="x_accent_bb s250" name="filterid" id="filterid" placeholder="<?php print $lang['filterid'];?>" value="<?php print $filterid;?>" onfocus="de('filterip').value=''" />
+</form>
+
+<form action="admin.php" style="float:right" autocomplete="off">
+<input type="hidden" name="q" value="logs" />
+
+<input type="text" class="x_accent_bb s250" name="filterip" id="filterip"  placeholder="<?php print $lang['filterip'];?>" value="<?php print $filterip;?>" onfocus="de('filterid').value=''" />
+</form>
+
+<br /><br /><hr />
+
+<div style="width:100%;max-height:500px;overflow:auto">
+<table style="float:left;width:100%;min-width:280px">
+<tr class="x_bcolor_bg"><td style="text-align:center;" colspan="4"><?php print $lang['l_seen'];?></td></tr>
+<?php print $log_users;?>
+<tr class="x_bcolor_bg"><td colspan="4"></td></tr>
+</table>
+</div>
+
+<br /><br /><hr />
+
+<div style="width:100%;max-height:500px;overflow:auto">
+<table style="width:100%;min-width:280px">
+<tr class="x_bcolor_bg"><td style="text-align:center;" colspan="4"><?php print $lang['banned'];?></td></tr>
+<tr class="x_bcolor_bg">
+<td style="text-align:right"><small><?php print $lang['username'];?></small></td>
+<td><small><?php print $lang['ipaddr'];?></small></td>
+<td style="text-align:center"><small><?php print $lang['expire'];?></small></td>
+<td><small><?php print $lang['action'];?></small></td></tr>
+<?php print $banned_users;?>
+<tr class="x_bcolor_bg"><td colspan="4"></td></tr>
+</table>
+</div>
+
+<br /><hr />
+
+</div>
+
+<?php include 'admin/menu.pxtm'; ?>
+</body></html>

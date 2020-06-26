@@ -1,0 +1,161 @@
+
+<?php
+
+$fusers=''; 
+
+$forder='b.name ASC';
+if($settings['uf_order']==2){$forder='a.hour_begin ASC';}
+if($settings['uf_order']==3){$forder='a.hour_end ASC';}
+
+$nores='<tr class="x_bcolor_bg"><td colspan="6" style="text-align:center">'.$lang['no_resu'].'</td></tr>';
+$ctm=gmdate('H',time()+$settings['acp_offset']*60);
+$res=neutral_query('SELECT a.id AS fid, a.status AS fstatus, a.hour_begin AS hour_b, a.hour_end AS hour_e, b.name AS fname FROM '.$dbss['prfx'].'_ufake a, '.$dbss['prfx']."_users b WHERE a.id=b.id ORDER BY $forder");
+
+$stts=array();
+$stts[1]='<div style="display:inline-block;width:10px;height:10px;border-radius:100%;background-color:#53C058"></div>';
+$stts[2]='<div style="display:inline-block;width:10px;height:10px;border-radius:100%;background-color:#607D8B"></div>';
+$stts[3]='<div style="display:inline-block;width:10px;height:10px;border-radius:100%;background-color:#FFC107"></div>';
+$stts[4]='<div style="display:inline-block;width:10px;height:10px;border-radius:100%;background-color:#9C27B0"></div>';
+$stts[5]='<div style="display:inline-block;width:10px;height:10px;border-radius:100%;background-color:#F44336"></div>';
+
+while($row=neutral_fetch_array($res)){
+$nores=''; $del_fuser='';
+$cbox='<input type="checkbox" name="multifusers[]" value="'.$row['fid'].'" />';
+$utoken=$row['fid'].'z'.hash('sha256',$row['fid'].'userinfo'.$settings['random_salt']);
+$fname=htmlspecialchars($row['fname']);
+$hour_b=(int)$row['hour_b'];
+$hour_e=(int)$row['hour_e'];
+
+$del_fuser='<input type="button" class="round4 x_accent_bg pointer" value="'.$lang['delete'].'" onclick="if(confirm(\''.$lang['confirm'].'\')){self.location.href=\'admin.php?delfuser='.$row['fid'].'\'}" />';
+
+$fusers.='<tr class="x_bcolor_bg"><td style="width:25px">'.$cbox.'</td><td style="width:15px;text-align:center">'.$stts[$row['fstatus']].'</td>';
+$fusers.='<td><span onclick="show_user(\''.$utoken.'\')" class="x_accent_fg pointer">'.$fname.'</span></td><td>'.$lang['fubegin'].' <b>'.$hour_b.':00</b></td>';
+$fusers.='<td>'.$lang['fuend'].' <b>'.$hour_e.':00</b></td><td style="width:80px;text-align:center">'.$del_fuser.'</td></tr>'."\n";
+
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['fusers'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js?xyz=<?php print $settings['forcereload'];?>"></script>
+</head>
+
+<body class="x_global x_overal">
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php?q=users'" class="pointer svg_usrs">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['fusers'];?></h2>
+<hr />
+<div class="left"><?php print $lang['fusrds'].' '.$lang['fusrdd'];?></div>
+
+<div style="text-align:right">
+<form action="admin.php" method="get" autocomplete="off">
+<input type="button" class="round4 x_bcolor_bg pointer" style="float:left;width:150px;padding:10px" onclick="<?php print 'a=confirm(\''.$lang['confirm'].'\');if(a){self.location.href=\'admin.php?delfake=1\'}';?>" value="<?php print $lang['delfusr'];?>" />
+<select style="width:30%" name="uf_order" class="x_accent_bb s250" onchange="document.forms[0].submit()">
+<?php if($settings['uf_order']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['fu_ord1'];?></option>
+<?php if($settings['uf_order']==2){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="2"<?php print $sel;?>><?php print $lang['fu_ord2'];?></option>
+<?php if($settings['uf_order']==3){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="3"<?php print $sel;?>><?php print $lang['fu_ord3'];?></option>
+</select>
+</form>
+</div>
+<br /><hr />
+
+<form action="admin.php" method="post" autocomplete="off">
+<div style="width:100%;overflow:auto">
+<table>
+<tr class="x_bcolor_bg"><td colspan="6"></td></tr>
+<?php print $nores.$fusers; ?>
+<tr class="x_bcolor_bg"><td colspan="6"></td></tr>
+</table>
+</div>
+
+<br /><hr />
+
+<div class="left" style="line-height:50px">
+<span class="x_accent_fg pointer" onclick="f=document.forms[1];i=0;while(f.length>i){f.elements[i].checked=1;i++}"><?php print $lang['sel_all'];?></span>
+&middot;
+<span class="x_accent_fg pointer" onclick="f=document.forms[1];i=0;while(f.length>i){f.elements[i].checked=0;i++}"><?php print $lang['sel_non'];?></span>
+</div>
+
+<div class="right">
+
+<select  name="status" class="x_accent_bb" style="width:80px">
+<option value="1"><?php print $lang['status1'];?></option>
+<option value="2"><?php print $lang['status2'];?></option>
+<option value="3"><?php print $lang['status3'];?></option>
+<option value="4"><?php print $lang['status4'];?></option>
+<option value="5"><?php print $lang['status5'];?></option>
+</select>
+
+<select  name="hour_begin"  class="x_accent_bb" style="width:80px">
+<option value="0"><?php print $lang['fubegin'];?> 0h</option>
+<option value="1"><?php print $lang['fubegin'];?> 1h</option>
+<option value="2"><?php print $lang['fubegin'];?> 2h</option>
+<option value="3"><?php print $lang['fubegin'];?> 3h</option>
+<option value="4"><?php print $lang['fubegin'];?> 4h</option>
+<option value="5"><?php print $lang['fubegin'];?> 5h</option>
+<option value="6"><?php print $lang['fubegin'];?> 6h</option>
+<option value="7"><?php print $lang['fubegin'];?> 7h</option>
+<option value="8"><?php print $lang['fubegin'];?> 8h</option>
+<option value="9"><?php print $lang['fubegin'];?> 9h</option>
+<option value="10"><?php print $lang['fubegin'];?> 10h</option>
+<option value="11"><?php print $lang['fubegin'];?> 11h</option>
+<option value="12"><?php print $lang['fubegin'];?> 12h</option>
+<option value="13"><?php print $lang['fubegin'];?> 13h</option>
+<option value="14"><?php print $lang['fubegin'];?> 14h</option>
+<option value="15"><?php print $lang['fubegin'];?> 15h</option>
+<option value="16"><?php print $lang['fubegin'];?> 16h</option>
+<option value="17"><?php print $lang['fubegin'];?> 17h</option>
+<option value="18"><?php print $lang['fubegin'];?> 18h</option>
+<option value="19"><?php print $lang['fubegin'];?> 19h</option>
+<option value="20"><?php print $lang['fubegin'];?> 20h</option>
+<option value="21"><?php print $lang['fubegin'];?> 21h</option>
+<option value="22"><?php print $lang['fubegin'];?> 22h</option>
+<option value="23"><?php print $lang['fubegin'];?> 23h</option>
+</select>
+
+<select  name="hour_end"  class="x_accent_bb" style="width:80px">
+<option value="1"><?php print $lang['fuend'];?> 1h</option>
+<option value="2"><?php print $lang['fuend'];?> 2h</option>
+<option value="3"><?php print $lang['fuend'];?> 3h</option>
+<option value="4"><?php print $lang['fuend'];?> 4h</option>
+<option value="5"><?php print $lang['fuend'];?> 5h</option>
+<option value="6"><?php print $lang['fuend'];?> 6h</option>
+<option value="7"><?php print $lang['fuend'];?> 7h</option>
+<option value="8"><?php print $lang['fuend'];?> 8h</option>
+<option value="9"><?php print $lang['fuend'];?> 9h</option>
+<option value="10"><?php print $lang['fuend'];?> 10h</option>
+<option value="11"><?php print $lang['fuend'];?> 11h</option>
+<option value="12"><?php print $lang['fuend'];?> 12h</option>
+<option value="13"><?php print $lang['fuend'];?> 13h</option>
+<option value="14"><?php print $lang['fuend'];?> 14h</option>
+<option value="15"><?php print $lang['fuend'];?> 15h</option>
+<option value="16"><?php print $lang['fuend'];?> 16h</option>
+<option value="17"><?php print $lang['fuend'];?> 17h</option>
+<option value="18"><?php print $lang['fuend'];?> 18h</option>
+<option value="19"><?php print $lang['fuend'];?> 19h</option>
+<option value="20"><?php print $lang['fuend'];?> 20h</option>
+<option value="21"><?php print $lang['fuend'];?> 21h</option>
+<option value="22"><?php print $lang['fuend'];?> 22h</option>
+<option value="23"><?php print $lang['fuend'];?> 23h</option>
+<option value="24" selected="selected"><?php print $lang['fuend'];?> 24h</option>
+</select>
+
+<input type="submit" class="round4 x_bcolor_bg" style="font-weight:bold;width:80px;height:50px" value="<?php print $lang['submit'];?>" />
+</div>
+</form>
+
+<br /><hr />
+</div>
+
+<?php include 'admin/menu.pxtm'; ?>
+</body></html>

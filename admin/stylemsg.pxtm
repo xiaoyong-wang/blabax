@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['msgstylt'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+<form action="admin.php" method="post" autocomplete="off">
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php?q=style'" class="pointer svg_styl">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['msgstylt'];?></h2>
+<hr />
+
+<div><?php print $lang['msgstylb'];?></div>
+<br /><hr />
+
+<textarea placeholder="HTML" name="msg_template" class="x_bcolor_bg" style="height:150px"><?php $x=htmlspecialchars($settings['msg_template']); print $x; ?></textarea>
+<textarea placeholder="CSS" name="msg_style" class="x_bcolor_bg" style="height:150px"><?php $x=htmlspecialchars($settings['msg_style']); print $x; ?></textarea>
+
+
+<div style="text-align:left">
+<input onclick="settns(0)" value="<?php print $lang['templ'];?>A" class="round4 x_bcolor_bg" style="margin:1px" type="button"  />
+<input onclick="settns(1)" value="<?php print $lang['templ'];?>B" class="round4 x_bcolor_bg" style="margin:1px" type="button"  />
+<input onclick="settns(2)" value="<?php print $lang['templ'];?>C" class="round4 x_bcolor_bg" style="margin:1px" type="button"  />
+<input onclick="settns(3)" value="<?php print $lang['templ'];?>D" class="round4 x_bcolor_bg" style="margin:1px" type="button"  />
+<input onclick="settns(4)" value="<?php print $lang['templ'];?>A@" class="round4 x_bcolor_bg" style="margin:1px" type="button"  />
+<input onclick="settns(5)" value="<?php print $lang['templ'];?>D@" class="round4 x_bcolor_bg" style="margin:1px" type="button"  />
+</div><hr />
+
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+
+</div>
+</form>
+<script>
+metmpl=new Array()
+mstyle=new Array()
+
+metmpl[0] = '<span class="chat_area_time">{TIME}</span> <span class="chat_area_user g{GROUP}">{NAME}</span>: <span class="tt{COLOR}">{TEXT}</span><br />'
+mstyle[0] = ''
+
+metmpl[1] = '<span class="msg x_all_rounded"><span class="chat_area_time">{TIME}</span> <span class="chat_area_user g{GROUP}">{NAME}</span>: <span class="tt{COLOR}">{TEXT}</span></span><br />'
+mstyle[1] = '.msg{min-width:200px;display:inline-block;color:#000;background-color:rgba(255,255,255,0.5);margin:1px;padding:8px}'
+
+metmpl[2] = '<span class="msg x_all_rounded"><span class="chat_area_time">{TIME}</span> <span class="chat_area_user g{GROUP}">{NAME}</span>: <span class="tt{COLOR}">{TEXT}</span></span><br />'
+mstyle[2] = '.msg{min-width:200px;display:inline-block;color:#fff;background-color:rgba(0,0,0,0.5);margin:1px;padding:8px}'
+
+metmpl[3] = '<div class="msg"><span style="background-image:url(avatar.php?q={UID})" class="avt"></span><span class="chat_area_user g{GROUP}">{NAME}</span> <span class="chat_area_time">{TIME}</span><br /><span class="tt{COLOR}">{TEXT}</span></div>'
+mstyle[3] = '.msg{margin-bottom:15px;min-width:200px;clear:both} .avt{display:inline-block;float:left;width:40px;height:40px;margin-right:5px;background-size:cover;background-repeat:no-repeat}'
+
+metmpl[4] = '<span class="chat_area_time">{TIME}</span> <span onclick="inp.value=\\\'«@\\\'+this.innerHTML+\\\'» \\\'+inp.value" class="pointer chat_area_user g{GROUP}">{NAME}</span>: <span class="tt{COLOR}">{TEXT}</span><br />'
+mstyle[4] = ''
+
+metmpl[5] = '<div class="msg"><span style="background-image:url(avatar.php?q={UID})" class="avt"></span><span onclick="inp.value=\\\'«@\\\'+this.innerHTML+\\\'» \\\'+inp.value" class="pointer chat_area_user g{GROUP}">{NAME}</span> <span class="chat_area_time">{TIME}</span><br /><span class="tt{COLOR}">{TEXT}</span></div>'
+mstyle[5] = '.msg{margin-bottom:15px;min-width:200px;clear:both} .avt{display:inline-block;float:left;width:40px;height:40px;margin-right:5px;background-size:cover;background-repeat:no-repeat}'
+
+function settns(x){document.forms[0].msg_template.value=metmpl[x];document.forms[0].msg_style.value=mstyle[x]}
+
+</script>
+<?php include 'admin/menu.pxtm'; ?>
+
+</body></html>

@@ -1,0 +1,293 @@
+<?php require_once('lang/languages.php'); ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['general'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+<form action="admin.php" method="post" autocomplete="off">
+
+<div class="holder">
+
+
+<h2 onclick="self.location.href='admin.php?q=settings'" class="pointer svg_sett">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['general'];?></h2>
+<hr />
+
+
+<div class="left"><?php print $lang['htmltit'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="512" name="html_title" value="<?php $x=htmlspecialchars($settings['html_title']); print $x;?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['offset'];?> (<span class="x_accent_fg pointer" onclick="offset=new Date().getTimezoneOffset()*-1;de('acpoff').value=offset"><?php print $lang['detect'];?></span>)</div>
+<div class="right">
+<input type="text" id="acpoff" class="x_accent_bb s250" maxlength="64" name="acp_offset" value="<?php print $settings['acp_offset'];?>" />
+</div>
+<br /><hr />
+
+<div class="left"><b class="pointer x_accent_fg" onclick="document.forms[0].cookie_salt.value=rand_str(50)"><?php print $lang['ckssalt'];?></b> (<?php print $lang['newsalt'];?>)</div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="64" name="cookie_salt" value="<?php $x=htmlspecialchars($settings['cookie_salt']); print $x;?>" />
+</div>
+<br /><hr />
+
+<div class="left">ACP Style</div>
+<div class="right">
+<select class="x_accent_bb s250" name="acp_css">
+<?php if($settings['acp_css']=='1.css'){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>>Rethymno</option>
+<?php if($settings['acp_css']=='2.css'){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="2"<?php print $sel;?>>Hermione</option>
+<?php if($settings['acp_css']=='3.css'){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="3"<?php print $sel;?>>Bragança</option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['deflang'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="default_lang">
+<?php 
+
+//prepare language options
+$lang2select=array();
+foreach ($lang_list as $key => $value) {
+$sel='';if($settings['default_lang']==$key){$sel=' selected="selected"';}
+$lang2select[]='<option title="'.$value[0].'" value="'.$key.'"'.$sel.'>'.$value[1].'</option>';
+}  sort($lang2select); $lang2select=implode("\n",$lang2select); print $lang2select;
+
+?>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['defampm'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="default_ampm">
+<?php if($settings['default_ampm']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['none'];?></option>
+<?php if($settings['default_ampm']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>>AM/PM</option>
+<?php if($settings['default_ampm']==2){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="2"<?php print $sel;?>>24H</option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['defsndo'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="default_sound">
+<?php if($settings['default_sound']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['on'];?></option>
+<?php if($settings['default_sound']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['off'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['dragscr'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="drag2scroll">
+<?php if($settings['drag2scroll']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['on'];?></option>
+<?php if($settings['drag2scroll']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['off'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['wheescr'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="whee2scroll">
+<?php if($settings['whee2scroll']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['on'];?></option>
+<?php if($settings['whee2scroll']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['off'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['mob_eff'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="mobile_effe">
+<?php if($settings['mobile_effe']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['on'];?></option>
+<?php if($settings['mobile_effe']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['off'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['dimblr'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="dimonblur">
+<?php if($settings['dimonblur']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['on'];?></option>
+<?php if($settings['dimonblur']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['off'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['runsent'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="rmb_unsent">
+<?php if($settings['rmb_unsent']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['on'];?></option>
+<?php if($settings['rmb_unsent']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['off'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['meta_ref'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="meta_ref">
+<?php if($settings['meta_ref']=='no-referrer'){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="no-referrer"<?php print $sel;?>>no-referrer</option>
+<?php if($settings['meta_ref']=='origin'){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="origin"<?php print $sel;?>>origin</option>
+<?php if($settings['meta_ref']=='same-origin'){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="same-origin"<?php print $sel;?>>same-origin</option>
+<?php if($settings['meta_ref']=='strict-origin'){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="strict-origin"<?php print $sel;?>>strict-origin</option>
+<?php if($settings['meta_ref']=='unsafe-url'){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="unsafe-url"<?php print $sel;?>>unsafe-url</option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['allowgt'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="allow_guest">
+<?php if($settings['allow_guest']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['yes'];?></option>
+<?php if($settings['allow_guest']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['no'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['allowrg'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="allow_reg">
+<?php if($settings['allow_reg']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['yes'];?></option>
+<?php if($settings['allow_reg']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['no'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['avsize'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="10" name="avsize" value="<?php $x=(int)$settings['avsize']; print $x;?>" onblur="if(this.value!=parseInt(this.value) || parseInt(this.value)>512 || parseInt(this.value)<80){this.value=250}" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['avatarfs'];?>
+<pre style="font-size:80%"><?php
+
+$upload_max_filesize=@ini_get('upload_max_filesize');
+$post_max_size=@ini_get('post_max_size');
+$memory_limit=@ini_get('memory_limit');
+
+print 'php.ini[upload_max_filesize]: '.$upload_max_filesize."\r\n";
+print 'php.ini[post_max_size]: '.$post_max_size."\r\n";
+print 'php.ini[memory_limit]: '.$memory_limit."\r\n";
+?></pre>
+</div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="10" name="avatar_msize" value="<?php $x=(int)$settings['avatar_msize']; print $x;?>" onblur="if(this.value!=parseInt(this.value) || parseInt(this.value)<102400){this.value=102400}" />
+</div>
+<br /><hr />
+
+<div style="font-size:80%"><?php print $lang['helpsec'];?></div>
+<br /><hr />
+
+<div class="left"><?php print $lang['defbanp'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="9" name="ban_period" value="<?php $x=(int)$settings['ban_period']; print $x;?>" onblur="if(this.value!=parseInt(this.value) || parseInt(this.value)<3600){this.value=3600}" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['keepiplg'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="9" name="keepiplg" value="<?php $x=(int)$settings['keepiplg']; print $x;?>" onblur="if(this.value!=parseInt(this.value) || parseInt(this.value)<86400){this.value=86400}" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['pml_s'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="7" name="pmlog_stop" value="<?php $x=(int)$settings['pmlog_stop']; print $x;?>" onblur="if(this.value!=parseInt(this.value) || parseInt(this.value)<3600 || parseInt(this.value)>2000000){this.value=86400}" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['postint'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="9" name="post_interval" value="<?php $x=(int)$settings['post_interval']; print $x;?>" onblur="if(this.value!=parseInt(this.value)){this.value=0}" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['usrperh'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="9" name="userperhour" value="<?php $x=(int)$settings['userperhour']; print $x;?>" onblur="if(this.value!=parseInt(this.value) || parseInt(this.value)<1){this.value=5}" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['wrnperh'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="9" name="wrongperhour" value="<?php $x=(int)$settings['wrongperhour']; print $x;?>" onblur="if(this.value!=parseInt(this.value) || parseInt(this.value)<1){this.value=5}" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['rldelay'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="9" name="reglog_delay" value="<?php $x=(int)$settings['reglog_delay']; print $x;?>" onblur="if(this.value!=parseInt(this.value)){this.value=0}" />
+</div>
+<br /><hr />
+
+<?php print $lang['defwelc'];?> <b class="pointer x_accent_fg" style="float:right" onclick="welcome()"><?php print $lang['resetdw'];?></b><br />&nbsp;<br />
+<textarea name="welcome_msg" class="x_bcolor_bg" style="height:200px"><?php $x=htmlspecialchars($settings['welcome_msg']); print $x; ?></textarea>
+
+<br /><hr />
+
+<?php print $lang['mottos'];?><br />&nbsp;<br />
+<textarea name="mottos" class="x_bcolor_bg" style="height:200px"><?php $x=htmlspecialchars($settings['mottos']); $x=explode('|',$x);$x=implode("\r\n",$x);print $x; ?></textarea>
+
+<br /><hr />
+
+
+<?php print $lang['badwords'];?><br />&nbsp;<br />
+<textarea name="badwords" class="x_bcolor_bg" style="height:200px"><?php $x=htmlspecialchars($settings['badwords']); $x=explode(',',$x);$x=implode("\r\n",$x);print $x; ?></textarea>
+
+<br /><hr />
+
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+
+</div>
+
+<br />
+
+</form>
+<?php include 'admin/menu.pxtm'; ?>
+
+<script>
+
+function welcome(){
+x='<b>Welcome to our chat!</b><div style="margin:10px"><div class="help_allp help_esck">The ESC key is your friend. Use it!</div><div class="help_allp help_cycl">Cycle through rooms with Ctrl+Shift+L/R Arrows.</div><div class="help_allp help_ctrl">Change rooms with Ctrl+Shift+1 Ctrl+Shift+2 ...</div><div class="help_allp help_drag">Drag-to-scroll or scroll with the arrow keys.</div><div class="help_allp help_dblc">A double-click swaps scroll &amp; select.</div><div class="help_allp help_swip">A swipe from the left edge opens the menu.</div></div>';
+document.forms[0].welcome_msg.value=x
+}
+
+</script>
+
+</body></html>

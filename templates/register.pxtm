@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="<?php print $lang_abbr;?>">
+
+<head><title><?php print $settings['html_title'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="blabax.css?xyz=<?php print $settings['forcereload'];?>" />
+<style>
+<?php print $settings['style_delivery'];?>
+</style>
+<script src="blabax.js?xyz=<?php print $settings['forcereload'];?>"></script>
+</head>
+
+<body class="x_global x_overal">
+
+<form action="index.php" method="post" autocomplete="off" onsubmit="return check_form()">
+
+<div id="middps" class="x_overal x_all_rounded">
+
+<div class="holder holder_menu">
+<div class="x1"><?php print $lang['register'];?></div>
+<div class="x2 pointer x_accent_bb"  onclick="gourl('account.php')"><?php print $lang['login'];?></div>
+<br style="clear:both" /></div>
+
+<div class="holder"><?php print $settings['tips_reg'];?></div>
+
+<div class="holder">
+<input type="text" name="regname" maxlength="12" class="holder_text x_accent_bb svg_user" placeholder="<?php print $lang['username'];?>" onfocus="input_style_back(this,'svg_user')" onblur="check_available(this.value)" />
+</div>
+
+<div class="holder">
+<input type="text" name="email" maxlength="64" class="holder_text x_accent_bb svg_mail" placeholder="<?php print $lang['email'];?>" onfocus="input_style_back(this,'svg_mail')" />
+</div>
+
+
+<div class="holder">
+<input type="password" name="password" maxlength="32" class="holder_text x_accent_bb svg_pass" placeholder="<?php print $lang['password'];?>" onfocus="input_style_back(this,'svg_pass')" />
+</div>
+
+<div class="holder">
+<input type="password" name="repasswd" maxlength="32" class="holder_text x_accent_bb svg_pass" placeholder="<?php print $lang['retype'];?>" onfocus="input_style_back(this,'svg_pass')" />
+</div>
+
+<div class="holder" style="height:20px"></div>
+
+<div class="holder">
+<input type="text" name="question" maxlength="128" class="holder_text x_accent_bb svg_psqn" placeholder="<?php print $lang['fpr_question'];?>" onfocus="input_style_back(this,'svg_psqn')" />
+</div>
+
+<div class="holder">
+<input type="text" name="answer" maxlength="128" class="holder_text x_accent_bb svg_psar" placeholder="<?php print $lang['fpr_answer'];?>" onfocus="input_style_back(this,'svg_psar')" />
+</div>
+
+<div class="holder" style="clear:both">
+<input type="submit" class="x_bcolor_z holder_button  x_all_rounded" style="width:100%" value="<?php print $lang['register'];?>" />
+</div>
+
+<div class="holder" style="text-align:right;font-size:80%;font-weight:bold;font-variant:small-caps">
+<div style="float:left" class="pointer" onclick="de('hidescreen_tran').style.display='block';hoop('flags_div',1)">
+<div class="svg_f_<?php print $lang_abbr;?> flag_curr"></div> <?php print $lang_name;?></div>
+<div style="float:right" class="pointer x_accent_fg" onclick="gourl('account.php?q=password')"><?php print $lang['forgot_pass'];?></div>
+</div>
+<br />&nbsp;<br />
+</div>
+</form>
+
+<!-- Thank you for keeping this link or please purchase BlaB! AX Pro -->
+<div class="x_overal" style="font-size:80%;position:fixed;left:0;bottom:0;padding:3px;width:100%;text-align:center">
+Powered by <b><a class="x_accent_fg" href="https://justblab.com" onclick="return hlink(this.href)">BlaB! AX</a></b></div>
+<!-- Thank you for keeping this link or please purchase BlaB! AX Pro -->
+
+<div id="hidescreen_tran" class="x_overal" onclick="this.style.display='none';hoop('flags_div',0)"></div>
+<div id="flags_div" class="x_bcolor_y x_all_rounded"><?php print $lang_divs;?></div>
+
+<script>
+
+form_submitted=0
+
+function check_available(s){
+if(s.length>2){
+ajax_obj=new XMLHttpRequest()
+s='check_name='+s
+ajax_obj.open('post','account.php')
+ajax_obj.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+ajax_obj.onreadystatechange=available_answer;ajax_obj.send(s)}}
+
+function available_answer(){
+if(ajax_obj.readyState==4 && ajax_obj.status==200){
+response=ajax_obj.responseText.toString()
+regnamebox=document.forms[0].regname
+if(response=='1'){
+regnamebox.value='';regnamebox.className='holder_text x_accent_bb x_accent_bg'}
+}}
+
+function check_form(){
+f=document.forms[0]
+s='holder_text x_accent_bb x_accent_bg'
+if(f.regname.value.trim().length<3){f.regname.className=s;return false}
+if(f.email.value.trim().length<7){f.email.className=s;return false}
+if(f.email.value.indexOf('@')==-1){f.email.className=s;return false}
+if(f.email.value.indexOf('.')==-1){f.email.className=s;return false}
+if(f.email.value.trim().indexOf(' ')!=-1){f.email.className=s;return false}
+if(f.password.value.trim().length<3){f.password.className=s;return false}
+if(f.password.value!=f.repasswd.value){f.repasswd.className=s;return false}
+if(f.question.value.trim().length<1){f.question.className=s;return false}
+if(f.answer.value.trim().length<1){f.answer.className=s;return false}
+if(form_submitted<1){f.action='account.php';form_submitted=1;return true}}
+
+function input_style_back(x,y){x.className='holder_text x_accent_bb '+y}
+
+window.onload=verti_pos; window.onresize=verti_pos
+setTimeout("de('middps').style.display='none';de('middps').style.visibility='visible';hoop('middps',1)",100)
+
+<?php if(isset($_COOKIE['mobileapp'])){print 'function hlink(h){return false}';}else{print 'function hlink(h){window.open(h);return false}';}?>
+
+</script>
+
+<?php if(!isset($_COOKIE[$xcookie_message[0]]) && strlen($settings['announce'])>5){
+print $settings['announce']; } ?>
+
+<div style="height:30px"></div>
+</body>
+</html>

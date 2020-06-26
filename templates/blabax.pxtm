@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="<?php print $lang_abbr;?>"><head>
+
+<title><?php print $settings['html_title'];?></title>
+<meta charset="utf-8" />
+<meta name="referrer" content="<?php print $settings['meta_ref'];?>" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="blabax.css?xyz=<?php print $settings['forcereload'];?>" />
+<link rel="stylesheet" href="emoticons.css?xyz=<?php print $settings['forcereload'];?>" />
+<style>
+.g1{}
+<?php 
+print $bgrooms;
+print "\n";
+print $css_colors;
+print "\n";
+print $settings['style_delivery'];
+print "\n";
+print $settings['msg_style'];
+
+print $settings['webkit_css'];
+
+?>
+</style>
+<script>
+<?php if(isset($_COOKIE['mobileapp'])){$mpp=(int)$_COOKIE['mobileapp']; print 'mobileapp='.$mpp.';';}else{print 'mobileapp=0;';}?>
+if(mobileapp==3){parent.postMessage('savecookie','*')}
+
+roomhistbutton=''; privhistbutton='';
+msg_template='<?php print $settings['msg_template'];?>';
+
+<?php if($settings['msg2db']>0){?>
+roomhistbutton='<div style="display:inline-block;margin-bottom:5px;min-height:24px" class="history_button svg_hist x_bcolor_x x_all_rounded" onclick="show_r_history(this)"><b><?php print $lang['history'];?></b>&nbsp;&nbsp;</div><br />'
+privhistbutton='<div style="display:inline-block;margin-bottom:5px;min-height:24px" class="history_button svg_hist x_bcolor_y x_all_rounded" onclick="show_p_history(this)"><b><?php print $lang['history'];?></b>&nbsp;&nbsp;</div><br />'
+<?php }?>
+
+</script>
+<script src="sounds.js?xyz=<?php print $settings['forcereload'];?>"></script>
+<script src="blabax.js?xyz=<?php print $settings['forcereload'];?>"></script>
+</head>
+
+<body onload="init()" class="x_blab x_overal">
+
+<div id="rbgcolor" class="top_area" style="top:5px"></div>
+
+<div class="x_bcolor_z top_area">
+
+<div class="status_select" <?php if($user_visible>0){print 'onclick="hst.style.display=\'block\';hoop(ons,1)"';}else{print 'style="opacity:0.3"';} ?>>
+<span id="curr_status_ico" class="pchat_notify status1"></span><span id="curr_status_nme"><?php if($user_visible>0){print $lang['status1'];}else{print $lang['status0'];} ?></span>
+&nbsp;</div>
+
+<div id="top_unread" class="x_accent_bg" onclick="swap_panel(0);hst.style.display='block';pab.style.display='block';hoop(pan,1)"></div>
+<div id="top2unread" class="x_accent_bg" onclick="swap_panel(5);hst.style.display='block';pab.style.display='block';hoop(pan,1)"></div>
+
+<div class="top_button svg_more" onclick="if(de('panel_pmlog').style.display=='block'){hidepm_notify()} hst.style.display='block';pab.style.display='block';hoop(pan,1)"></div>
+</div>
+
+<div class="bgbwsp" id="chat_area" <?php if($settings['drag2scroll']>0){print 'onmousedown="mdown(event)" onmousemove="mmove(this,event)" ondblclick="nselect(1)"';} ?>>
+<div class="spinner"><div class="bounce1 x_accent_bg"></div><div class="bounce2 x_accent_bg"></div><div class="bounce3 x_accent_bg"></div></div>
+</div>
+
+<?php print $settings['customjs'];?>
+<div id="online_button" class="x_bcolor_z x_circle svg_usrs" onclick="display_layout_frs(1)"><span id="global_notify" class="pchat_notify"></span></div>
+
+<div id="online_title">
+<div onclick="display_layout_frs(0)" class="online_title_close svg_clos"></div>
+<div class="online_title_text"><?php print $lang['online'];?></div></div>
+
+<div id="online_users" onmousedown="m2down(event)" onmousemove="m2move(this,event)"></div>
+
+<div id="autoscroll" class="x_bcolor_z x_circle svg_down" onclick="ascroll()"></div>
+ 
+<div id="hidescreen_part" class="x_overal" onclick="if(blockuserchange<1){if(srv_usr_id!=0){hide_user()} hsp.style.display='none'; if(lof.style.display=='block'){hoop(lof,0)}inp_focus()}"></div>
+
+<div id="user_info" class="x_bcolor_x x_top_rounded">
+<div id="user_avatar" class="pointer" onclick="ext_profile()"></div>
+<div style="float:left;margin-left:5px;margin-top:10px">
+<div id="user_name" style="cursor:pointer" onclick="ext_profile()">&nbsp;</div>
+<small id="user_motto"></small></div></div>
+
+<div id="user_buttons" class="user_butt">
+<span title="<?php print $lang['un_mute'];?>" class="x_circle x_bcolor_z pointer svg_mute" id="ig_unig" onclick="shoop(this,1,100);ignore_set()">&nbsp;</span>
+<?php if($uid==1){ ?><span onclick="shoop(this,1,100);if(blockuserchange<1){hoop('kick_ban',1)}" title="<?php print $lang['kick'].'/'.$lang['ban'];?>" class="x_circle x_bcolor_z pointer svg_kick">&nbsp;</span><?php } ?>
+</div>
+
+<div id="kick_ban" class="user_butt x_all_rounded x_bcolor_x">
+<?php if($uid==1){ ?>
+<span onclick="ban_user(0)" title="<?php print $lang['kick'];?>" class="x_circle x_bcolor_z pointer svg_kick">&nbsp;</span>
+<span onclick="ban_user(1)" title="<?php print $lang['ban'];?>: ID" class="x_circle x_bcolor_z pointer svg_bann"><small style="padding:4px;font-size:10px;position:relative;top:-10px" class="x_overal">&nbsp;id&nbsp;</small></span>
+<span onclick="ban_user(2)" title="<?php print $lang['ban'];?>: ID+IP" class="x_circle x_bcolor_z pointer svg_bann"><small style="padding:4px;font-size:10px;position:relative;top:-10px" class="x_overal">&nbsp;id/ip&nbsp;</small></span>
+<span onclick="shoop(this,1,100);hoop('kick_ban',0)" title="<?php print $lang['cancel'];?>" class="x_circle x_bcolor_z pointer svg_clos">&nbsp;</span>
+<?php } ?>
+</div>
+
+<div id="private_chats"></div>
+
+<div id="box_emoji_stickers" class="x_bcolor_y x_all_rounded">
+<div id="list_of_emoji"><?php print $emos2dv;?></div>
+<div id="list_of_stickers" style="margin-top:10px;display:none"></div>
+
+<b id="emoji_button" onclick="if(!obj2hoop){lie.style.display='none';sti.style.display='none';hoop(lie,1);shoop(this,1,100)}" class="pointer x_all_rounded x_bcolor_z svg_bemo" style="width:80px">&nbsp;</b>
+
+<?php 
+foreach ($sticker_sets as $key => $value) {
+print '<b onclick="if(!obj2hoop){lie.style.display=\'none\';sti.style.display=\'none\';sti.innerHTML=stickers_'.$key.';hoop(sti,1);lof.scrollTop=lof.scrollHeight;shoop(this,1,100)}" class="pointer x_bcolor_z x_all_rounded" style="width:80px">'.$key.'</b>'."\n";
+} ?>
+
+</div>
+
+<form action="?do" onsubmit="msg_send();return false" autocomplete="off">
+<div id="bottom_middle" class="x_bcolor_z"><input type="text" id="text_input" maxlength="320" class="x_input_blabws" placeholder=" <?php print $lang['message'];?> " /></div>
+<div id="bottom_smile" class="x_bcolor_z x_left_rounded svg_emtn" onmouseover="if(mobile<1){this.className='x_left_rounded svg_emtn x_accent_bg'}" onmouseout="if(mobile<1){this.className='x_bcolor_z x_left_rounded svg_emtn'}" onclick="if(chatflow<1){if(lof.style.display=='block'){if(srv_usr_id==0){hsp.style.display='none'} shoop(this,1,100); hoop(lof,0)} else{if(srv_usr_id==0){hsp.style.display='block'} shoop(this,1,100); hoop(lof,1)}}"></div>
+
+<div id="bottom_send" class="x_bcolor_z x_right_rounded svg_send" onmouseover="if(mobile<1){this.className='x_right_rounded svg_send x_accent_bg'}" onmouseout="if(mobile<1){this.className='x_bcolor_z x_right_rounded svg_send'}" onclick="shoop(this,1,100);msg_send()"></div>
+</form>
+
+<div id="hidescreen_tran" class="x_overal" onclick="this.style.display='none';if(pan.style.display=='block'){pab.style.display='none';hoop(pan,0)} if(ons.style.display=='block'){hoop(ons,0)} inp_focus()"></div>
+
+<div id="statuses" class="x_bcolor_y x_all_rounded">
+<div>&nbsp;</div>
+<div onclick="change_status(1,'<?php print $lang['status1'];?>')"><span class="pchat_notify status1"></span><?php print $lang['status1'];?></div>
+<div onclick="change_status(2,'<?php print $lang['status2'];?>')"><span class="pchat_notify status2"></span><?php print $lang['status2'];?></div>
+<div onclick="change_status(3,'<?php print $lang['status3'];?>')"><span class="pchat_notify status3"></span><?php print $lang['status3'];?></div>
+<div onclick="change_status(4,'<?php print $lang['status4'];?>')"><span class="pchat_notify status4"></span><?php print $lang['status4'];?></div>
+<div onclick="change_status(5,'<?php print $lang['status5'];?>')"><span class="pchat_notify status5"></span><?php print $lang['status5'];?></div>
+<div>&nbsp;</div>
+</div>
+
+<!-- PANEL BEGIN -->
+
+<div id="panel_left" class="x_bcolor_y">
+
+<div id="panel_settings" style="display:none">
+
+<div class="panel_title x_accent_bb" style="text-align:left"><?php print $lang['settings'];?></div>
+
+
+<input id="ampm" class="x_all_rounded x_bcolor_z panel_button" title="24H AM/PM" type="button" style="width:43%;margin:1%" value=" 24h " onclick="shoop(this,1,100);swap_ampm(1)" /><input id="sndd" class="panel_button x_bcolor_z x_all_rounded svg_sndd" title="<?php print $lang['on'].'/'.$lang['off'];?>" type="button" style="width:43%;margin:1%" onclick="shoop(this,1,100);swap_sound(1)" value="&nbsp;" />
+
+<div style="margin-top:20px"><select onchange="settings_snd('lang',this.value)" class="x_bcolor_y x_accent_bb panel_input">
+<?php print $lang2select;?>
+</select></div>
+
+<div class="panel_title panel_sounds">
+<input id="snd1oo" type="button" onclick="shoop(this,1,100);sound_opt(1)" class="pointer x_bcolor_z x_left_rounded svg_sndd" value="" />
+<span class="x_overal x_right_rounded"><?php print $lang['sound1'];?></span><br /></div>
+<div class="panel_title panel_sounds">
+<input id="snd2oo" type="button" onclick="shoop(this,1,100);sound_opt(2)" class="pointer x_bcolor_z x_left_rounded svg_sndd" value="" />
+<span class="x_overal x_right_rounded"><?php print $lang['sound2'];?></span><br /></div>
+<div class="panel_title panel_sounds">
+<input id="snd4oo" type="button" onclick="shoop(this,1,100);sound_opt(4)" class="pointer x_bcolor_z x_left_rounded svg_sndd" value="" />
+<span class="x_overal x_right_rounded"><?php print $lang['sound4'];?></span><br /></div>
+<div class="panel_title panel_sounds">
+<input id="snd3oo" type="button" onclick="shoop(this,1,100);sound_opt(3)" class="pointer x_bcolor_z x_left_rounded svg_sndd" value="" />
+<span class="x_overal x_right_rounded"><?php print $lang['sound3'];?></span><br /></div>
+<div class="panel_title panel_sounds">
+<input id="snd5oo" type="button" onclick="shoop(this,1,100);sound_opt(5)" class="pointer x_bcolor_z x_left_rounded svg_sndd" value="" />
+<span class="x_overal x_right_rounded"><?php print $lang['sound5'];?></span><br /></div>
+
+<div class="panel_title x_accent_bb" style="margin-top:20px"></div>
+
+<div id="colors_div" style="width:90%;margin:auto;margin-top:20px">
+<?php print $colors;?>
+</div>
+</div>
+
+<div id="panel_profile" style="display:none">
+<div class="panel_title x_accent_bb" style="text-align:left"><?php print $lang['profile'];?></div>
+
+<?php if($xuser['bwsuser']==2){ ?>
+
+<form action="profile.php" method="post" autocomplete="off" onsubmit="return user_check_form()">
+<div><input type="text" class="x_bcolor_y x_accent_bb panel_input svg_user" value="<?php print $uname;?>" readonly="readonly" /></div>
+<div><input name="newpass" type="password" class="x_bcolor_y x_accent_bb panel_input svg_pass" placeholder="<?php print $lang['new_pass'];?>" onfocus="panput_style_back(this, 'svg_pass')" /></div>
+<div id="rt" style="display:none">
+<div><input name="retype" type="password" class="x_bcolor_y x_accent_bb panel_input svg_pass" placeholder="<?php print $lang['retype'];?>" onfocus="panput_style_back(this, 'svg_pass')" /></div>
+<div><input name="oldpass" type="password" class="x_bcolor_y x_accent_bb panel_input svg_pass" placeholder="<?php print $lang['old_pass'];?>" onfocus="panput_style_back(this, 'svg_pass')" /></div>
+</div>
+<div style="height:20px"></div>
+<div><input name="email" type="text" class="x_bcolor_y x_accent_bb panel_input svg_mail" placeholder="<?php print $lang['email'];?>" value="<?php $str_esc=htmlspecialchars($xuser['email']);print $str_esc;?>" onfocus="panput_style_back(this, 'svg_mail')" /><input type="hidden" name="dbmail" value="<?php print $str_esc;?>" /></div>
+<div id="qa" style="display:none">
+<div><input name="question" type="text" class="x_bcolor_y x_accent_bb panel_input svg_psqn" value="<?php $str_esc=htmlspecialchars($xuser['question']);print $str_esc;?>" readonly="readonly" /></div>
+<div><input name="answer" type="text" class="x_bcolor_y x_accent_bb panel_input svg_psar" placeholder="<?php print $lang['fpr_answer'];?>" onfocus="panput_style_back(this, 'svg_psar')" /></div>
+</div>
+<div><input id="prosubbutton" style="width:90%;height:50px;margin-top:30px" class="x_all_rounded x_bcolor_z panel_button" type="submit" value="<?php print $lang['submit'];?>" /></div>
+</form>
+
+<?php } elseif($xuser['bwsuser']==1 && $settings['allow_reg']>0){ ?>
+
+<form action="profile.php" method="post" autocomplete="off" onsubmit="return guest_check_form()">
+<div><input type="text" class="x_bcolor_y x_accent_bb panel_input svg_user" value="<?php print $uname;?>" readonly="readonly" /></div>
+<div><input name="password" type="password" class="x_bcolor_y x_accent_bb panel_input svg_pass" placeholder="<?php print $lang['password'];?>" onfocus="panput_style_back(this, 'svg_pass')" /></div>
+<div><input name="retype" type="password" class="x_bcolor_y x_accent_bb panel_input svg_pass" placeholder="<?php print $lang['retype'];?>" onfocus="panput_style_back(this, 'svg_pass')" /></div>
+<div><input name="email" type="text" class="x_bcolor_y x_accent_bb panel_input svg_mail" placeholder="<?php print $lang['email'];?>" onfocus="panput_style_back(this, 'svg_mail')" /></div>
+<div style="height:20px"></div>
+<div><input name="question" type="text" class="x_bcolor_y x_accent_bb panel_input svg_psqn" placeholder="<?php print $lang['fpr_question'];?>" onfocus="panput_style_back(this, 'svg_psqn')" /></div>
+<div><input name="answer" type="text" class="x_bcolor_y x_accent_bb panel_input svg_psar" placeholder="<?php print $lang['fpr_answer'];?>" onfocus="panput_style_back(this, 'svg_psar')" /></div>
+<div><input id="prosubbutton" style="width:90%;height:50px;margin-top:30px" class="x_all_rounded x_bcolor_z panel_button" type="submit" value="<?php print $lang['submit'];?>" /></div>
+</form>
+
+<?php } ?>
+</div>
+
+<div id="panel_rooms" style="display:none">
+<div class="panel_title x_accent_bb" style="text-align:left"><?php print $lang['rooms'];?></div>
+
+<?php
+
+$rcodecn=0; $rcodejs='';
+
+foreach($rooms as &$room){
+$rcodecn+=1;$rcodejs.='rcodes['.$rcodecn.']='.$room[0].';';
+$rcodepn=$rcodecn.'. '; if($rcodecn>9){$rcodepn='';} 
+
+$rname=htmlspecialchars($room[1]); $rdesc=htmlspecialchars($room[2]); 
+print '<div class="x_accent_bb pointer panel_room" style="text-align:left" onclick="change_room('.$room[0].');manage_esc()">'."\n";
+print '<div id="unr'.$room[0].'" class="x_all_rounded x_bcolor_z" style="border-color:#'.$room[3].'">0</div>'."\n";
+print '<span>'.$rcodepn.$rname.'</span><br /><small>'.$rdesc.'</small>'."\n";
+print '<br style="clear:both" />&nbsp;</div>'."\n\n";} 
+
+?>
+</div>
+
+<div id="panel_pmlog" style="display:none">
+<div class="panel_title x_accent_bb" style="text-align:left"><?php print $lang['pmlog'];?></div>
+
+<div class="panel_title x_accent_bb" style="font-size:90%;text-align:left;margin:20px;margin-left:5%;padding-bottom:25px;margin-bottom:30px">
+<input id="pmreg" class="panel_button x_bcolor_z x_all_rounded" title="<?php print $lang['on'].'/'.$lang['off'];?>" type="button" style="width:50px;margin:0;margin-left:10px;float:right" onclick="shoop(this,1,100);swap_pmreg(1,'<?php print $lang['on'];?>','<?php print $lang['off'];?>')" value="<?php print $lang['off'];?>" />
+<?php print $lang['pmlogd'];?></div>
+
+<div id="pmlog_container" style="width:90%;margin:auto">
+<?php print $pmlog;?>
+</div></div>
+
+<div id="panel_avatar" style="display:none">
+<div class="panel_title x_accent_bb" style="text-align:left"><?php print $lang['avatar'];?> &amp; <?php print $lang['motto'];?></div>
+
+
+<form action="mavatar.php" method="post" autocomplete="off" enctype="multipart/form-data" onsubmit="return true">
+<input id="avupload" type="file" name="avupload" style="display:none" onchange="tav=de('my_avatar_pic');if(typeof this.files[0]=='object' && this.files[0].size<<?php print $settings['avatar_msize'];?>){de('avatar').value='';shoop(de('avmottosbutton'),2,200);setTimeout('shoop(de(\'avmottosbutton\'),2,200)',400);tav.src='avatars/002.svg'}else{this.value='';de('avatar').value='';de('avmaxsizedesc').className='x_accent_bg';tav.src='avatars/001.svg';setTimeout('de(\'avmaxsizedesc\').className=\'x_bcolor_z\'',1200)}" accept="image/*" />
+
+<div style="float:left">
+<img src="<?php print $myavatar;?>" id="my_avatar_pic" alt="" /><br />
+<label for="avupload" class="x_bcolor_z pointer" style="position:relative;top:-20px;padding:5px;font-size:90%"><?php print $lang['select'];?></label>
+</div>
+
+<div style="font-size:90%;text-align:justify;margin-right:20px">
+<?php print $lang['upload_ms']; $max=(int)$settings['avatar_msize']; $max=round($max/1024); ?>
+<div class="x_bcolor_z" style="float:right;padding:5px;font-size:90%" id="avmaxsizedesc">Max: <?php print $max;?> kB</div>
+</div><br style="clear:both" />
+
+<input type="text" id="motto" name="motto" class="x_bcolor_y x_accent_bb panel_input svg_psar" value="<?php print $mymotto;?>" placeholder="<?php print $lang['motto'];?>" maxlength="64" />
+<input type="hidden" name="stoken" value="<?php print $stoken;?>" />
+<input type="hidden" id="avatar" name="avatar" value="<?php print $myavatar;?>" />
+<div><input id="avmottosbutton" style="width:90%;height:50px" class="x_all_rounded x_bcolor_z panel_button" type="submit" value="<?php print $lang['submit'];?>" /></div>
+</form>
+<div style="margin-top:30px" id="avatar_list"></div>
+</div>
+
+
+
+<div id="panel_ctab" style="display:none">
+<div class="panel_title x_accent_bb" style="text-align:left"><?php $x=htmlspecialchars($settings['ctab_title']);print $x;?></div>
+<?php print $settings['ctab_content']; ?></div>
+
+<br />
+</div>
+
+<div id="panel_bottom" class="x_bcolor_z">
+
+<?php if($uid==1){?><span class="x_circle x_bcolor_z pointer svg_admn" title="<?php print $lang['acp'];?>" onclick="if(mobileapp>0){gourl('admin.php')}else{manage_esc();acpwin=window.open('admin.php','acp');acpwin.focus()}"></span><?php }?>
+
+<?php if($settings['ctab_display']>0){?><span class="x_circle x_bcolor_z pointer <?php print $settings['ctab_icon'];?>" title="<?php $x=htmlspecialchars($settings['ctab_title']);print $x;?>" onclick="shoop(this,1,100);swap_panel(4)"></span><?php }?>
+
+<span id="bot_unread" style="position:absolute;width:8px;height:8px;z-index:1;border-radius:100%" class="x_accent_bg"></span>
+<?php if(count($rooms)>1){?>
+<span class="x_bcolor_z pointer svg_room" title="<?php print $lang['rooms'];?>" onclick="shoop(this,1,100);swap_panel(0)"></span><?php }?>
+
+<span id="bot2unread" style="position:absolute;width:8px;height:8px;z-index:1;border-radius:100%;opacity:0" class="x_accent_bg"></span>
+<span class="x_bcolor_z pointer svg_pmms" title="<?php print $lang['pmlog'];?>" onclick="shoop(this,1,100);swap_panel(5)"></span>
+
+<span class="x_circle x_bcolor_z pointer svg_sett" onclick="shoop(this,1,100);swap_panel(1)" title="<?php print $lang['settings'];?>"></span>
+<?php if($xuser['bwsuser']>0 && ($settings['allow_reg']>0 || $xuser['bwsuser']==2)){ ?><span class="x_circle x_bcolor_z pointer svg_user" onclick="shoop(this,1,100);swap_panel(2)" title="<?php print $lang['profile'];?>"></span><?php }?>
+
+<span class="x_circle x_bcolor_z pointer svg_avtr" onclick="shoop(this,1,100);swap_panel(3);load_avatars()" title="<?php print $lang['avatar'].' &amp; '.$lang['motto'];?>"></span>
+
+<?php $exitaction='cnf=confirm(\''.$lang['exitt'].'?\');if(cnf){ax_ping(1);setTimeout(\'gourl(\\\'account.php\\\')\',500)}';?>
+<span class="x_circle x_bcolor_z pointer svg_exit" title="<?php print $lngexit=$lang['exitt'];?>" onclick="<?php print $exitaction;?>"></span>
+</div>
+
+<!-- PANEL END -->
+
+<div id="hidescreen_opaq" class="x_overal"></div>
+<div id="system_info" class="x_bcolor_y x_all_rounded pointer" onclick="u=self.location.href.toString();gourl(u)"></div>
+<div id="hidescreen_blur"></div>
+
+<script>
+
+onx=de('online_title')
+onl=de('online_users')
+log=de('chat_area')
+inp=de('text_input')
+aus=de('autoscroll')
+hst=de('hidescreen_tran')
+hso=de('hidescreen_opaq')
+hsp=de('hidescreen_part')
+sys=de('system_info')
+lof=de('box_emoji_stickers')
+sti=de('list_of_stickers')
+lie=de('list_of_emoji')
+pan=de('panel_left')
+pab=de('panel_bottom')
+ons=de('statuses')
+uin=de('user_info')
+unn=de('user_name')
+sms=de('bottom_send')
+fmc=de('fcontent')
+pch=de('private_chats')
+btl=de('rbgcolor')
+
+
+<?php if(isset($_COOKIE[$xcookie_ignored[0]])){
+$ingored_users=str_replace("'",'',$_COOKIE[$xcookie_ignored[0]]); ?>
+try {ignored_users=JSON.parse('<?php print $ingored_users;?>')}
+catch(e){console.log(e)} <?php }?>
+
+<?php print 'ignored_cookie_name=\''.$xcookie_ignored[0].'\'; ignored_cookie_length='.$xcookie_ignored[1].';'; ?>
+<?php print 'soundop_cookie_name=\''.$xcookie_soption[0].'\'; soundop_cookie_length='.$xcookie_soption[1].';'; ?>
+
+<?php if(isset($_COOKIE[$xcookie_soption[0]])){ $sso=explode('z',$_COOKIE[$xcookie_soption[0]]);
+for($i=0;$i<10;$i++){if(isset($sso[$i])){$sso[$i]=(int)$sso[$i];}else{$sso[$i]=1;}}
+$sso=implode(',',$sso); print 'sound_options=['.$sso.'];';} else{print 'sound_options=[1,1,1,1,1,1,1,1,1,1];';} ?>
+
+if(mobile==1 && mobileapp<2){sound_options=[0,0,0,0,0,0,0,0,0,0]} sound_opt_init();
+
+<?php print $rooms2js; ?>
+current_room=<?php print $landing_room;?>; recalc_msg(); 
+btl.style.backgroundColor='#'+rooms[current_room][0];
+log.className='bgbwsp rr'+current_room;
+
+msgs2keep=<?php print $msgs2keep;?>;
+spinner='<div class="spinner"><div class="bounce1 x_accent_bg"></div><div class="bounce2 x_accent_bg"></div><div class="bounce3 x_accent_bg"></div></div>'
+postint=<?php print $settings['post_interval'];?>;
+ping_period=<?php print $ping_period;?>;
+
+welcome_raw='<?php print $welcome;?>';
+if(welcome_raw!='{PREVIOUSLY}'){welcome_msg='<div id="welcome_msg">'+welcome_raw+'</div>';
+setTimeout("if(de('welcome_msg')){de('welcome_msg').innerHTML=roomhistbutton}",12000)}
+else{welcome_msg='<div id="welcome_msg"></div>';load_history=1}
+
+emos=new Array();
+<?php print $emos2js;?>
+
+gnames=new Array();
+
+rcodes=new Array();
+<?php print $rcodejs;?>
+
+lang=new Array();
+<?php print $lang2js;?>
+
+<?php print $badwordsfilter;?>
+
+<?php print $stick2js;?>
+if(stickers.length<2){de('emoji_button').style.display='none'}
+<?php foreach ($sticker_sets as $key => $value) {print "stickers_$key ='$value'; ";} ?>
+
+time_ampm=2; sound_on=1; bg_sound=1; pm_reg=0; color=0; pan.style.display='none';
+postint=<?php print $settings['post_interval'];?>
+
+<?php if($settings['dimonblur']>0){?>
+window.onfocus=function(){manage_wfocus(1)} 
+window.onblur=function(){manage_wfocus(0)}
+
+<?php }?>
+
+window.onmouseup=function(){dragdown=false}
+document.onkeyup=function(event){if(event.keyCode==27){manage_esc()}}
+document.onkeydown=function(e){if(e.shiftKey && e.ctrlKey){key_changer(e.keyCode)}else{keyscroll(e.keyCode)}}
+
+log.addEventListener("touchstart", ttouch1)
+log.addEventListener("touchend", ttouch2)
+onl.addEventListener("wheel", w2move)
+
+window.addEventListener('click',acntx)
+window.addEventListener('wheel',acntx)
+window.addEventListener('keypress',acntx)
+window.addEventListener('touchstart',acntx)
+
+<?php if($settings['rmb_unsent']>0){print 'rmb_unsent=true;';}else{print 'rmb_unsent=false;';}?>
+<?php if($settings['whee2scroll']>0){print 'log.addEventListener("wheel", wmove)';}?>
+
+if(mobile>0){log.style.overflow='auto';onl.style.overflow='auto';lof.style.overflow='auto'}
+
+<?php print $swap_color_onload;?>
+<?php print $swap_sound_onload;?>
+<?php print $swap_pmreg_onload;?>
+<?php print $swap_ampm_onload;?>
+
+effects_on_mobile=<?php print $settings['mobile_effe'];?>;
+<?php if($settings['drag2scroll']<1){print 'nselect(1);setTimeout(\'function nselect(a){}\',500);';} ?>
+inp_focus();
+
+<?php 
+
+if($settings['ctab_display']>0 && $settings['ctab_default']>0){print 'swap_panel(4);';} 
+else{if(count($rooms)>1){print 'swap_panel(0);';}else{print 'swap_panel(1);';}}
+
+
+if($user_visible>0){print 'stealth=0;';}else{print 'stealth=1;constructcount=2;';}
+if(strlen($ufake)>0){print $ufake;}else{print 'fls_online={};';}
+?>
+
+myuuid=<?php print $uid;?>;
+stoken='<?php print $stoken;?>';
+ptoken='<?php print $ptoken;?>';
+mtoken='<?php print $mtoken;?>';
+tpoint=<?php print $timestamp;?>;
+
+chatflow=0;
+
+</script>
+
+</body>
+</html>

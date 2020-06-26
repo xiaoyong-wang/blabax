@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['dbopt'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php'" class="pointer svg_cron">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['dbopt'];?></h2>
+<hr />
+
+<div class="left"><?php print $lang['csvex'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" onchange="self.location.href='admin.php?csv='+this.value;this.value='0'">
+<option value="0"><?php print $lang['extbl'];?></option>
+<option value="users">Users</option>
+<option value="rooms">Rooms</option>
+</select>
+</div>
+
+<br /><hr />
+<h3>cron.php</h3>
+<div><?php print $lang['dbdsc'];?></div>
+
+<br /><hr />
+<form action="admin.php" method="post" autocomplete="off">
+
+<div class="left"><?php print $lang['crn_k'];?></div>
+<div class="right">
+<input type="hidden" name="crn_d" value="20" />
+<input type="hidden" name="crn_u" value="20" />
+<input type="text" class="x_accent_bb s250" maxlength="60" id="crn_k" name="crn_k" onkeyup="setcurl()" value="<?php $x=htmlspecialchars($settings['crn_k']); print $x;?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['crn_m'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="4" name="crn_m" value="<?php $x=(int)$settings['crn_m']; print $x; ?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['crn_g'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="crn_g">
+<?php if($settings['crn_g']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['yes'];?></option>
+<?php if($settings['crn_g']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['no'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['crn_o'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="crn_o">
+<?php if($settings['crn_o']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['yes'];?></option>
+<?php if($settings['crn_o']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['no'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+</form>
+
+<br /><hr />
+
+<div class="x_bcolor_bg" style="padding:10px"><br />
+<pre class="left" style="font-size:80%"><?php print $lang['cronu'];?></pre>
+<div class="right"><input type="text" class="x_accent_bb s250" id="cron_u" onclick="this.select()" name="cron_u" value="" readonly="readonly" /></div><br /><br />
+<pre class="left" style="font-size:80%"><?php print $lang['cronh'];?></pre>
+<div class="right"><input type="text" class="x_accent_bb s250" id="cron_h" onclick="this.select()" name="cron_h" value="" readonly="readonly"  /></div><br /><br />
+<pre class="left" style="font-size:80%"><?php print $lang['crond'];?></pre>
+<div class="right"><input type="text" class="x_accent_bb s250" id="cron_d" onclick="this.select()" name="cron_d" value="" readonly="readonly" /></div><br /><br />
+</div>
+<br /><hr />
+
+<div id="crondv">
+<input type="button" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['dbrun'];?>" onclick="mrun()" />
+</div>
+
+</div>
+
+
+<script>
+
+function setcurl(){
+a=document.getElementById('crn_k').value
+u=document.location.href.toString().split('admin.php');
+u=u[0]+'cron.php?q='+a
+document.getElementById('cron_u').value=u
+document.getElementById('cron_h').value='0 * * * * /usr/bin/wget -q '+u
+document.getElementById('cron_d').value='0 5 * * * /usr/bin/wget -q '+u
+return u}
+
+function mrun(){u=setcurl()
+x='<iframe src="'+u+'" style="color:#666;background-color:#eee;width:100%;height:200px;overflow:auto;border-width:0" />'
+document.getElementById('crondv').innerHTML=x}
+
+setcurl()
+
+</script>
+
+<?php include 'admin/menu.pxtm'; ?>
+
+</body>
+</html>

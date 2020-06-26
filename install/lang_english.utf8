@@ -1,0 +1,62 @@
+<?php
+
+
+/* English */
+
+$lang=array();
+
+$lang['selopt']     = 'Please select installation type...';
+$lang['hostext']    = '<div style="font-weight:bold;margin-bottom:5px">Remotely Hosted Websocket Server</b></div><i style="text-decoration:underline">websocket server</i> hosted on another host (our server hosting service or elsewhere)';
+$lang['hostslf']    = '<div style="font-weight:bold;margin-bottom:5px">Self Hosted Websocket Server</div><i style="text-decoration:underline">websocket server</i> hosted on the same host, <b>self-hosted</b> here @ ';
+$lang['howto']      = 'Our how-to-install guides can be found at <b style="cursor:pointer" onclick="window.open(\'https://justblab.com\')">justblab.com</b>';
+
+$lang['installing'] = 'Installation';
+$lang['config_set'] = '<b>config.php</b> seems to have been set. This install expects an empty file, and will not continue.';
+$lang['config_chm'] = '<b>config.php</b> is not writeable. CHMOD it to 666 and reload the install.';
+
+$lang['step1edesc'] = 'You have to submit websocket server details - Server URL, ACCESSKEY and ProxyPass Token. If you host your websocket server with us, these details appear under <b>Console » Help</b>. You can skip this step and submit the details later at Admin CP » Server.';
+$lang['step1_desc'] = 'You have to submit <b>websocket server</b> details (<i>full path, port to listen etc</i>) in order to start and stop your websocket server from the Admin CP. The information goes to <b>config.php</b>. This option requires a function called <b>shell_exec</b> enabled in your <b>php.ini</b> file. You may want to <span class="pointer x_accent_fg" onclick="window.open(\'http://google.com/search?q=enable+shell_exec\')">enable <b>shell_exec</b></span> beforehand.';
+$lang['step2_desc'] = 'At this step you need to submit your MySQL database details: host, database user, password and a database name. <b>Note that this install cannot create a MySQL database for you.</b> You cannot continue unless your PHP supports MySQLi and JSON!';
+$lang['step3_desc'] = 'You have to create your administrator account by providing a username, password, email etc. This is the last step and after that you will be able to enter your Admin CP immediately. Do not forget to remove or rename the folder <b>/install</b> once you have everything set and working properly.';
+
+$lang['next']       = 'NEXT';
+$lang['step']       = 'STEP';
+$lang['skip']       = 'SKIP';
+$lang['submit']     = 'SUBMIT';
+$lang['testconn']   = 'TEST CONNECTION';
+$lang['dbok']       = 'DATABASE SETTING ARE OK!';
+$lang['inst_ok']    = 'INSTALL COMPLETED! GO TO <span class="pointer x_accent_fg" onclick="self.location.href=\'../admin.php?uncache=1\'">ADMIN CP</span>';
+$lang['enabled']    = '<b style="color:#4CAF50">Enabled</b>';
+$lang['disabled']   = '<b style="color:#E91E63">Disabled</b>';
+
+$lang['bpath']      = '<b>Server path</b><br /> Absolute path to where you uploaded your websocket server executable file.';
+$lang['bport']      = '<b>Server port</b><br /> The port where your websocket server listens for connections. Port 9002 is as good as any. Do not change unless you have another service running on it: 100-65500';
+$lang['bckey']      = '<b>Accesskey</b><br /> The access key ensures that users connect to your websocket server from your website only. ';
+$lang['bckeyf']     = 'The accesskey can have letters and numbers only. Length: 25 chars.';
+$lang['bckeyp']     = 'Login and generate a valid ACCESSKEY at <span class="pointer x_accent_fg" onclick="window.open(\'https://justblab.com/cs/\')">justblab.com</span>.';
+$lang['logfl']      = '<b>Log file</b><br />Absolute path to the log file. Your websocket server should be able to create and modify this file and the easiest solution is to use a directory with world-wide permissions such as <b>/tmp/</b> or <b>/var/tmp/</b> Files in <b>/tmp/</b> are deleted on reboot, files in <b>/var/tmp/</b> survive reboots. <b>/dev/null</b> = no log.';
+
+$lang['srvhosted']  = '<b>Server URL</b><br />The host (URL / IP address) where where your websocket server is installed. If you host your websocket server with us the info is available under <b>Console » Help</b>. You can submit or change this later under Admin CP » Server.';
+$lang['keyhosted']  = '<b>Accesskey</b><br />The access key ensures that users connect to your websocket server from your website only. If you host your server with us the info is available under <b>Console » Help</b>. You can submit or change this later under Admin CP » Server.';
+$lang['ppshosted']  = '<b>ProxyPass Token</b><br />If you host your server with us the info is available under <b>Console » Help</b>. You can submit or change this later under Admin CP » Server.';
+
+$lang['dbhost']     = '<b>Database host</b>';
+$lang['dbname']     = '<b>Database name</b>';
+$lang['dbuser']     = '<b>Database user</b>';
+$lang['dbpass']     = '<b>Database password</b>';
+$lang['dbprfx']     = '<b>Table prefix</b>';
+$lang['dbcset']     = '<b>Database charset</b>';
+$lang['dbsock']     = '<b>Database socket</b>';
+$lang['sock_desc']  = 'Leave &lt;<i>database socket</i>&gt; empty unless you connect to MySQL through sockets.';
+
+$lang['udsc']       = '';
+$lang['user']       = 'Admin username';
+$lang['pass']       = 'Admin password';
+$lang['mail']       = 'Admin email';
+$lang['ques']       = 'Password recovery question';
+$lang['answ']       = 'Password recovery answer';
+
+$lang['err_msql']   = 'PHP mysqli extension is not enabled! The install cannot continue without PHP mysqli extension enabled!';
+$lang['err_json']   = 'PHP JSON extension is not enabled! The install cannot continue without PHP JSON extension enabled!';
+
+?>

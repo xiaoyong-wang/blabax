@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['tips_title'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+<form action="admin.php" method="post" autocomplete="off">
+
+<div class="holder">
+
+
+<h2 onclick="self.location.href='admin.php?q=settings'" class="pointer svg_sett">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['tips_title'];?></h2>
+<hr />
+
+<?php print $lang['tips_desc'];?><br />&nbsp;<br />
+<textarea name="tips_login" placeholder="LOGIN" class="x_bcolor_bg" style="height:100px"><?php $x=htmlspecialchars($settings['tips_login']);print $x; ?></textarea>
+<br /><br />
+<textarea name="tips_reg" placeholder="REGISTER" class="x_bcolor_bg" style="height:100px"><?php $x=htmlspecialchars($settings['tips_reg']);print $x; ?></textarea>
+<br /><br />
+<textarea name="tips_pass" placeholder="PASSWORD" class="x_bcolor_bg" style="height:100px"><?php $x=htmlspecialchars($settings['tips_pass']);print $x; ?></textarea>
+<br /><hr />
+
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+
+</div>
+
+<br />
+
+</form>
+<?php include 'admin/menu.pxtm'; ?>
+
+</body></html>

@@ -1,0 +1,157 @@
+<?php 
+
+$users=''; $search=''; $order=0; $where=0; $from=0;
+$where_clause=''; $order_clause='ORDER BY a.id DESC';
+
+$nores='<tr class="x_bcolor_bg"><td colspan="6" style="text-align:center">'.$lang['no_resu'].'</td></tr>';
+
+if(isset($_GET['page'])){$page=(int)$_GET['page']-1;}else{$page=0;}
+
+if(isset($_GET['order'])){
+if($_GET['order']==1){$order_clause='ORDER BY a.id ASC';$order=1;}
+if($_GET['order']==2){$order_clause='ORDER BY a.name ASC';$order=2;}
+if($_GET['order']==3){$order_clause='ORDER BY a.name DESC';$order=3;}}
+
+if(isset($_GET['where'])){
+if($_GET['where']==1){$where=1;}
+if($_GET['where']==2){$where=2;}}
+
+if(!isset($_GET['group']) || $_GET['group']=='0'){$group=0;$where_clause='WHERE a.ugroup>-1';}
+else{$group=(int)$_GET['group'];$where_clause='WHERE a.ugroup='.$group;}
+
+if(isset($_GET['search'])){
+$search2db=abc123($_GET['search'],'');
+if(length($search2db)>2 && $where==1){$where_clause.=" AND a.name LIKE('%$search2db%')";$search=$search2db;}
+if(length($search2db)>2 && $where==2){$where_clause.=" AND a.email LIKE('%$search2db%')";$search=$search2db;}}
+
+$res=neutral_query('SELECT count(*) FROM '.$dbss['prfx']."_users a $where_clause");
+$all=neutral_fetch_array($res);$all=(int)$all[0];$pages=floor($all/20);
+if($page>$pages){$page=$pages;}if($page<0){$page=0;}
+if($all>0){$nores='';}
+
+$from=$page*20;
+
+$res=neutral_query('SELECT a.id AS uid, a.name AS uname, b.color AS color, a.timestamp AS tstamp, a.email AS email, a.password AS password, a.quarantine AS quarantine, c.image AS avatar FROM '.$dbss['prfx'].'_users a LEFT JOIN '.$dbss['prfx'].'_groups b ON a.ugroup=b.id LEFT JOIN '.$dbss['sprf']."_uxtra c ON a.id=c.id $where_clause $order_clause LIMIT 20 OFFSET $from");
+
+while($row=neutral_fetch_array($res)){
+
+$datetime=gmdate('Y-m-d H:i',$row['tstamp']+$settings['acp_offset']*60);
+$email=htmlspecialchars($row['email']); if(length($email)>15){$semail15=substr($email,0,12).'...';}else{$semail15=$email;}
+$status='<b class="bu_r">R</b>'; $cbox=''; $avatar=htmlspecialchars($row['avatar']); if(strlen($avatar)<5){$avatar='';}else{$avatar='<img src="'.$avatar.'" alt="" style="width:30px;height:30px" />';}
+if(strlen($row['password'])<1){$status='<b class="bu_g">G</b>';}
+if($row['quarantine']>$timestamp){$status='<b class="x_accent_fg">Q</b>';}
+if($row['uid']>1){$cbox='<input type="checkbox" name="multiusers[]" value="'.$row['uid'].'" />';}
+
+$users.='<tr class="x_bcolor_bg"><td>'.$cbox.'</td><td style="text-align:center">'.$avatar.'</td><td style="font-weight:bold" class="pointer" onclick="self.location.href=\'admin.php?q=user&amp;id='.$row['uid'].'\'">'.$row['uname'].'<td>'.$status.'</td><td><span style="cursor:help" title="'.$email.'">'.$semail15.'</span></td><td>'.$datetime.'</td></tr>'."\n";
+
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['users'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+<div class="holder">
+<form action="admin.php" method="get" autocomplete="off">
+
+
+<h2 onclick="self.location.href='admin.php'" class="pointer svg_usrs">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['users'];?></h2>
+<hr />
+
+<div style="float:right">
+<input type="button" class="round4 x_bcolor_bg pointer" style="padding:10px" onclick="self.location.href='admin.php?q=fusers'" value="<?php print $lang['fusers'];?>" />
+<input type="button" class="round4 x_accent_bg pointer" style="padding:10px" onclick="<?php print 'a=confirm(\''.$lang['confirm'].'\');if(a){self.location.href=\'admin.php?delguests=1\'}';?>" value="<?php print $lang['dellg'];?>" />
+</div>
+
+<br style="clear:both" /><br /><hr />
+
+<div class="left">
+<input type="text" class="x_accent_bb" name="search" placeholder="<?php print $lang['search'];?>" value="<?php print $search;?>" />
+</div>
+
+<div class="right">
+<select class="x_accent_bb" style="min-width:10%;max-width:30%" name="where">
+<option value="1"><?php print $lang['wh_name'];?></option>
+<option value="2" <?php if($where=='2'){print 'selected="selected"';}?>><?php print $lang['wh_mail'];?></option>
+</select>
+
+<select class="x_accent_bb" style="min-width:10%;max-width:30%" name="order">
+<option value="0"><?php print $lang['or_regd'];?> &darr;</option>
+<option value="1" <?php if($order=='1'){print 'selected="selected"';}?>><?php print $lang['or_regd'];?> &uarr;</option>
+<option value="2" <?php if($order=='2'){print 'selected="selected"';}?>><?php print $lang['or_name'];?> A-Z</option>
+<option value="3" <?php if($order=='3'){print 'selected="selected"';}?>><?php print $lang['or_name'];?> Z-A</option>
+</select>
+
+<select class="x_accent_bb" style="min-width:10%;max-width:30%" name="group">
+<?php 
+
+$res=neutral_query('SELECT id,name FROM '.$dbss['prfx'].'_groups ORDER BY id ASC');
+print '<option value="0">'.$lang['agroup'].'</option>';
+while($row=neutral_fetch_array($res)){
+$gid=(int)$row['id'];
+$gname=htmlspecialchars($row['name']);
+if($group==$gid){$sel=' selected="selected"';}else{$sel='';}
+print '<option value="'.$gid.'"'.$sel.'>'.$gname.'</option>';
+}
+
+?>
+
+</select>
+
+</div>
+
+<br />
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['search'];?>" />
+
+<input type="hidden" name="page" value="0" />
+<input type="hidden" name="q" value="users" />
+</form>
+
+<br />
+
+<form action="admin.php?q=users" method="post" autocomplete="off">
+<div style="width:100%;overflow:auto">
+<table>
+<tr class="x_bcolor_bg"><td colspan="6"></td></tr>
+<?php print $nores.$users; ?>
+<tr class="x_bcolor_bg"><td colspan="6"></td></tr>
+</table>
+</div>
+<input type="hidden" name="whattodo" value="0" />
+</form>
+
+<?php 
+$page+=1; $pages+=1; $page2go=$page+1;if($page2go>$pages){$page2go=1;} 
+$info_line=$lang['page'].': <b>'.$page.'</b> ('.$pages.') &nbsp; '.$lang['users'].': '.$all;
+?>
+
+
+<div class="right"><?php print $lang['page'];?> <input class="x_accent_bb" style="width:50px" id="page" type="text" value="<?php print $page2go;?>" />
+<input type="button" class="round4 x_bcolor_bg" style="margin-right:1px" value="&nbsp; <?php print $lang['go'];?> &nbsp;" onclick="document.forms['0'].page.value=de('page').value;document.forms[0].submit()" /></div>
+<div class="left" style="margin-top:6px"><?php print $info_line;?></div>
+
+<br /><hr />
+
+<div class="right">
+<input type="button" class="round4 x_bcolor_bg pointer" style="width:120px;padding:5px" onclick="f=document.forms[1];f.whattodo.value=1;f.submit()" value="<?php print $lang['delquar'];?>" />
+<input type="button" class="round4 x_accent_bg pointer" style="width:80px;padding:5px" onclick="a=confirm('<?php print $lang['confirm'];?>');if(a){f=document.forms[1];f.whattodo.value=2;f.submit()}" value="<?php print $lang['delete'];?>" />
+</div>
+
+<span class="x_accent_fg pointer" onclick="f=document.forms[1];i=0;while(f.length>i){f.elements[i].checked=1;i++}"><?php print $lang['sel_all'];?></span>
+&middot;
+<span class="x_accent_fg pointer" onclick="f=document.forms[1];i=0;while(f.length>i){f.elements[i].checked=0;i++}"><?php print $lang['sel_non'];?></span>
+
+<br /><hr />
+</div>
+
+<?php include 'admin/menu.pxtm'; ?>
+</body></html>

@@ -1,0 +1,170 @@
+<?php
+
+if(isset($_GET['utf8scan'])){
+
+$name=abc123($_GET['utf8scan'],'');
+if(length($name)<3){print 'Username too short...'; die();}
+if(abcmixed($name)){print '<b style="text-decoration:line-through">'.$name.'</b> - mixed subsets or subset not allowed...'; die();}
+print 'Username OK: <b>'.$name.'</b>';
+die();}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: UTF8SCAN</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+<form action="admin.php" method="post" autocomplete="off">
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php?q=settings'" class="pointer svg_sett">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+UTF8SCAN</h2>
+<hr />
+
+
+<div class="left"><?php print $lang['utf8_run'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="utf8_run">
+<?php if($settings['utf8_run']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['on'];?></option>
+<?php if($settings['utf8_run']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['off'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<?php $subsets=explode(',',$settings['utf8_set']); ?>
+
+<div style="width:100%;overflow:auto">
+<table>
+<tr class="x_bcolor_bg"><td colspan="3" style="text-align:center"><b><?php print $lang['utf8_set'];?></b></td></tr>
+<tr class="x_bcolor_bg"><td colspan="3"></td></tr>
+
+<tr class="x_bcolor_bg">
+<td><?php $x='Arabic'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Armenian'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Bengali'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Bopomofo'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Braille'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Buhid'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Cherokee'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Cyrillic'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Devanagari'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Ethiopic'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Georgian'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Greek'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Gujarati'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Gurmukhi'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Han'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Hangul'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Hanunoo'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Hebrew'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Hiragana'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Kannada'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Katakana'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Khmer'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Lao'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td style="font-weight:bold"><?php $x='Latin'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Limbu'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Malayalam'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Mongolian'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Myanmar'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Ogham'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Oriya'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Runic'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Sinhala'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Syriac'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Tagalog'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Tagbanwa'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='TaiLe'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Tamil'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Telugu'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Thaana'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg">
+<td><?php $x='Thai'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Tibetan'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+<td><?php $x='Yi'; $c=''; if(in_array($x,$subsets)){$c=' checked="checked"';} print '<input type="checkbox"'.$c.' name="utf8_set[]" style="float:left;margin-right:10px" value="'.$x.'" />'; print $x;?></td>
+</tr>
+<tr class="x_bcolor_bg"><td colspan="3">
+<span class="x_accent_fg pointer" onclick="f=document.forms[0];i=0;while(f.length>i){f.elements[i].checked=1;i++}"><?php print $lang['sel_all'];?></span>
+&middot;
+<span class="x_accent_fg pointer" onclick="f=document.forms[0];i=0;while(f.length>i){f.elements[i].checked=0;i++}"><?php print $lang['sel_non'];?></span>
+</td></tr>
+
+</table>
+</div>
+
+<br /><hr />
+<?php print $lang['utf8_msg'];?><br />&nbsp;<br />
+<textarea name="utf8_msg" class="x_bcolor_bg" style="height:200px"><?php $x=htmlspecialchars($settings['utf8_msg']); print $x; ?></textarea>
+
+
+<br /><hr />
+
+<input type="button" onclick="document.forms[0].submit()" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+<br /></form>
+
+<br /><hr />
+
+<form action="admin.php" onsubmit="utf8snd();return false"><div>
+<input type="text" id="utf8scan" maxlength="12" class="round4 x_bcolor_bg" style="width:49%;height:50px" placeholder="<?php print $lang['username'];?>" />
+<input type="button" class="round4 x_accent_bg" style="float:right;width:49%;font-weight:bold;height:50px" value="UTF8SCAN" onclick="utf8snd()">
+<div id="utf8res" class="x_bcolor_bg" style="margin-top:5px;text-align:center;padding:20px">&nbsp;</div>
+</div></form>
+
+</div>
+
+<script>
+
+function utf8snd(){
+x=encodeURIComponent(document.getElementById('utf8scan').value);
+ajax_obj=new XMLHttpRequest();
+ajax_obj.open('get','admin.php?q=utf8test&utf8scan='+x)
+ajax_obj.onreadystatechange=utf8res
+ajax_obj.send()}
+
+function utf8res(){
+if(ajax_obj.readyState==4 && ajax_obj.status==200){
+res=ajax_obj.responseText.toString();
+document.getElementById('utf8scan').value='';
+document.getElementById('utf8res').innerHTML=res}}
+
+</script>
+
+<?php include 'admin/menu.pxtm'; ?>
+
+</body>
+</html>

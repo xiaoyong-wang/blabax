@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="<?php print $lang_abbr;?>">
+
+<head><title><?php print $settings['html_title'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="blabax.css?xyz=<?php print $settings['forcereload'];?>" />
+<style>
+<?php print $settings['style_delivery'];?>
+</style>
+<script src="blabax.js?xyz=<?php print $settings['forcereload'];?>"></script>
+</head>
+
+<body class="x_global x_overal">
+
+<div id="system_info" class="x_bcolor_y x_all_rounded" style="display:block">
+
+<table style="width:100%"><tr><td>
+<?php if(isset($info_line)){print $info_line;} ?>
+</td>
+<?php if(isset($info_url) && strlen($info_url)>0){?>
+<td style="text-align:right"><input type="button" class="x_bcolor_z pointer x_all_rounded" style="width:100%;min-width:80px;height:30px;line-height:32px;font-weight:bold" onclick="gourl('<?php print $info_url;?>')" value="OK" /></td>
+<?php } ?>
+</tr></table>
+
+</div>
+
+</body>
+</html>

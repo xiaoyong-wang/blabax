@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['dash'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+
+<div class="holder">
+
+<h2 class="svg_dash"><?php print $lang['dash'];?></h2><hr />
+<div style="text-align:center">
+<span class="menu_dash svg_dash" onclick="self.location.href='admin.php'" title="<?php print $lang['dash'];?>"></span>
+<span class="menu_dash svg_stat" onclick="self.location.href='admin.php?q=stats'" title="<?php print $lang['stats'];?>"></span>
+<span class="menu_dash svg_logs" onclick="self.location.href='admin.php?q=logs'" title="<?php print $lang['logs'];?>"></span>
+<span class="menu_dash svg_sett" onclick="self.location.href='admin.php?q=settings'" title="<?php print $lang['settings'];?>"></span>
+<span class="menu_dash svg_styl" onclick="self.location.href='admin.php?q=style'" title="<?php print $lang['style'];?>"></span>
+<span class="menu_dash svg_room" onclick="self.location.href='admin.php?q=rooms'" title="<?php print $lang['rooms'];?>"></span>
+<span class="menu_dash svg_mssg" onclick="self.location.href='admin.php?q=messages'" title="<?php print $lang['messages'];?>"></span>
+<span class="menu_dash svg_usrs" onclick="self.location.href='admin.php?q=users'" title="<?php print $lang['users'];?>"></span>
+<span class="menu_dash svg_cron" onclick="self.location.href='admin.php?q=dbopt'" title="<?php print $lang['dbopt'];?>"></span>
+<span class="menu_dash svg_vpro" onclick="self.location.href='admin.php?q=vpro'" title="BlaB! AX/WS Pro"></span>
+<span class="menu_dash svg_exit" onclick="if(window.opener){self.close()}else{self.location.href='index.php'}" title="<?php print $lang['exit'];?>"></span>
+<br />&nbsp;</div><hr />
+
+<div class="left"><?php print $lang['chaton'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="chaton" onchange="self.location.href='admin.php?chaton='+this.value">
+<?php if($settings['chaton']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['on'];?></option>
+<?php if($settings['chaton']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['off'];?></option>
+</select>
+<br />&nbsp;</div>
+
+<form action="admin.php" method="post" autocomplete="off">
+<textarea name="chatoff" placeholder="<?php print $lang['chatoff'];?>" class="x_bcolor_bg" style="height:50px"><?php $x=htmlspecialchars($settings['chatoff']); print $x; ?></textarea><br />
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+</form>
+
+<br /><hr />
+
+<form action="admin.php" method="post" autocomplete="off">
+<div class="x_bcolor_bg" style="padding:2%;font-weight:bold"><?php print $lang['notes'];?></div>
+<textarea name="notes" class="x_bcolor_bg" style="height:200px"><?php $x=htmlspecialchars($settings['notes']); print $x; ?></textarea><br />
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+</form>
+<br /><hr />
+
+<div style="text-align:right;font-weight:400">
+<b class="x_accent_fg pointer" onclick="link='https://justblab.com';if(parent.length==0){window.open(link)}else{prompt(link,link)}">justblab.com</b>
+&middot;
+<b class="x_accent_fg pointer" onclick="link='https://justblab.com/blabax-chat-faq';if(parent.length==0){window.open(link)}else{prompt(link,link)}">BlaB! AX FAQ</b>
+</div>
+</div>
+
+<?php include 'admin/menu.pxtm'; ?>
+
+<script>
+
+self.focus();
+
+</script>
+</body></html>

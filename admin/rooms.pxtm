@@ -1,0 +1,117 @@
+<?php
+$res=neutral_query('SELECT * FROM '.$dbss['prfx'].'_rooms ORDER BY zorder,id ASC');
+
+$rooms=''; $rcodecn=0;
+
+while($row=neutral_fetch_array($res)){
+
+$rcodecn+=1; $rcodepn=$rcodecn.'. '; if($rcodecn>9){$rcodepn='';} 
+$name=htmlspecialchars($row['name']); $desc=htmlspecialchars($row['description']);
+$dell=''; if($row['id']>1){$dell='<input type="button" class="round4 x_accent_bg pointer" onclick="cfrm=confirm(\''.$lang['confirm'].'\');if(cfrm){self.location.href=\'admin.php?delroom='.$row['id'].'\'}" value="&nbsp;'.$lang['delete'].'&nbsp;" />';}
+
+$rooms.='<tr class="x_bcolor_bg">';
+$rooms.='<td class="pointer" style="width:40px"><div onclick="self.location.href=\'admin.php?q=room&room='.$row['id'].'\'" style="width:40px;height:40px;border-radius:100%;background-color:#'.$row['color'].'"></div>';
+if($row['zorder']>0){$rooms.='<div class="x_accent_bg round4" style="text-align:right;font-size:90%;padding:2px;position:relative;top:-10px">&nbsp;'.$row['zorder'].'&nbsp;</div>';}
+$rooms.='</td>';
+$rooms.='<td class="pointer" onclick="self.location.href=\'admin.php?q=room&room='.$row['id'].'\'">';
+$rooms.='<div style="font-size:180%;font-weight:bold">'.$rcodepn.$name.'</div>'.$desc.'</td>';
+$rooms.='<td style="width:80px;text-align:center">'.$dell.'</td>';
+$rooms.='</tr>';
+
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['rooms'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php'" class="pointer svg_room">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['rooms'];?></h2>
+<hr />
+
+<?php print $lang['roomdesc'];?>
+<br />&nbsp;<br />
+
+<hr />
+
+<?php 
+$addroom='return false'; $addroom='self.location.href=\'admin.php?addroom=1\'';
+$delallr='return false'; $delallr='cfrm=confirm(\''.$lang['confirm'].'\');if(cfrm){self.location.href=\'admin.php?delallrooms\'}';
+
+?>
+<div style="width:100%;overflow:auto">
+<table>
+<tr class="x_bcolor_bg"><td colspan="3"></td></tr>
+
+<?php print $rooms;?>
+
+<tr class="x_bcolor_bg"><td colspan="3"></td></tr>
+</table>
+</div>
+<br /><hr />
+<input type="button" style="float:left;margin-bottom:10px" class="round4 x_bcolor_bg s120 pointer" onclick="<?php print $addroom;?>" value="<?php print $lang['addroom'];?>" />
+<input type="button" style="float:right;margin-bottom:10px" class="round4 x_accent_bg s120 pointer" onclick="<?php print $delallr;?>" value="<?php print $lang['dellall'];?>" />
+<br /><hr />
+
+<form action="admin.php" method="post" autocomplete="off">
+
+<div class="left"><?php print $lang['roombg'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="showroombg">
+<?php if($settings['showroombg']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['on'];?></option>
+<?php if($settings['showroombg']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['off'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['roombgc'];?></div>
+<div class="right">
+<input type="color" class="s250" name="roombgc" value="#<?php $x=htmlspecialchars($settings['roombgc']); print $x;?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['roombgf'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="16" name="roombgf" value="<?php $x=htmlspecialchars($settings['roombgf']); print $x;?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['roombgt'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="3" name="roombgt" value="<?php $x=(int)$settings['roombgt']; print $x;?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['roombgs'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="3" name="roombgs" value="<?php $x=(int)$settings['roombgs']; print $x;?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['roombgl'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="3" name="roombgl" value="<?php $x=(int)$settings['roombgl']; print $x;?>" />
+</div>
+<br /><hr />
+
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+
+</form>
+
+</div>
+
+<?php include 'admin/menu.pxtm'; ?>
+
+</body></html>

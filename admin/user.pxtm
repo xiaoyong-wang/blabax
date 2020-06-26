@@ -1,0 +1,213 @@
+<?php
+
+if(!isset($_GET['id'])){redirect('admin.php?q=users');die();}
+$id=(int)$_GET['id'];
+$res=neutral_query('SELECT * FROM '.$dbss['prfx'].'_users a LEFT JOIN '.$dbss['sprf'].'_uxtra b ON a.id=b.id WHERE a.id='.$id);
+if(neutral_num_rows($res)<1){redirect('admin.php?q=users');die();}
+$user=neutral_fetch_array($res);
+$guest_user=0; if(strlen($user['password'])<1){$guest_user=1;}
+$regdate=gmdate('Y-m-d H:i:s',$user['timestamp']+$settings['acp_offset']*60);
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $user['name'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+<form action="admin.php" method="post" autocomplete="off" onsubmit="return check_guest()">
+<input type="hidden" name="edituser" value="<?php print $id;?>" />
+
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php?q=users'" class="pointer svg_usrs">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $user['name'];?></h2>
+<hr />
+
+<div>
+<?php  if($guest_user>0){print $lang['usr2hint'];}else{print $lang['usr1hint'];}?>
+</div>
+
+<br /><hr />
+
+<div class="left"><?php print $lang['username'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" value="<?php print $user['name'];?>" readonly="readonly" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['group'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="group">
+<?php 
+
+$res=neutral_query('SELECT id,name FROM '.$dbss['prfx'].'_groups ORDER BY id ASC');
+
+while($row=neutral_fetch_array($res)){
+$gid=(int)$row['id'];
+$gname=htmlspecialchars($row['name']);
+if($user['ugroup']==$gid){$sel=' selected="selected"';}else{$sel='';}
+print '<option value="'.$gid.'"'.$sel.'>'.$gname.'</option>';
+}
+
+?>
+
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['uregdate'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" value="<?php print $regdate;?>" readonly="readonly" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['usermail'];?></div>
+<div class="right">
+<input type="text" name="email" class="x_accent_bb s250" value="<?php $x=htmlspecialchars($user['email']); print $x;?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['userpass'];?></div>
+<div class="right">
+<input type="text" name="password" class="x_accent_bb s250" value="" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['userques'];?></div>
+<div class="right">
+<input type="text" name="question" class="x_accent_bb s250" value="<?php $x=htmlspecialchars($user['question']); print $x;?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['useransw'];?></div>
+<div class="right">
+<input type="text" name="answer" class="x_accent_bb s250" value="" />
+</div>
+<br /><hr />
+
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+
+
+</div>
+</form>
+
+<br />&nbsp;<br />
+
+
+<form action="admin.php" method="post" autocomplete="off">
+<input type="hidden" name="edituser" value="<?php print $id;?>" />
+<div class="holder">
+<br /><hr />
+<div class="left">
+<?php $x=''; if(strlen($user['image'])>0){$x=htmlspecialchars($user['image']);print '<img src="'.$x.'" alt="" style="max-width:100px;max-height:100px" />';} ?>
+</div>
+<div class="right">
+<input type="text" name="avatar" class="x_accent_bb s250" value="<?php print $x;?>" placeholder="<?php print $lang['avatar'];?>" />
+<br />&nbsp;<br />
+<input type="text" name="motto" class="x_accent_bb s250" value="<?php $x=htmlspecialchars($user['motto']); print $x;?>" placeholder="<?php print $lang['motto'];?>" /></div>
+<br /><br />
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+</div>
+</form>
+
+<form action="admin.php" method="post" autocomplete="off">
+<div class="holder">
+<br /><hr />
+<?php print $lang['fusrdsc'];?>
+<p>&nbsp;</p>
+<input type="hidden" name="fakeuser" value="<?php print $id;?>" />
+<div style="text-align:right">
+
+<select  name="status" class="x_accent_bb" style="width:20%">
+<option value="1"><?php print $lang['status1'];?></option>
+<option value="2"><?php print $lang['status2'];?></option>
+<option value="3"><?php print $lang['status3'];?></option>
+<option value="4"><?php print $lang['status4'];?></option>
+<option value="5"><?php print $lang['status5'];?></option>
+</select>
+
+<select  name="hour_begin"  class="x_accent_bb" style="width:20%">
+<option value="0"><?php print $lang['fubegin'];?> 0h</option>
+<option value="1"><?php print $lang['fubegin'];?> 1h</option>
+<option value="2"><?php print $lang['fubegin'];?> 2h</option>
+<option value="3"><?php print $lang['fubegin'];?> 3h</option>
+<option value="4"><?php print $lang['fubegin'];?> 4h</option>
+<option value="5"><?php print $lang['fubegin'];?> 5h</option>
+<option value="6"><?php print $lang['fubegin'];?> 6h</option>
+<option value="7"><?php print $lang['fubegin'];?> 7h</option>
+<option value="8"><?php print $lang['fubegin'];?> 8h</option>
+<option value="9"><?php print $lang['fubegin'];?> 9h</option>
+<option value="10"><?php print $lang['fubegin'];?> 10h</option>
+<option value="11"><?php print $lang['fubegin'];?> 11h</option>
+<option value="12"><?php print $lang['fubegin'];?> 12h</option>
+<option value="13"><?php print $lang['fubegin'];?> 13h</option>
+<option value="14"><?php print $lang['fubegin'];?> 14h</option>
+<option value="15"><?php print $lang['fubegin'];?> 15h</option>
+<option value="16"><?php print $lang['fubegin'];?> 16h</option>
+<option value="17"><?php print $lang['fubegin'];?> 17h</option>
+<option value="18"><?php print $lang['fubegin'];?> 18h</option>
+<option value="19"><?php print $lang['fubegin'];?> 19h</option>
+<option value="20"><?php print $lang['fubegin'];?> 20h</option>
+<option value="21"><?php print $lang['fubegin'];?> 21h</option>
+<option value="22"><?php print $lang['fubegin'];?> 22h</option>
+<option value="23"><?php print $lang['fubegin'];?> 23h</option>
+</select>
+
+<select  name="hour_end"  class="x_accent_bb" style="width:20%">
+<option value="1"><?php print $lang['fuend'];?> 1h</option>
+<option value="2"><?php print $lang['fuend'];?> 2h</option>
+<option value="3"><?php print $lang['fuend'];?> 3h</option>
+<option value="4"><?php print $lang['fuend'];?> 4h</option>
+<option value="5"><?php print $lang['fuend'];?> 5h</option>
+<option value="6"><?php print $lang['fuend'];?> 6h</option>
+<option value="7"><?php print $lang['fuend'];?> 7h</option>
+<option value="8"><?php print $lang['fuend'];?> 8h</option>
+<option value="9"><?php print $lang['fuend'];?> 9h</option>
+<option value="10"><?php print $lang['fuend'];?> 10h</option>
+<option value="11"><?php print $lang['fuend'];?> 11h</option>
+<option value="12"><?php print $lang['fuend'];?> 12h</option>
+<option value="13"><?php print $lang['fuend'];?> 13h</option>
+<option value="14"><?php print $lang['fuend'];?> 14h</option>
+<option value="15"><?php print $lang['fuend'];?> 15h</option>
+<option value="16"><?php print $lang['fuend'];?> 16h</option>
+<option value="17"><?php print $lang['fuend'];?> 17h</option>
+<option value="18"><?php print $lang['fuend'];?> 18h</option>
+<option value="19"><?php print $lang['fuend'];?> 19h</option>
+<option value="20"><?php print $lang['fuend'];?> 20h</option>
+<option value="21"><?php print $lang['fuend'];?> 21h</option>
+<option value="22"><?php print $lang['fuend'];?> 22h</option>
+<option value="23"><?php print $lang['fuend'];?> 23h</option>
+<option value="24" selected="selected"><?php print $lang['fuend'];?> 24h</option>
+</select>
+
+<input type="submit" class="round4 x_bcolor_bg" style="font-weight:bold;width:20%;height:50px" value="<?php print $lang['submit'];?>" />
+</div><br /><hr /></div></form> 
+
+<script>
+guest_user=<?php print $guest_user;?>
+
+
+function check_guest(){
+
+if(guest_user<1){return true}
+p=0;e=0;q=0;a=0
+f=document.forms[0]
+if(f.password.value.trim().length>2){p=1}
+if(f.email.value.trim().length>5 && f.email.value.indexOf('@')!=-1 && f.email.value.indexOf('.')!=-1  && f.email.value.indexOf(' ')==-1){e=1}
+if(f.question.value.trim().length>0){q=1}
+if(f.answer.value.trim().length>0){a=1}
+
+if((p+e+q+a)<4){return false}
+return true}
+
+</script>
+
+<?php include 'admin/menu.pxtm'; ?>
+</body></html>

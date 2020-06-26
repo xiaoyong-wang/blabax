@@ -1,0 +1,69 @@
+<?php
+
+$rid=0;
+if(isset($_GET['room'])){$rid=(int)$_GET['room'];}
+if($rid<1){die();}
+
+
+$res=neutral_query('SELECT * FROM '.$dbss['prfx'].'_rooms WHERE id='.$rid);
+if(neutral_num_rows($res)<1){die();}
+
+$room=neutral_fetch_array($res);
+$name=htmlspecialchars($room['name']);
+$desc=htmlspecialchars($room['description']);
+$color=htmlspecialchars($room['color']);
+$zorder=(int)$room['zorder'];
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $name;?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+<form action="admin.php" method="post" autocomplete="off">
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php?q=rooms'" class="pointer svg_room">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $name;?></h2>
+<hr />
+
+<div class="left"><?php print $lang['roomnme'];?></div>
+<div class="right">
+<input type="hidden" name="editroom" value="<?php print $rid;?>" />
+<input type="text" name="name" class="x_accent_bb s250" maxlength="20" value="<?php print $name;?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['roomdsc'];?></div>
+<div class="right">
+<input type="text" name="desc" class="x_accent_bb s250" maxlength="40" value="<?php print $desc;?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['roomclr'];?></div>
+<div class="right">
+<input type="color" name="color" class="s250" value="#<?php print $color;?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['roomord'];?></div>
+<div class="right">
+<input type="text" name="zorder" class="x_accent_bb s250" maxlength="6" value="<?php print $zorder;?>" />
+</div>
+<br /><hr />
+
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+
+</div>
+</form>
+
+<?php include 'admin/menu.pxtm'; ?>
+
+</body></html>

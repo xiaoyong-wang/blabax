@@ -1,0 +1,268 @@
+<?php
+
+$res=neutral_query('SELECT * FROM '.$dbss['prfx'].'_style');
+$style=array();
+
+while($row=neutral_fetch_array($res)){
+$style[$row['id']]=$row['value'];
+}
+
+
+$color_inputs=''; $i=0;
+$db_col=explode('|',$settings['colors']);
+
+foreach ($db_col as $value) {
+$color_inputs.='<input type="color" id="x'.$i.'" style="width:10%;margin:3px" value="#'.$value.'" />';
+$i+=1;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['style'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+
+<script>
+
+initial_colors_1='EF9A9A|F48FB1|CE93D8|B39DDB|9FA8DA|90CAF9|81D4FA|80DEEA|80CBC4|A5D6A7|C5E1A5|E6EE9C|FFF59D|FFE082|FFCC80|FFAB91|BCAAA4|B0BEC5|E57373|F06292|BA68C8|9575CD|7986CB|64B5F6|4FC3F7|4DD0E1|4DB6AC|81C784|AED581|DCE775|FFF176|FFD54F|FFB74D|FF8A65|A1887F|90A4AE'
+initial_colors_2='F44336|E91E63|9C27B0|673AB7|3F51B5|2196F3|03A9F4|00BCD4|009688|4CAF50|8BC34A|CDDC39|FFEB3B|FFC107|FF9800|FF5722|795548|607D8B|E53935|D81B60|8E24AA|5E35B1|3949AB|1E88E5|039BE5|00ACC1|00897B|43A047|7CB342|C0CA33|FDD835|FFB300|FB8C00|F4511E|6D4C41|546E7A'
+initial_colors_3='C62828|AD1457|6A1B9A|4527A0|283593|1565C0|0277BD|00838F|00695C|2E7D32|558B2F|9E9D24|F9A825|FF8F00|EF6C00|D84315|4E342E|37474F|B71C1C|880E4F|4A148C|311B92|1A237E|0D47A1|01579B|006064|004D40|1B5E20|33691E|827717|F57F17|FF6F00|E65100|BF360C|3E2723|263238'
+
+tstyles=new Array()
+tstyles[0]=new Array('Rethymno','e3x9MTR7fH1zYW5zLXNlcmlme3x9e3x9I2ZmZmZmZnt8fSMzMzMzMzN7fH0jZmVjNDAwe3x9IzAwMDAwMHt8fSNmZmZmZmZ7fH0jZmZmZmZme3x9IzIyMjIyMnt8fSNmZmZmZmZ7fH0jMjIyMjIye3x9I2ZmZmZmZnt8fSMxMTExMTF7fH01e3x9MTAw');
+tstyles[1]=new Array('CaféNoir','e3x9MTR7fH1zZXJpZnt8fXt8fSMwMDAwMDB7fH0jZjVmNWRje3x9I2ZmZWIzYnt8fSMwMDAwMDB7fH0jZmZmZmZme3x9IzAwMDAwMHt8fSNlYWVhZDN7fH0jZmZmZmZme3x9IzY1NjA1N3t8fSNmZmZmZmZ7fH0jNGI0NjQxe3x9NXt8fTEwMA==');
+tstyles[2]=new Array('Zanzibar','e3x9MTR7fH1zYW5zLXNlcmlme3x9e3x9I2ZmZmZmZnt8fSMzMzU1NTV7fH0jZTkxZTYze3x9I2ZmZmZmZnt8fSM0OTdhN2F7fH0jZmZmZmZme3x9IzExMzUzNXt8fSNmZmZmZmZ7fH0jMTEzNTM1e3x9I2ZmZmZmZnt8fSMwMDI1MjV7fH01e3x9MTAw');
+tstyles[3]=new Array('Seleucia','e3x9MTR7fH1zYW5zLXNlcmlme3x9e3x9IzAwMDAwMHt8fSNmYWY3Y2R7fH0jM2Y1MWI1e3x9I2ZmZmZmZnt8fSNlNmRkYWJ7fH0jMDAwMDAwe3x9I2U2ZGRhYnt8fSMwMDAwMDB7fH0jZTZjZjg4e3x9I2ZmZmZmZnt8fSNhODg2NWN7fH01e3x9MTAw');
+tstyles[4]=new Array('Hermione','e3x9MTR7fH1zYW5zLXNlcmlme3x9e3x9IzAwMDAwMHt8fSNlZWVlZWV7fH0jZjQ0MzM2e3x9IzAwMDAwMHt8fSNmZmZmZmZ7fH0jMDAwMDAwe3x9I2NjY2NjY3t8fSNmZmZmZmZ7fH0jNTU1NTU1e3x9I2ZmZmZmZnt8fSM0NDQ0NDR7fH01e3x9MTAw');
+tstyles[5]=new Array('Bordeaux','e3x9MTR7fH1zYW5zLXNlcmlme3x9e3x9IzAwMDAwMHt8fSNlZWVlZWV7fH0jOTQyZjNke3x9IzAwMDAwMHt8fSNmZmZmZmZ7fH0jMDAwMDAwe3x9I2RkZGRkZHt8fSMwMDAwMDB7fH0jZGRkZGRke3x9I2ZmZmZmZnt8fSM2MzJjMzR7fH01e3x9MTAw');
+tstyles[6]=new Array('InXanadu','e3x9MTR7fH1zYW5zLXNlcmlme3x9e3x9IzAwMDAwMHt8fSNlZmZhZWJ7fH0jY2RkYzM5e3x9IzAwMDAwMHt8fSNmZmZmZmZ7fH0jMDAwMDAwe3x9I2QzZTVkNnt8fSNmZmZmZmZ7fH0jNTg2ZDVle3x9I2ZmZmZmZnt8fSM0MDRhNDV7fH01e3x9MTAw');
+tstyles[7]=new Array('Bragança','e3x9MTR7fH1tb25vc3BhY2V7fH17fH0jZmZmZmZme3x9IzY4Njk1Znt8fSNlNGQ5NmZ7fH0jMDAwMDAwe3x9I2ZmZmZmZnt8fSNmZmZmZmZ7fH0jYTlhNDkwe3x9I2ZmZmZmZnt8fSNhOWE0OTB7fH0jZmZmZmZme3x9IzU4NTk1MHt8fTV7fH0xMDA=');
+tstyles[8]=new Array('Sayonara','e3x9MTR7fH1zZXJpZnt8fXt8fSNmZmZmZmZ7fH0jMmI0MDQ2e3x9Izk5MDM1YXt8fSMwMDAwMDB7fH0jZmZmZmZme3x9I2ZmZmZmZnt8fSMyODNhM2Z7fH0jZmZmZmZme3x9IzI0MzUzYXt8fSNmZmZmZmZ7fH0jMzc1MTU5e3x9NXt8fTEwMA==');
+tstyles[9]=new Array('Zaragoza','e3x9MTR7fH1zYW5zLXNlcmlme3x9e3x9IzAwMDAwMHt8fSNmZmZmZmZ7fH0jZWQwMDQxe3x9IzAwMDAwMHt8fSNlMmUyZTJ7fH0jMDAwMDAwe3x9I2UyZTJlMnt8fSMwMDAwMDB7fH0jZTJlMmUye3x9I2ZmZmZmZnt8fSM3NjAwMTd7fH0we3x9MA==');
+
+bgtmp=new Array()
+bgtmp[0]='';
+bgtmp[1]='background-image:url(backgrounds/coffee1.jpg);background-size:cover;background-attachment:fixed;background-repeat:no-repeat;background-position:left';
+bgtmp[2]='background-image:url(backgrounds/coffee2.jpg);background-size:cover;background-attachment:fixed;background-repeat:no-repeat;background-position:left';
+bgtmp[3]='background-image:url(backgrounds/couple1.jpg);background-size:cover;background-attachment:fixed;background-repeat:no-repeat;background-position:center';
+bgtmp[4]='background-image:url(backgrounds/couple2.jpg);background-size:cover;background-attachment:fixed;background-repeat:no-repeat;background-position:center';
+bgtmp[5]='background-image:url(backgrounds/pasta1.jpg);background-size:cover;background-attachment:fixed;background-repeat:no-repeat;background-position:center';
+bgtmp[6]='background-image:url(backgrounds/pasta2.jpg);background-size:cover;background-attachment:fixed;background-repeat:no-repeat;background-position:left';
+
+function settns1(x){x=parseInt(x);document.forms[0][3].value=bgtmp[x];prvshow(x)}
+function settns2(x){x=parseInt(x);document.forms[0][17].value=bgtmp[x];prvshow(x)}
+
+function prvshow(x){if(x<1){return}
+document.getElementById('tmplt1').style.display='none'
+document.getElementById('tmplt2').style.display='none'
+document.getElementById('cancl1').style.display='block'
+document.getElementById('cancl2').style.display='block'
+document.body.style.backgroundColor=document.forms[0][5].value
+document.body.className='bgs'+x+' x_global x_overal'
+mprv=setTimeout('prvhide()',5000)}
+
+function prvhide(){
+clearTimeout(mprv)
+document.getElementById('tmplt1').style.display='block'
+document.getElementById('tmplt2').style.display='block'
+document.getElementById('cancl1').style.display='none'
+document.getElementById('cancl2').style.display='none'
+document.body.style.backgroundColor='';
+document.body.className='x_global x_overal'}
+
+function reset_colors(x){x=x.split('|');for(i in x){y=de('x'+i);y.value='#'+x[i];}}
+
+function implode_colors(){x=new Array();
+for(i=0;i<36;i++){x[i]=de('x'+i).value;x[i]=x[i].replace('#','')}
+x=x.join('|');document.forms[0].colors.value=x}
+
+function t_import(){
+a=document.forms[0]; preview(0,6); de('impexp').placeholder='<?php print $lang['imp_help'];?>'
+de('impexp').addEventListener('keypress',function(e){if(e.key=='Enter'){t2import()}})}
+
+function t2import(){ t='';
+try{t=b64d(de('impexp').value)}catch(e){console.log('Not a valid style...');de('impexp').value='';return}
+t=t.split('{|}'); if(t[16]){
+if(!t[17]){t[17]=''}
+for(i=1;i<18;i++){a[i].value=t[i]}
+close_preview()}else{de('impexp').value=''}}
+
+function t_export(){
+a=document.forms[0]; t=new Array()
+for(i=1;i<18;i++){t[i]=a[i].value}
+t=t.join('{|}'); t=b64e(t); preview(0,6)
+de('impexp').value=t; de('impexp').select()}
+
+function set_template(x){
+a=document.forms[0]; 
+if(!tstyles[x][1]){return}
+t=b64d(tstyles[x][1]); t=t.split('{|}')
+if(t[16]){for(i=1;i<17;i++){if(i!=3){a[i].value=t[i]}}
+}close_preview()}
+
+function load_templates(){
+alstl=''; for(i=0;i<tstyles.length;i++){
+tname=tstyles[i][0];
+crstl=b64d(tstyles[i][1]); crstl=crstl.split('{|}')
+alstl+='<div style="cursor:pointer;margin:2%;width:45%;height:35px;line-height:35px;float:left;color:'+crstl[4]+';background-color:'+crstl[5]+';border-bottom:5px solid '+crstl[6]+'" onclick="set_template('+i+')">'+tname+'</div>'
+}preview(0,7);de('themelist').innerHTML=alstl}
+
+
+document.write('<style>')
+for(i=0;i<=bgtmp.length-1;i++){document.write('.bgs'+i+'{'+bgtmp[i]+'}')}
+document.write('</style>')
+</script>
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php'" class="pointer svg_styl">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['style'];?></h2>
+<hr />
+
+<input type="button" class="round4 x_bcolor_bg" style="width:15%;float:left;margin:5px 5px 0 0" onclick="self.location.href='admin.php?q=stylemsg'" value="<?php print $lang['msgstylt'];?>" />
+<input type="button" class="round4 x_bcolor_bg" style="width:15%;float:left;margin:5px 5px 0 0" onclick="self.location.href='admin.php?q=sounds'" value="<?php print $lang['soundds0'];?>" />
+<input type="button" class="round4 x_accent_bg" style="width:15%;float:left;margin:5px 0 0 0" onclick="load_templates()" value="<?php print $lang['themes'];?>" />
+<input type="button" class="round4 x_bcolor_bg" style="width:15%;float:right;margin:5px 0 0 5px" onclick="t_export()" value="<?php print $lang['export'];?>" />
+<input type="button" class="round4 x_bcolor_bg" style="width:15%;float:right;margin:5px 0 0 0" onclick="t_import()" value="<?php print $lang['import'];?>" />
+
+<br />
+
+<br /><hr />
+<div style="text-align:center"><?php print $lang['stybeg'];?></div>
+<br /><hr />
+
+<form action="admin.php" method="post" autocomplete="off">
+<input type="hidden" name="colors" value="<?php print $settings['colors'];?>" />
+
+
+<div class="left"><?php print $lang['globalff'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s120" name="1" placeholder="font-size" value="<?php print $style[1];?>" onblur="if(this.value!=parseInt(this.value) || parseInt(this.value)<10 || parseInt(this.value)>20){this.value=14}" /><input type="text" class="x_accent_bb s120" name="2" placeholder="font-family" value="<?php $x=htmlspecialchars($style[2]); print $x;?>" />
+</div>
+
+
+<br /><hr />
+
+(<b>&lt;BODY&gt; CSS:  LOGIN/REGISTER</b>) <?php print $lang['bodyhelp'];?><br />
+<textarea name="3" class="x_bcolor_bg"  placeholder="&lt;BODY&gt; CSS: LOGIN/REGISTER" style="height:200px"><?php $x=htmlspecialchars($style[3]); print $x; ?></textarea>
+<div id="tmplt1" style="font-family:sans-serif;font-size:11px;height:50px">
+<span onclick="settns1(1)" title="Cup of Coffee" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px">01</span>
+<span onclick="settns1(2)" title="Coffee Beans" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px">02</span>
+<span onclick="settns1(3)" title="Couple Drinking Tea" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px">03</span>
+<span onclick="settns1(4)" title="Couple Entertainment" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px">04</span>
+<span onclick="settns1(5)" title="Colorful Pasta" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px">05</span>
+<span onclick="settns1(6)" title="Pasta FFF Veil" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px">06</span>
+<span onclick="settns1(0)" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px"><?php print $lang['none'];?></span>
+</div>
+<div id="cancl1" onclick="prvhide()" class="round4 x_accent_bg pointer" style="height:50px;line-height:50px;text-align:center;display:none"><?php print $lang['bgstyl'];?></div>
+
+<hr />
+
+<div class="left"><?php print $lang['globalcb'];?></div>
+<div class="right">
+<input type="color" class="s120" name="4" value="#<?php print $style[4];?>" /><input type="color" class="s120" name="5" value="#<?php print $style[5];?>" />
+</div>
+
+<br /><hr />
+
+
+<div class="left"><?php print $lang['globalac'];?></div>
+<div class="right">
+<input type="color" class="s250" name="6" value="#<?php print $style[6];?>" />
+</div>
+
+<br /><hr />
+
+
+<div class="left"><?php print $lang['inputccb'];?></div>
+<div class="right">
+<input type="color" class="s120" name="7" value="#<?php print $style[7];?>" /><input type="color" class="s120" name="8" value="#<?php print $style[8];?>" />
+</div>
+
+<br /><hr />
+
+
+<div class="left"><?php print $lang['onlinecb'];?></div>
+<div class="right">
+<input type="color" class="s120" name="9" value="#<?php print $style[9];?>" /><input type="color" class="s120" name="10" value="#<?php print $style[10];?>" />
+</div>
+
+<br /><hr />
+
+
+<div class="left"><?php print $lang['panellcb'];?></div>
+<div class="right">
+<input type="color" class="s120" name="11" value="#<?php print $style[11];?>" /><input type="color" class="s120" name="12" value="#<?php print $style[12];?>" />
+</div>
+
+<br /><hr />
+
+
+<div class="left"><?php print $lang['titbutcb'];?></div>
+<div class="right">
+<input type="color" class="s120" name="13" value="#<?php print $style[13];?>" /><input type="color" class="s120" name="14" value="#<?php print $style[14];?>" />
+</div>
+
+<br /><hr />
+
+
+<div class="left"><?php print $lang['rndcorns'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s120" name="15" placeholder="border-radius (px)" value="<?php print $style[15];?>" onblur="if(this.value!=parseInt(this.value) || parseInt(this.value)>30 || parseInt(this.value)<0){this.value=5}" /><input type="text" class="x_accent_bb s120" name="16" placeholder="border-radius (%)" value="<?php print $style[16];?>" onblur="if(this.value!=parseInt(this.value) || parseInt(this.value)>100 || parseInt(this.value)<0){this.value=100}" />
+</div>
+
+
+<br /><hr />
+
+(<b>&lt;BODY&gt; CSS: CHAT</b>) <?php print $lang['bodyhelp'];?><br />
+<textarea name="17" class="x_bcolor_bg"  placeholder="&lt;BODY&gt; CSS: CHAT" style="height:200px"><?php $x=htmlspecialchars($style[17]); print $x; ?></textarea>
+<div id="tmplt2" style="font-family:sans-serif;font-size:11px;height:50px">
+<span onclick="settns2(1)" title="Cup of Coffee" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px">01</span>
+<span onclick="settns2(2)" title="Coffee Beans" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px">02</span>
+<span onclick="settns2(3)" title="Couple Drinking Tea" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px">03</span>
+<span onclick="settns2(4)" title="Couple Entertainment" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px">04</span>
+<span onclick="settns2(5)" title="Colorful Pasta" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px">05</span>
+<span onclick="settns2(6)" title="Pasta FFF Veil" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px">06</span>
+<span onclick="settns2(0)" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;padding:7px;margin:1px"><?php print $lang['none'];?></span>
+</div>
+<div id="cancl2" onclick="prvhide()" class="round4 x_accent_bg pointer" style="height:50px;line-height:50px;text-align:center;display:none"><?php print $lang['bgstyl'];?></div>
+
+<hr />
+
+<div style="text-align:center"><?php print $lang['styend'];?></div>
+<br /><hr />
+
+Custom CSS: <i>selector{color:white;display:block}</i><br />
+<textarea name="webkit_css" class="x_bcolor_bg" style="height:100px"><?php $x=htmlspecialchars($settings['webkit_css']); print $x; ?></textarea>
+
+<br /><hr />
+
+<div style="text-align:center">
+<?php print $lang['msgcolrs'];?> 
+<br />&nbsp;<br />
+<input type="button" style="margin-left:10px;background-color:#bbb;color:#fff" class="round4 pointer" onclick="reset_colors(initial_colors_1)" value="&nbsp; <?php print $lang['reset'];?> &nbsp;" />
+<input type="button" style="margin-left:10px;background-color:#888;color:#fff" class="round4 pointer" onclick="reset_colors(initial_colors_2)" value="&nbsp; <?php print $lang['reset'];?> &nbsp;" />
+<input type="button" style="margin-left:10px;background-color:#555;color:#fff" class="round4 pointer" onclick="reset_colors(initial_colors_3)" value="&nbsp; <?php print $lang['reset'];?> &nbsp;" />
+</div>
+
+<br />
+<?php print $color_inputs;?>
+
+<br /><hr />
+
+<input type="button" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" onclick="implode_colors();document.forms[0].submit()" value="<?php print $lang['submit'];?>" />
+<br />
+</form>
+
+</div>
+
+<?php include 'admin/menu.pxtm'; ?>
+
+</body></html>

@@ -1,0 +1,208 @@
+<?php
+
+$soundfile='sounds.js';
+
+// ---
+
+if(isset($_POST['sound_slot']) && isset($_FILES['fupload']) && isset($_FILES['fupload']['tmp_name']) && isset($_FILES['fupload']['size']) && $_FILES['fupload']['size']<20480){
+$slot=(int)$_POST['sound_slot'];$slot='sound'.$slot;
+
+$smime='audio/mpeg';
+if(function_exists('finfo_open') && function_exists('finfo_file')){
+$finfo=finfo_open(FILEINFO_MIME_TYPE);$smime=finfo_file($finfo,$_FILES['fupload']['tmp_name']);}
+elseif(function_exists('mime_content_type')){$smime=@mime_content_type($_FILES['fupload']['tmp_name']);}
+$smime=strtolower($smime);
+
+if($smime=='audio/mpeg'){
+$thefil=file_get_contents($_FILES['fupload']['tmp_name']);
+$base64=neutral_escape('data:audio/mpeg;base64,'.base64_encode($thefil),50000,'str');
+neutral_query('UPDATE '.$dbss['prfx']."_scache SET value='$base64' WHERE id='$slot'");
+redirect('admin.php?q=sounds&ok='.$timestamp);}else{redirect('admin.php?q=sounds');}}
+
+
+// ---
+
+if(isset($_POST['sound1']) && isset($_POST['sound2']) && isset($_POST['sound3']) && isset($_POST['sound4']) && isset($_POST['sound5']) && isset($_POST['sound6']) && isset($_POST['sound7'])){
+
+$tmpl=array("","enter_mp3='SOUND1'","messg_mp3='SOUND2'","pmntf_mp3='SOUND3'","pmmsg_mp3='SOUND4'","bgmsg_mp3='SOUND5'","scall_mp3='SOUND6'","rcall_mp3='SOUND7'","");
+$tmpl[1]=str_replace('SOUND1',$_POST['sound1'],$tmpl[1]);
+$tmpl[2]=str_replace('SOUND2',$_POST['sound2'],$tmpl[2]);
+$tmpl[3]=str_replace('SOUND3',$_POST['sound3'],$tmpl[3]);
+$tmpl[4]=str_replace('SOUND4',$_POST['sound4'],$tmpl[4]);
+$tmpl[5]=str_replace('SOUND5',$_POST['sound5'],$tmpl[5]);
+$tmpl[6]=str_replace('SOUND6',$_POST['sound6'],$tmpl[6]);
+$tmpl[7]=str_replace('SOUND7',$_POST['sound7'],$tmpl[7]);
+unset($tmpl[0]); $tmpl=implode(";\n",$tmpl);
+
+if(is_writable($soundfile)){
+$forcereload=substr(md5($timestamp),0,9);
+neutral_query('UPDATE '.$dbss['prfx']."_settings SET value='$forcereload' WHERE id='forcereload'");
+file_put_contents($soundfile,$tmpl); redirect('admin.php?q=sounds&ok='.$timestamp);}
+
+else{
+if(!headers_sent()){
+header('Content-Type: application/octet-stream');
+header('Content-Length: '.strlen($tmpl));
+header('Content-Transfer-Encoding: binary');
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+header('Content-Disposition: attachment; filename="'.$soundfile.'"');
+header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+print $tmpl;}}}
+
+// ---
+
+if(is_writable($soundfile)){$submit_b=$lang['so_rep'];}
+else{$submit_b=$lang['so_dnd'];}
+
+$customsounds=array(); $moreopt=''; $hlbutt=array();
+$res=neutral_query('SELECT * FROM '.$dbss['prfx']."_scache WHERE id LIKE 'sound%'");
+while($row=neutral_fetch_array($res)){
+
+switch($row['id']){
+case 'sound1': if(strlen($row['value'])>0){$hlbutt[]=90;$customsounds[]="m[90]='".$row['value']."';\n";$moreopt.='<option value="90">A</option>';}else{$customsounds[]="m[90]='';\n";};break;
+case 'sound2': if(strlen($row['value'])>0){$hlbutt[]=91;$customsounds[]="m[91]='".$row['value']."';\n";$moreopt.='<option value="91">B</option>';}else{$customsounds[]="m[91]='';\n";};break;
+case 'sound3': if(strlen($row['value'])>0){$hlbutt[]=92;$customsounds[]="m[92]='".$row['value']."';\n";$moreopt.='<option value="92">C</option>';}else{$customsounds[]="m[92]='';\n";};break;
+case 'sound4': if(strlen($row['value'])>0){$hlbutt[]=93;$customsounds[]="m[93]='".$row['value']."';\n";$moreopt.='<option value="93">D</option>';}else{$customsounds[]="m[93]='';\n";};break;
+case 'sound5': if(strlen($row['value'])>0){$hlbutt[]=94;$customsounds[]="m[94]='".$row['value']."';\n";$moreopt.='<option value="94">E</option>';}else{$customsounds[]="m[94]='';\n";};break;
+case 'sound6': if(strlen($row['value'])>0){$hlbutt[]=95;$customsounds[]="m[95]='".$row['value']."';\n";$moreopt.='<option value="95">F</option>';}else{$customsounds[]="m[95]='';\n";};break;
+case 'sound7': if(strlen($row['value'])>0){$hlbutt[]=96;$customsounds[]="m[96]='".$row['value']."';\n";$moreopt.='<option value="96">G</option>';}else{$customsounds[]="m[96]='';\n";};break;
+default: break;}}
+
+$customsounds=implode('',$customsounds);
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['soundds1'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js?xyz=<?php print $settings['forcereload'];?>"></script>
+<script src="admin/allsounds.js"></script>
+</head>
+
+<body class="x_global x_overal">
+
+<div class="holder">
+
+
+<h2 onclick="self.location.href='admin.php?q=settings'" class="pointer svg_sett">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['soundds1'];?></h2>
+<hr />
+
+<?php print $lang['soundds2'].' '.$lang['soundds3'];?><br />&nbsp;<br />
+<input type="button" <?php print 'onclick="if(confirm(\''.$lang['confirm'].'\')){defaults()}"';?> class="round4 x_bcolor_bg" style="font-weight:bold;float:right;width:48%;height:50px" value="<?php print $lang['defsound'];?>" />
+<br /><hr />
+<div style="text-align:center">
+<?php for($i=1;$i<58;$i++){if($i<10){$j='0'.$i;}else{$j=$i;};
+print '<span onclick="ps('.$i.')" class="round4 x_bcolor_bg pointer" style="display:inline-block;font-weight:bold;width:25px;padding:3px;margin:2px">'.$j.'</span>'."\n";} 
+?>
+<span onclick="ps(90)" class="round4 <?php if(in_array(90,$hlbutt)){print 'x_bcolor_bg';}else{print 'x_accent_bg';} ?> pointer" style="display:inline-block;font-weight:bold;width:25px;padding:3px;margin:2px">A</span>
+<span onclick="ps(91)" class="round4 <?php if(in_array(91,$hlbutt)){print 'x_bcolor_bg';}else{print 'x_accent_bg';} ?> pointer" style="display:inline-block;font-weight:bold;width:25px;padding:3px;margin:2px">B</span>
+<span onclick="ps(92)" class="round4 <?php if(in_array(92,$hlbutt)){print 'x_bcolor_bg';}else{print 'x_accent_bg';} ?> pointer" style="display:inline-block;font-weight:bold;width:25px;padding:3px;margin:2px">C</span>
+<span onclick="ps(93)" class="round4 <?php if(in_array(93,$hlbutt)){print 'x_bcolor_bg';}else{print 'x_accent_bg';} ?> pointer" style="display:inline-block;font-weight:bold;width:25px;padding:3px;margin:2px">D</span>
+<span onclick="ps(94)" class="round4 <?php if(in_array(94,$hlbutt)){print 'x_bcolor_bg';}else{print 'x_accent_bg';} ?> pointer" style="display:inline-block;font-weight:bold;width:25px;padding:3px;margin:2px">E</span>
+<span onclick="ps(95)" class="round4 <?php if(in_array(95,$hlbutt)){print 'x_bcolor_bg';}else{print 'x_accent_bg';} ?> pointer" style="display:inline-block;font-weight:bold;width:25px;padding:3px;margin:2px">F</span>
+<span onclick="ps(96)" class="round4 <?php if(in_array(96,$hlbutt)){print 'x_bcolor_bg';}else{print 'x_accent_bg';} ?> pointer" style="display:inline-block;font-weight:bold;width:25px;padding:3px;margin:2px">G</span>
+</div><br />
+<hr />
+
+
+<div class="left"><?php print $lang['sound1'];?></div><div class="right">
+<select class="x_accent_bb s250" id="sound1"><option value="0"><?php print $lang['soundm'];?></option>
+<?php for($i=1;$i<58;$i++){if($i<10){$j='0'.$i;}else{$j=$i;}; print '<option value="'.$i.'">'.$j.'</option>';}?>
+<?php print $moreopt;?></select></div><br /><br />
+
+<div class="left"><?php print $lang['sound2'];?></div><div class="right">
+<select class="x_accent_bb s250" id="sound2"><option value="0"><?php print $lang['soundm'];?></option>
+<?php for($i=1;$i<58;$i++){if($i<10){$j='0'.$i;}else{$j=$i;}; print '<option value="'.$i.'">'.$j.'</option>';}?>
+<?php print $moreopt;?></select></div><br /><br />
+
+<div class="left"><?php print $lang['sound4'];?></div><div class="right">
+<select class="x_accent_bb s250" id="sound4"><option value="0"><?php print $lang['soundm'];?></option>
+<?php for($i=1;$i<58;$i++){if($i<10){$j='0'.$i;}else{$j=$i;}; print '<option value="'.$i.'">'.$j.'</option>';}?>
+<?php print $moreopt;?></select></div><br /><br />
+
+<div class="left"><?php print $lang['sound3'];?></div><div class="right">
+<select class="x_accent_bb s250" id="sound3"><option value="0"><?php print $lang['soundm'];?></option>
+<?php for($i=1;$i<58;$i++){if($i<10){$j='0'.$i;}else{$j=$i;}; print '<option value="'.$i.'">'.$j.'</option>';}?>
+<?php print $moreopt;?></select></div><br /><br />
+
+<div class="left"><?php print $lang['sound5'];?></div><div class="right">
+<select class="x_accent_bb s250" id="sound5"><option value="0"><?php print $lang['soundm'];?></option>
+<?php for($i=1;$i<58;$i++){if($i<10){$j='0'.$i;}else{$j=$i;}; print '<option value="'.$i.'">'.$j.'</option>';}?>
+<?php print $moreopt;?></select></div><br /><br />
+
+<br /><hr />
+<form action="admin.php?q=sounds" method="post" autocomplete="off" onsubmit="return check_sounds()">
+<input type="hidden" name="sound1" value="" />
+<input type="hidden" name="sound2" value="" />
+<input type="hidden" name="sound3" value="" />
+<input type="hidden" name="sound4" value="" />
+<input type="hidden" name="sound5" value="" />
+<input type="hidden" name="sound6" value="" />
+<input type="hidden" name="sound7" value="" />
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $submit_b;?>" />
+</form>
+
+<br /><hr />
+<form action="admin.php?q=sounds" method="post" enctype="multipart/form-data" autocomplete="off">
+<input type="file" id="fupload" name="fupload" style="display:none" onchange="if(typeof this.files[0]=='object' && this.files[0].size<20480){document.forms[1].submit();}else{document.getElementById('ftoobig').className='x_accent_bg'}" />
+
+<?php print $lang['soundds4'];?><br />&nbsp;<br />
+<select class="x_accent_bb" name="sound_slot" style="width:48%" onchange="if(this.value>0){document.getElementById('lupload').style.display='block'}else{document.getElementById('lupload').style.display='none'}">
+<option value="0"><?php print $lang['slotnm'];?></option>
+<option value="1">A</option>
+<option value="2">B</option>
+<option value="3">C</option>
+<option value="4">D</option>
+<option value="5">E</option>
+<option value="6">F</option>
+<option value="7">G</option>
+</select>
+
+<label for="fupload" id="lupload" class="round4 x_bcolor_bg" style="display:none;font-weight:bold;float:right;width:48%;height:50px;line-height:50px;text-align:center"><?php print $lang['uplsnd'];?></label>
+
+</form>
+<br /><br /><hr />
+
+</div><br />
+
+<script>
+
+<?php print $customsounds;?>
+
+// ---
+
+audf=document.createElement('audio');
+function ps(x){if(m[x].length>10){audf.src=m[x];audf.play()}else{alert('<?php print $lang['slotnm'].' & '.$lang['uplsnd'];?>')}}
+
+function check_sounds(){
+x1=document.getElementById('sound1'); if(x1.value=='0'){x1.focus();return false}
+x2=document.getElementById('sound2'); if(x2.value=='0'){x2.focus();return false}
+x3=document.getElementById('sound3'); if(x3.value=='0'){x3.focus();return false}
+x4=document.getElementById('sound4'); if(x4.value=='0'){x4.focus();return false}
+x5=document.getElementById('sound5'); if(x5.value=='0'){x5.focus();return false}
+
+y=document.forms[0]; y.sound1.value=m[x1.value]; y.sound2.value=m[x2.value]; y.sound3.value=m[x3.value]
+y.sound4.value=m[x4.value]; y.sound5.value=m[x5.value];
+return true
+}
+
+function defaults(){
+document.forms[0].sound1.value=enter_mp3
+document.forms[0].sound2.value=messg_mp3
+document.forms[0].sound3.value=pmntf_mp3
+document.forms[0].sound4.value=pmmsg_mp3
+document.forms[0].sound5.value=bgmsg_mp3
+document.forms[0].sound6.value=scall_mp3
+document.forms[0].sound7.value=rcall_mp3
+document.forms[0].submit()}
+
+</script>
+
+<?php include 'admin/menu.pxtm'; ?>
+
+</body></html>

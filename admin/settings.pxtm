@@ -1,0 +1,70 @@
+<?php require_once('lang/languages.php'); ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['settings'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php'" class="pointer svg_sett">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['settings'];?></h2>
+<hr />
+
+<div class="left"><?php print $lang['gensett'];?></div>
+<div class="right"><input type="button" value="<?php print $lang['general'];?>" class="round4 x_bcolor_bg s250" onclick="self.location.href='admin.php?q=general'" /></div>
+<br /><hr />
+
+<div class="left"><?php print $lang['ctab_desc'];?></div>
+<div class="right"><input type="button" value="cTab <?php print $lang['settings'];?>" class="round4 x_bcolor_bg s250" onclick="self.location.href='admin.php?q=ctab'" /></div>
+<br /><hr />
+
+<div class="left"><?php print $lang['tips_desc'];?></div>
+<div class="right"><input type="button" value="<?php print $lang['tips_title'];?>" class="round4 x_bcolor_bg s250" onclick="self.location.href='admin.php?q=tips'" /></div>
+<br /><hr />
+
+<div class="left"><?php print $lang['gdprdsc'];?></div>
+<div class="right"><input type="button" value="GDPR <?php print $lang['settings'];?>" class="round4 x_bcolor_bg s250" onclick="self.location.href='admin.php?q=gdpr'" /></div>
+<br /><hr />
+
+<div class="left"><?php print $lang['widgets1'];?></div>
+<div class="right"><input type="button" value="<?php print $lang['widgets'];?>" class="round4 x_bcolor_bg s250" onclick="self.location.href='admin.php?q=widgets'" /></div>
+<br /><hr />
+
+<div class="left"><?php print $lang['soundds2'];?></div>
+<div class="right"><input type="button" value="<?php print $lang['soundds1'];?>" class="round4 x_bcolor_bg s250" onclick="self.location.href='admin.php?q=sounds'" /></div>
+<br /><hr />
+
+<div class="left"><?php print $lang['customj2'];?></div>
+<div class="right"><input type="button" value="<?php print $lang['customj1'];?>" class="round4 x_bcolor_bg s250" onclick="self.location.href='admin.php?q=customjs'" /></div>
+<br /><hr />
+
+<div class="left"><?php print $lang['utf8_dsc'];?></div>
+<div class="right"><input type="button" value="UTF8SCAN" class="round4 x_bcolor_bg s250" onclick="self.location.href='admin.php?q=utf8test'" /></div>
+<br /><hr />
+
+<div class="left"><?php print $lang['fusrds'];?></div>
+<div class="right"><input type="button" value="<?php print $lang['fusers'];?>" class="round4 x_bcolor_bg s250" onclick="self.location.href='admin.php?q=fusers'" /></div>
+<br /><hr />
+
+<div class="left"><?php print $lang['mappd1'];?></div>
+<div class="right"><input type="button" value="<?php print $lang['mapps'];?>" class="round4 x_bcolor_bg s250" onclick="self.location.href='admin.php?q=mapps'" /></div>
+<br /><hr />
+
+<div class="left"><?php print $lang['forcer'];?></div>
+<div class="right"><input type="button" value="<?php print $lang['uncache'];?>" class="round4 x_accent_bg s250" onclick="self.location.href='admin.php?uncache=1'" /></div>
+<br /><hr />
+
+</div>
+
+<?php include 'admin/menu.pxtm'; ?>
+
+</body></html>

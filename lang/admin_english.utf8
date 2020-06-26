@@ -1,0 +1,574 @@
+<?php
+
+
+/* English */
+
+$lang=array();
+
+$lang['menu']     = 'Menu';
+$lang['dash']     = 'Board';
+$lang['console']  = 'Server Console';
+$lang['logs']     = 'Logs';
+$lang['server']   = 'Server';
+$lang['settings'] = 'Settings';
+$lang['general']  = 'General settings';
+$lang['style']    = 'Style';
+$lang['rooms']    = 'Rooms';
+$lang['messages'] = 'Messages';
+$lang['users']    = 'Users';
+$lang['mods']     = 'Moderators';
+$lang['group']    = 'Group';
+$lang['groups']   = 'Groups';
+$lang['integra']  = 'Integration';
+$lang['files']    = 'Uploads';
+$lang['spaint']   = 'Doodle';
+$lang['paint']    = 'Doodles';
+$lang['exit']     = 'Exit';
+$lang['reset']    = 'Reset';
+$lang['on']       = 'On';
+$lang['off']      = 'Off';
+$lang['test']     = 'Test Mode';
+$lang['yes']      = 'Yes';
+$lang['no']       = 'No';
+$lang['none']     = 'None';
+$lang['submit']   = 'OKAY';
+$lang['delete']   = 'Delete';
+$lang['form_ok']  = 'Submitted successfully!';
+$lang['offset']   = 'ACP time offset in minutes';
+$lang['detect']   = 'Detect offset';
+$lang['s_status'] = 'SERVER STATUS';
+$lang['s_on']     = 'Server is ON';
+$lang['on_off']   = 'Turn OFF';
+$lang['s_off']    = 'Server is OFF';
+$lang['off_on']   = 'Turn ON';
+$lang['l_seen']   = 'Last seen';
+$lang['usr_all']  = 'All users';
+$lang['msg_all']  = 'All rooms including PM';
+$lang['msgpall']  = 'Private messages';
+$lang['usr_reg']  = 'Registered';
+$lang['guests']   = 'Guests';
+$lang['quarant']  = 'Quarantine';
+$lang['banned']   = 'Banned';
+$lang['username'] = 'Username';
+$lang['notes']    = 'Notes';
+$lang['ronly']    = 'Read only!';
+$lang['noperm']   = 'FORBIDDEN!';
+$lang['iphide']   = 'IP hidden';
+$lang['filterid'] = 'Filter username';
+$lang['filterip'] = 'Filter IP address';
+$lang['helpmenu'] = 'Swipe from the left edge or press ESC to open the menu.';
+$lang['svg_hlp']  = 'Select an element from the diagram above';
+$lang['svg_vis']  = 'Visitors';
+$lang['svg_msg']  = 'Messages';
+$lang['svg_sday'] = 'Seen/Day';
+$lang['svg_shrs'] = 'Seen/Hour';
+$lang['svg_smnt'] = 'Seen/Month';
+$lang['svg_mday'] = 'Mssg/Day';
+$lang['svg_mhrs'] = 'Mssg/Hour';
+$lang['svg_mmnt'] = 'Mssg/Month';
+$lang['stats']    = 'Statistics';
+$lang['top5r']    = 'Top 5 rooms';
+$lang['top5u']    = 'Top 5 users';
+$lang['svgcache'] = 'Information cached until %XXX%';
+$lang['dellall']  = 'Delete All';
+$lang['chaton']   = 'Turn chat on/off';
+$lang['chatoff']  = 'Chat OFF Message (HTML allowed)';
+$lang['usrdel']   = 'Non-existent/deleted user...';
+
+/* Logs */
+
+$lang['ipaddr']   = 'IP address';
+$lang['expire']   = 'Expiration';
+$lang['action']   = 'Action';
+$lang['ban']      = 'Ban';
+$lang['unban']    = 'Unban';
+$lang['s_log']    = 'SERVER LOG';
+$lang['hour']     = 'Hour';
+$lang['day']      = 'Day';
+$lang['week']     = 'Week';
+$lang['month']    = 'Month';
+
+
+/*Server */
+
+$lang['eakey']    = 'Login and generate a valid ACCESSKEY for your domain at <span class="pointer x_accent_fg" onclick="window.open(\'https://justblab.com/cs/\')">justblab.com</span>';
+$lang['sdsc1']    = 'There are different methods to start/stop your websocket server and the methods <b>cannot be mixed</b>: from <b class="pointer x_accent_fg" onclick="self.location.href=\'admin.php\'">BOARD</b> in case your PHP supports <i>shell_exec</i> or  using a <b class="pointer x_accent_fg" onclick="self.location.href=\'admin.php?q=bashctrl\'">SystemdService|ShellScript</b>. Check out our install instructions for details.';
+$lang['sdsc2']    = '<b>The settings below only affect how your client connects to the websocket server!</b>';
+$lang['proto']    = 'Protocol: <b>ws</b> or <b>wss</b>';
+$lang['srurl']    = 'wsServer URL, no trailing slashes: <i>website.com</i>';
+$lang['sport']    = 'wsServer port: <i>100-65500</i>';
+$lang['proxp']    = 'ProxyPass token, no slashes: <i>MyWsServer</i>';
+$lang['ackey']    = 'ACCESSKEY: <i>A-z0-9</i>';
+$lang['keyvl']    = 'WS token validity in seconds: <i>default 20</i>. When the websocket server is on a different host increase to 60-120 to avoid handshake errors.';
+$lang['cbash']    = 'Create a bash script to start or stop your websocket and check its status';
+$lang['bckey']    = 'Accesskey';
+$lang['bpath']    = 'Server path';
+$lang['bport']    = 'Server port';
+$lang['logfl']    = 'Log file path';
+$lang['onlfl']    = 'Online list path /tmp/online (0=off)';
+$lang['pingws']   = 'Ping the websocket server every 60s (prevent timeouts with nginx WS proxy)';
+
+
+/* Settings */
+
+$lang['gensett']  = 'General settings - title, default language, welcome message, guest login and more...';
+$lang['deflang']  = 'Default language';
+$lang['defampm']  = 'Default time format';
+$lang['defsndo']  = 'Sound notifications';
+$lang['htmltit']  = 'HTML title';
+$lang['ip2c']     = 'IP2Counry displays 2-letter country code in profiles and country name <i>onmouseover</i>. Set 2-letter country code (eu,us,de) for users that cannot be recognized or leave empty to disable entirely. <i>* Requires Apache/Nginx GeoIP module.</i>';
+$lang['ip2hash']  = 'IP2Hash displays IP identifier next to the username e.g. xAtWY HiUzS LpaQw. Visible to:';
+$lang['avsize']   = 'Avatar width/height (80-512)';
+$lang['allowgt']  = 'Allow guest logins';
+$lang['allowrg']  = 'Allow users to register';
+$lang['rldelay']  = '<b>Quarantine!</b><br />New users allowed to login X seconds after registering or when approved from ACP';
+$lang['usrperh']  = 'IP allowed to register X accounts per hour';
+$lang['wrnperh']  = 'IP allowed X failed login attempts per hour';
+$lang['defmutp']  = 'Gag period in seconds when users are kicked out: (60-57600)';
+$lang['defbanp']  = 'Ban period in seconds: (7200-64000000)';
+$lang['runsent']  = 'Remember unsent messages per room/user';
+$lang['keepiplg'] = 'Period to keep IP log in seconds';
+$lang['avatarfs'] = 'Avatars maximum filesize in bytes<br />(<small>less than php.ini values below</small>)';
+$lang['uploadfs'] = 'Uploads maximum filesize in bytes<br />(<small>less than php.ini values below</small>)';
+$lang['uploadnm'] = 'How many files one user is allowed to upload (1-99)';
+$lang['uploadpn'] = 'How many doodles one user is allowed to have (1-99)';
+$lang['ckssalt']  = 'Generate new cookie salt';
+$lang['newsalt']  = 'All users will have to relogin';
+$lang['postint']  = 'Post interval in seconds';
+$lang['helpsec']  = '3600 sec = 1 hour / 86400 sec = 1 day / 604800 sec = 1 week / 2592000 sec = 1 month';
+$lang['gifpage']  = 'Display GIFs to post in the sticker box. This is a 3rd party service powered by <b>Tenor</b> and disabled by default. Requires a Tenor API key: (<span class="x_accent_fg">https://tenor.com/gifapi</span>) and it is also affected by group permissions.';
+$lang['gif2num']  = 'How many GIFs to be displayed';
+$lang['gif2rnd']  = 'A comma separated list of GIF topics to pick from onload';
+$lang['gdprdsc']  = 'A <span class="x_accent_fg">GDPR Notice</span> that appears on LOGIN and REGISTER  pages. It is your responsibility to display an accurate GDPR notice based on how you use this software.';
+$lang['annonce']  = 'A <span class="x_accent_fg">GDPR Notice</span> that appears on LOGIN and REGISTER pages.<br /><br />It is your responsibility to display an accurate GDPR notice based on how you use this software. You can leave this box empty if you do not have and do not expect EU visitors. <b>You can also add here custom elements or JavaScript code to appear at the very bottom of the login/register pages.</b>';
+$lang['customj1'] = 'Custom JS/HTML/Toolbar';
+$lang['customj2'] = 'Custom HTML/JavaScript or custom toolbar on the chat page. HTML elements with fixed positioning will appear on top of the main chat area but under panel, online list, PM.';
+$lang['mlinks1']  = 'ACP menu';
+$lang['mlinks2']  = 'Custom entries in the ACP menu.  HTML/JS allowed. Using the provided template you can easily set links to the Admin CP of another channel.<br /><br />Use <b style="font-size:120%">{Q}</b> in the URL which will be replaced with the current GET[q] var and you will land on the same page in the other ACP (<i>see Template</i>).';
+$lang['resetdw']  = 'DEFAULT MSG';
+$lang['defwelc']  = 'Default welcome message in chat (HTML and CSS only). Avoid single quotes!<br /><b>{PREVIOUSLY}</b> loads the latest messages.';
+$lang['welcome']  = 'Welcome message for this group. Leave it empty to use the default message from SETTINGS instead. Supports HTML and CSS only. Avoid single quotes and new lines. <b>{PREVIOUSLY}</b> loads the latest messages.';
+$lang['mottos']   = 'Random mottos (one per line) for those who have not picked theirs up. HTML not supported';
+$lang['mob_eff']  = 'Fade-in / Fade-out on mobile';
+$lang['show_t']   = 'Display attachments inline <ol start="0"><li>None</li><li>Images</li><li>Images + YouTube thumbnails</li><li>Images + YouTube thumbnails + giphy GIFs</li></ol>';
+$lang['dimblr']   = 'Dim when chatbox loses focus';
+$lang['uncache']  = 'Rebuild &amp; Uncache';
+$lang['forcer']   = 'Rebuild stickers cache, rebuild avatars cache and uncache cached by browsers JS/CSS files. You have to use this option when you edit JS/CSS files and when you add or remove stickers and avatars.';
+$lang['logio']    = 'Enter/Leave messages';
+$lang['multacp']  = 'Multiple ACP';
+$lang['multlnk']  = 'Menu links to other ACPs to appear in the left menu.';
+$lang['bdgtxt']   = 'Multiple instances? Mark this ACP with a badge.';
+$lang['bdgbgc']   = 'ACP Badge Color';
+$lang['dragscr']  = 'Drag-2-scroll';
+$lang['wheescr']  = 'Wheel-2-scroll';
+$lang['meta_ref'] = 'Meta referrer (no-referrer might break YouTube videos)'; 
+$lang['pgdpr']    = 'Preview / ESC to Exit';
+$lang['templ']    = 'Template';
+$lang['stimoji']  = 'Stimoji';
+$lang['smojitit'] = 'Stimoji - Sticker Emojis. A locally searchable index of more that a thousand high quality SVG images.';
+$lang['smojidir'] = 'STIMOJI DIRECTORY - relative path with no trailing slashes (blank = no stimoji).<br /><br /><b>IMPORTANT</b>: if you choose to upload your <i style="font-size:120%">STIMOJI DIRECTORY</i> inside your <i style="font-size:120%">stickers directory</i>, make sure that its name contains _ (underscore) or - (dash); e.g. <i>stickers/<b style="color:red">folder-123</b></i> or <i>stickers/<b style="color:red">folder_123</b></i>';
+$lang['smojidsc'] = '(1) Download a stimoji pack from our download center; (2) Unzip and upload in a separate folder; (3) Set <i style="font-size:120%">STIMOJI DIRECTORY</i> below; (4) Rebuild <i>SEARCH INDEX</i>. <b>Stimojis are dependable on group permissions.</b> If you are running multiple channels rebuild <i>SEARCH INDEX</i> from each ACP.';
+$lang['smojirbl'] = 'Rebuild <i>SEARCH INDEX</i> with a combination of languages';
+$lang['smojiexp'] = 'FULLTEXT search could be better but you have to add/change a config variable in the configuration file of MySQL: <b style="white-space:nowrap">ft_min_word_len=3</b> and restart your MySQL server. Otherwise it will not find 3-letter words like <i>cat</i>.';
+$lang['smojinum'] = 'How many stickers to be displayed on search';
+$lang['badwords'] = 'Bad words filter - one word/phrase per line - case insensitive, use letters, numbers and spaces only. This is a helper and not a bulletproof solution - any filter can be bypassed easily as different UTF8 letters may look the same, e.g. <b>bitch</b> is not <b>bitсh</b> (CTRL+F and search this page for <b>bitch</b>). Test thoroughly - there might be a conflict with stickers and emojis. You must reload the chat page for the changes to take effect.';
+$lang['tns_l']    = 'Number of messages in transcript (20-2000)';
+$lang['tns_p']    = 'Image/Audio/Video/Voice URLs in transcript';
+$lang['pml_s']    = 'PM Log: period to scan for PMs in seconds (3600-2000000)';
+
+$lang['vvm_tt']   = 'Voice &amp; Video Messages';
+$lang['vvm_d1']   = 'Voice and video messages require a recent version of Chrome and Firefox and work over SSL (https) only.';
+$lang['vvm_d2']   = '<br /><br />Voice and video mesages are dependable on group permissions! Be careful with <i>FILESIZE</i>, <i>VIDEOLENGTH</i> and <i>BITRATE</i> - <b>you should set sensible values</b>.<br /><br />With <i>upload_max_filesize=2M</i> in php.ini your best option is FILESIZE 2000000 VIDEOLENGTH 20s BITRATE 0.5. See php.ini values below.<br /><br />With Apache <i>LimitRequestBody</i>=102400 or Nginx <i>client_max_body_size</i>=1M  <b>your only option</b> is FILESIZE 1000000 VIDEOLENGTH 10s BITRATE 0.5. Apache/Nginx settings cannot be detected!';
+$lang['vvm_d3']   = '0.5mbps 60sec ≈  5mB<br />1.0mbps 60sec ≈ 10mB<br />2.0mbps 60sec ≈ 20mB<br />3.0mbps 60sec ≈ 30mB<br />';
+$lang['vvm_on']   = 'Enable/disable voice and video messages globally';
+$lang['ask_av']   = 'Ask for permission to use microphone &amp; camera on load';
+$lang['vvm_us']   = 'How many voice &amp; video one user is allowed to upload (1-99)';
+$lang['vvm_sz']   = 'Max filesize of the video/audio files in bytes';
+$lang['vvm_la']   = 'Max length of the voice messages in seconds (5-60)';
+$lang['vvm_lv']   = 'Max length of the video messages in seconds (5-60)';
+$lang['vvm_rs']   = 'Video resolution';
+$lang['vvm_ba']   = 'Audio bitrate';
+$lang['vvm_bv']   = 'Video bitrate';
+
+$lang['p2_tit']   = 'P2P Voice &amp; Video Calls';
+$lang['p2_ds1']   = 'Peer-to-peer voice and video calls over WebRTC. P2P calls require a recent version of Chrome and Firefox and work over SSL (https) only.';
+$lang['p2_ds2']   = 'Initiating a P2P voice/video call is affected by group permissions. It is accepted that only 70-80% of the users can technically participate in a P2P voice/video call. A P2P voice/video call requires on both sides: <ul><li>A modern browser that supports WebRTC (latest Firefox, Chrome and Chromium derivates).</li><li>Obviously hardware equipment - microphone and camera.</li><li>Decent hardware &amp; Internet connection to encode, broadcast, receive and decode compressed audio/video streams in realtime.</li><li>P2P calls may be prevented by a restrictive firewall or a complicated NAT (Network Address Translation).</li></ul>';
+$lang['p2_pon']   = 'Peer-to-peer voice/video calls enabled globally';
+$lang['p2_aav']   = 'Ask for permission to use microphone &amp; camera on load. Affects voice and video messages as well.';
+$lang['p2_lvl']   = 'Online status when users accept calls. A = Available; A = Away; O = Occupied; N = Not Available';
+$lang['p2_stn']   = 'STUN servers, one per line. It is not necessary to provide multiple STUN servers (<i>may slow down the beginning of the call</i>). One or two would be sufficient. <br /><br /><b>stun.stunprotocol.org:3478<br />stun.l.google.com:19302</b><br /><br /> <i>Wikipedia: STUN - Session Traversal Utilities for NAT is a standardized set of methods, including a network protocol, for traversal of network address translator gateways in applications of real-time voice, video, messaging, and other interactive communications.</i>';
+
+$lang['utf8_dsc'] = 'Scan and compare new usernames with different unicode subsets. Affects registrations, guests and Facebook users.';
+$lang['utf8_run'] = 'There is a popular method to register fake usernames using mixed alphabets and this can\'t be done by accident:  <b>John</b> is not <b>Jоhn</b> (CTRL+F and search this page for <b>John</b>). Run a test on new usernames - allow specific unicode subsets and do <b>not</b> allow mixed subsets and numeric usernames. Will not affect already registered usernames. If OFF usernames can contain mixed UTF8 letters, digits, dashes and spaces.';
+$lang['utf8_set'] = 'Allowed unicode subsets';
+$lang['utf8_msg'] = 'Enter a message to be displayed when UTF8SCAN finds a numeric username, not allowed unicode subset or mixed unicode subsets in the username.';
+
+$lang['fb_name']  = 'Facebook Login';
+$lang['fb_desc']  = '<i>Continue with Facebook</i> integration. You need a Facebook developer account. SSL (https) is a must! Quarantine does not apply to Facebook users.';
+$lang['fb_ouri']  = 'Facebook OAuth Redirect URI (https required)';
+$lang['fb_tfrm']  = '<i>index.php</i> or top frame URL when iframed';
+$lang['fb_dss1']  = 'Go to: <i>https://developers.facebook.com/apps/</i> and <b>Add a New App</b>.';
+$lang['fb_dss2']  = 'Choose name for your app, Select a Scenario: <i>Integrate Facebook Login</i> and <i>Confirm</i>.';
+$lang['fb_dss3']  = 'PRODUCTS » Facebook Login » Settings » Enter <i>Facebook OAuth Redirect URI</i>:<br /> - Copy/paste from the box above (will NOT work without https!)<br /> - example: <i>https://YOUR-URL.com/chat/fblogin.php</i>';
+$lang['fb_dss4']  = 'Enable <b>Login from Devices</b> and <b>Embedded Browser OAuth Login</b> and <i>Save Changes</i>.';
+$lang['fb_dss5']  = 'Copy/paste your Facebook APP ID in the provided box above and save with OKAY.';
+$lang['fb_dss6']  = 'To disable Facebook Login remove APP ID from the box above.';
+
+$lang['mapps']    = 'Android Apps';
+$lang['andr9']    = 'You cannot create QR-CODE/CHAT-CODE from a non-SSL URL. Click here to load the Admin CP with https!';
+$lang['mappd1']   = 'We provide two ready to use Adnroid apps on Google Play. To join your chat your website visitors need to scan a QR code from <b>BlaB! Q</b> or enter a CHAT CODE in <b>BlaB! G</b>.';
+$lang['mappd2']   = 'Do not change the URL of your chat as the QR / CHAT CODE will stop working!';
+$lang['mapp_q']   = '<b>BlaB! Q</b>: Right click, save the picture and show it anywhere on your website. Do not forget to provide a link to the app. <div style="margin-top:20px;text-align:left">BlaB! Q on Google Play: <span class="x_accent_fg">https://play.google.com/store/apps/details?id=com.justblab.bwsq</span></div>';
+$lang['mapp_g']   = '<b>BlaB! G</b>: Copy the URL from the box, go to <b>https://bit.ly</b> and enter the URL. The chat code is what you have after <i>bit.ly/</i> in your shortened URL. <span class="x_accent_fg">Do not load this link with your web browser - you will lose your sound notifications as the chat will try to play them via Android API.</span> <div style="margin-top:5px;text-align:left">BlaB! G on Google Play: <span class="x_accent_fg">https://play.google.com/store/apps/details?id=com.justblab.bwsg</span></div>';
+
+$lang['dbopt']    = 'Database';
+$lang['dbdsc']    = 'Settings for <b>cron.php</b> when you automatically maintain and optimize your database with CRONJOBS. Use the built-in CRON service (CMD or hosting panel) or a 3rd-party online CRON.';
+$lang['dbrun']    = 'Run cron.php manually';
+$lang['cronu']    = 'URL only (3rd-party service)';
+$lang['cronh']    = 'Every hour! <span class="x_accent_bg">&nbsp;sudo crontab -e&nbsp;</span> (copy/paste)';
+$lang['crond']    = 'Daily @5am! <span class="x_accent_bg">&nbsp;sudo crontab -e&nbsp;</span> (copy/paste)';
+$lang['crn_g']    = 'Delete guests and IPLog';
+$lang['crn_o']    = 'Optimize database';
+$lang['crn_m']    = 'Delete messages older than XX days';
+$lang['crn_d']    = 'Delete doodles older than XX days';
+$lang['crn_u']    = 'Delete uploads older than XX days';
+$lang['crn_k']    = 'A security key: <i>cron.php?q=KEY</i>';
+$lang['csvex']    = 'Export database tables as CSV files. You must backup your database regularly with a dedicated backup tool! Use the dropdown menu tobackup quickly your users. CSV files can be imported into the corresponding tables with phpMyAdmin or Adminer: <i>https://adminer.org</i>';
+$lang['extbl']    = 'Export table...';
+
+$lang['polls1']       = 'Polls';
+$lang['polls2']       = 'Creating polls is affected by group permissions. One user = one vote. If <b>one vote per IP address</b> and <b>vote change</b> are both enabled only the initial voter can change the vote of the IP.';
+$lang['vote_seeres']  = 'Results accessible before voting';
+$lang['vote_change']  = 'Enable vote change';
+$lang['vote_ipaddr']  = 'One vote per IP address';
+$lang['vote_colors']  = 'Background colors. Use medium colors - both black and white text on top should be visible.';
+
+$lang['pguard']   = 'ProxyGuard';
+$lang['pg_desc1'] = 'ProxyGuard does not allow users behind proxies and VPN to enter the chat. Since ProxyGuard depends on 3-rd party services <b>php_curl</b> is required to enable it!';
+$lang['pg_desc2'] = 'ProxyGuard does not allow users behind proxies and VPN to enter the chat. ProxyGuard depends on 3-rd party services to recognize if an IP address is a proxy/VPN. Currently available: <b>iphub.info</b> &amp; <b>getipintel.net</b>. <b class="x_accent_fg">&nbsp;You need an API KEY!&nbsp;</b> iphub.info - 1000 queries/day are free; getipintel.net - your email is the API KEY, 500 queries/day are free. OnError &amp; OnTimeout the IP is considered non-proxy but not cached.<br /><br />In case you use cloudflare protection or a reverse proxy in front you might be unable to enter the chat - the IP will be considered a proxy. Test with <b>ProxyGuard on chat page</b> only so you can get back here and turn ProxyGuard off. <i>Options to deal with this situation are available in config.php</i>.';
+$lang['pg_curl']  = '<b>php_curl</b> not detected! <b>php_curl</b> is required to enable ProxyGuard!';
+$lang['pg_on']    = '<ol style="margin:0"><li>ProxyGuard when loading the chat page</li><li>ProxyGuard on chat page &amp; login/register</li></ol>';
+$lang['pg_timeout'] = 'Timeout - wait X sec for an answer';
+$lang['pg_tcache']  = 'Keep IP info in cache for XX seconds <br />86400 = day; 604800 = week; (<i>7200 &lt; XX &lt; 604800</i>)';
+$lang['pg_api_src'] = 'Provider';
+$lang['pg_api_key'] = 'API KEY (valid email for getipintel.net)';
+$lang['pg_failmsg'] = 'Message to display when a proxy/VPN user is detected. Non-explanatory error message may discourage further attempts. HTML/CSS allowed.';
+$lang['pg_wlist']   = 'Whitelist. Comma separated list of IPs/IP-ranges not to be affected by ProxyGuard.';
+
+$lang['tips_title'] = 'Login/Register Tips ';
+$lang['tips_desc']  = 'Display custom text on login, register, forgotten password pages. Supports HTML, CSS and JavaScript.';
+
+$lang['genderedit'] = 'User editable gender';
+$lang['genderlist'] = 'Comma separated list of genders, dash=none';
+
+$lang['soundds0']   = 'Sounds';
+$lang['soundds1']   = 'Sound notifications';
+$lang['soundds2']   = 'Build your own sound notification JavaScript file using predefined sounds or uploaded mp3 files.';
+$lang['soundds3']   = 'Uploaded mp3 files from slots <b>A B C D E F G</b> appear at the bottom of each drop-down menu.<br /><br />If your current sound file is writeable (CHMOD=666) it will be replaced when you click BUILD &amp; REPLACE. In case PHP cannot replace that file you will be prompted to download it: upload and replace your current sound file with the downloaded one in the main chat folder and then <b>UNCACHE</b> from Admin CP » Settings.';
+$lang['soundds4']   = 'Select slot and upload an mp3 file <b id="ftoobig" style="display:inline-block;padding:2px 5px 2px 5px">smaller than 20kB</b> - mp3 files are checked on upload and not processed unless MIME=mpeg/audio. In case you do not have suitable mp3 files use <b>OcenAudio</b> to cut/convert/edit any sound file. OcenAudio (<i class="x_accent_fg">www.ocenaudio.com</i>) natively supports Windows, MacOS, Linux. Any sound file 2sec or shorter through <i>OcenAudio » File » Export » MPEG [MPEG Layer III] » bitrate = 32kbps</i> should produce an mp3 file smaller than 20kB.';
+$lang['defsound']   = 'Load and submit defaults';
+$lang['so_dnd']     = 'Build &amp; Download JS sound file';
+$lang['so_rep']     = 'Build &amp; Replace current JS file + Uncache';
+$lang['soundm']     = 'Select sound';
+$lang['slotnm']     = 'Select slot';
+$lang['uplsnd']     = 'Upload mp3';
+$lang['sound1']     = 'Enter/Leave notification';
+$lang['sound2']     = 'Foreground message';
+$lang['sound3']     = 'New PM notification';
+$lang['sound4']     = 'Background message';
+$lang['sound5']     = 'Private message';
+$lang['sound6']     = 'Outgoing P2P call';
+$lang['sound7']     = 'Incoming P2P call';
+
+/* Style */
+
+$lang['themes']   = 'Themes';
+$lang['bgstyl']   = 'Backgrounds';
+$lang['import']   = 'Import';
+$lang['export']   = 'Export';
+$lang['stybeg']   = 'This style begins here...';
+$lang['styend']   = 'This style ends here...';
+$lang['imp_help'] = '1. Paste a valid style\n2. Hit ENTER to import';
+$lang['globalff'] = 'Global font-size and font-family';
+$lang['globalcb'] = 'Global text color and background color';
+$lang['globalac'] = 'Color accent (links, borders, backgrounds)';
+$lang['inputccb'] = 'Chat input box color and background color';
+$lang['onlinecb'] = 'Online list text color and background color';
+$lang['panellcb'] = 'Left panel text color and background color';
+$lang['titbutcb'] = 'Titles/buttons text color and background color';
+$lang['rndcorns'] = 'Rounded corners (px), button roundness (%)';
+$lang['msgcolrs'] = 'Colors to post messages with. To disable and hide a slot in chat set <i>#123456</i>';
+$lang['bodyhelp'] = 'CSS to be applied to the BODY element. Modern SVG/CSS backgrounds such as <b>svgbackgrounds.com</b>, <b>heropatterns.com</b> and <b>lea.verou.me/css3patterns</b> work out of the box. Excellent public domain photos can be downloaded from <b>free-images.com</b>. Predefined backgrounds are in pairs. The odd numbers are suitable for login/register pages, the next even number for the chat page. Select a proper color scheme!';
+$lang['msgstylt'] = 'Message style';
+$lang['msgstylb'] = '<b>Be careful!</b> The first box holds an HTML template and in the second you can provide CSS styles. <ul><li><b>{UID} {TIME} {COLOR} {GROUP} {NAME} {TEXT}</b> are replaced in the actual messages</li><li><b>{GROUP}</b> -  group colors: <i>.g1{...}</i>, <i>.g2{...}</i> <b>Pro only!</b></li><li><b>{COLOR}</b> - message colors: <i>.tt1{...}</i>, <i>.tt2{...}</i><li>Styles in the CSS box overwrite the global CSS file</li><li>To display user avatars next to messages use <b>template D</b></li></ul> <small class="x_bcolor_bg" style="display:block;padding:10px">Avatars in messages are loaded through the file <b>avatar.php</b> and to achieve better performance login credentials are not checked. If you consider this a security flaw disable <b>avatar.php</b> with a variable in <b>config.php</b>: <b>$disablema=1;</b></small>';
+
+$lang['widgets']  = 'Widgets';
+$lang['widgets1'] = 'Widgets serve JSON objects that can be processed with JavaScript on an external page in order to display information from the chat.';
+$lang['widgets2'] = '<b>CODE:FIXED</b> should be inserted at the bottom of the HTML document, just before the closing &lt;/body&gt; tag. <b>CODE:INLINE</b> can be insterted anywhere within the BODY of the document.';
+$lang['w_enbl']   = 'Widget enabled';
+$lang['w_disb']   = 'Widget disabled';
+
+$lang['w_ofile']  = '<b>Users online</b> widgets only: URL <b>OR</b> absolute path to the JSON file provided by the websocket server.<ul><li>URL: <i>PHP allow_url_fopen = On</i> is required!</li><li>PATH: e.g. /tmp/online - in order to access the file from the /tmp directory Apache might need in <i>/usr/lib/systemd/system/httpd.service</i> <b>PrivateTmp=false</b> then <i>systemctl daemon-reload</i> and <i>systemctl restart httpd</i></li></ul>';
+$lang['w_cache']  = 'Widgets cached by the browsers for XX seconds (10-3600)';
+$lang['w_cross']  = 'CORS enabled. Widgets can be called cross-domain.';
+$lang['w_onlu']   = '<b>Users online</b> <i>[ID=USERNAME]</i>';
+$lang['w_onla']   = '<b>Users online + avatars</b> <i>[USERNAME=AVATAR_URL]</i>';
+$lang['w_stat']   = '<b>Statistics</b> <i>[USERS, GROUPS, MESSAGES, UPLOADS, DOODLES]</i>';
+$lang['w_tten']   = '<b>Top 10 chatters</b> <i>[USERNAME, AVATAR, MSGNUM, PERCENT]</i>';
+$lang['w_last']   = '<b>Latest visitors</b> <i>[USERNAME, AVATAR, TIMESTAMP]</i>';
+
+$lang['w_demo']   = 'Preview widget';
+$lang['w_codi']   = 'Code: inline';
+$lang['w_codf']   = 'Code: fixed';
+
+/* Users / Uploads / Rooms / Messages  */
+
+$lang['go']       = 'Go';
+$lang['page']     = 'Page';
+$lang['motto']    = 'Motto';
+$lang['avatar']   = 'Avatar';
+$lang['age']      = 'Year of Birth';
+$lang['location'] = 'Location';
+$lang['gender']   = 'Gender';
+$lang['search']   = 'Search';
+$lang['confirm']  = 'Please confirm!';
+$lang['wh_name']  = 'Search in name';
+$lang['wh_mail']  = 'Search in email';
+$lang['or_name']  = 'Order by name';
+$lang['or_regd']  = 'Order by date';
+$lang['no_resu']  = 'No results...';
+$lang['sel_all']  = 'Select all';
+$lang['sel_non']  = 'Select none';
+$lang['dellg']    = 'Delete guests / IPLog';
+$lang['selectd']  = 'Selected';
+$lang['public']   = 'Public';
+$lang['hidden']   = 'Hidden';
+$lang['delquar']  = 'Lift Quarantine';
+$lang['preview']  = 'Preview';
+$lang['download'] = 'Download';
+$lang['uregdate'] = 'Registered';
+$lang['usermail'] = 'Set new e-mail';
+$lang['userpass'] = 'Set new password';
+$lang['userques'] = 'Set new recovery question';
+$lang['useransw'] = 'Set new recovery answer';
+$lang['deloldfs'] = 'Delete uploads older than XX days: ';
+$lang['deloldms'] = 'Delete messages older than XX days: ';
+$lang['deloldps'] = 'Delete doodles older than XX days: ';
+$lang['nodicevi'] = 'Dice not available...';
+$lang['pm_mssgs'] = 'Enter one <i>userID</i> (e.g. 51) to show all messages from a single user or enter two <i>userID</i>s separated by a comma (e.g. 123,65) to show PMs only between the two users: ';
+$lang['msg2dbon'] = 'Store messages in the database. Turn this <b>off</b> to reduce the load on your MySQL and HTTP servers.';
+$lang['usersdsc'] = 'Users from an integrated system do not appear here...';
+$lang['usr1hint'] = 'Password and recovery answer are encrypted in the database &amp; therefore not displayed.';
+$lang['usr2hint'] = 'Guest users have no email, password and Q&amp;A set. Their authentication is based on their username and IP address. Guests can be members of the &lt;guest&gt; group only. To turn this guest user into a registered one fill in all empty fields carefully and change their group.';
+$lang['roomdesc'] = 'Users are connected to all normal rooms and based on their group to {<i class="x_accent_fg">some</i>|<i class="x_accent_fg">all</i>|<i class="x_accent_fg">none</i>} hidden rooms.  A setup with room #1 only disables the room menu in chat. Room #1 cannot be hidden, cannot be removed and always appears on top.';
+$lang['addroom']  = 'Add room';
+$lang['roomnme']  = 'Room name';
+$lang['roomdsc']  = 'Description';
+$lang['roomclr']  = 'Room color';
+$lang['roomord']  = 'Z-Order';
+$lang['roombg']   = 'Show room background';
+$lang['roombgf']  = 'Room background font (sans-serif, monospace, serif)';
+$lang['roombgc']  = 'Font color; enter <i>#123456</i> to inherit from room colors';
+$lang['roombgs']  = 'Font size (20-120)';
+$lang['roombgl']  = 'Length (5-30)';
+$lang['roombgt']  = 'Font opacity (10-100)';
+$lang['createu']  = 'New User';
+$lang['rmode']    = 'Room type';
+$lang['rpublic']  = 'Normal room';
+$lang['rhidden']  = 'Hidden room';
+$lang['rperm']    = 'Groups allowed to see this room<br />&nbsp;- SuperAdmin (id=1) can see all rooms<br />&nbsp;- Hold down CTRL to select multiple groups';
+
+$lang['fusers']   = 'Fake users';
+$lang['delfusr']  = 'Delete all fake users';
+$lang['fusrds']   = 'Fake users appear online in the online list but do not interact with the chat server in any way.';
+$lang['fusrdd']   = 'To add a fake user go to ACP » Users » {USERNAME} » bottom of the page. When you delete guests manually or with cronjobs guests that are fake users will not be deleted. Timezone: ACP » Settings.';
+$lang['fusrdsc']  = 'Put this user online. Fake users do not interact with the chat server in any way. Be careful - if the real user enters the chat there will be two identical users in the online list.';
+$lang['fubegin']  = 'From';
+$lang['fuend']    = 'To';
+$lang['fu_ord1']  = 'Order A-Z';
+$lang['fu_ord2']  = 'Order by {FROM}';
+$lang['fu_ord3']  = 'Order by {TO}';
+$lang['status1']  = 'Available';
+$lang['status2']  = 'Away';
+$lang['status3']  = 'Occupied';
+$lang['status4']  = 'N.A.';
+$lang['status5']  = 'D.N.D.';
+
+
+/* Groups */
+
+$lang['gname']    = 'Group name';
+$lang['agroup']   = 'Any group';
+$lang['gcolor']   = 'Group color';
+$lang['link']     = 'Linked&nbsp;group';
+$lang['groupg']   = 'Guest users go to this group.';
+$lang['groupr']   = 'Registered users go to this group.';
+$lang['groupf']   = 'Facebook users go to this group.';
+$lang['addgrp']   = 'Add group';
+$lang['perm']     = 'Permissions';
+$lang['dellnk']   = 'Delete and link groups';
+$lang['movems']   = 'Move your cursor over the letters above to see permissions.';
+$lang['grdesc']   = 'You can easily link user groups from your main site to chat groups when editing permissions. Users that are not members of any group go to the default group (id:1) which cannot be removed or linked. To delete currently linked groups and link all the groups from your main site click on DELETE AND LINK GROUPS. Superuser (id:1) is granted all possible permissions no matter which group s/he is a member of.';
+$lang['gr_link']  = 'Link to this chat group a group from your main site.<br />Note that only groups that are not yet linked appear in the list';
+
+$lang['pdesc']    = '<div style="float:right;margin-left:20px;padding:20px;white-space:pre;font:12px monospace" class="x_bcolor_bg">Permissions/ID        Level
+-----------------------------
+                      level=0
+Permission E          level=1
+Permission D          level=2
+Permission C          level=3
+SuperAdmin [id=1]     level=4</div>
+There are five user levels based on permissions C, D &amp; E. Corresponding users are allowed to kick out and gag (<i>C/D + banID/banIP</i>) any user below their level.
+<br style="clear:both" />';
+
+$lang['gr_pa']    = '<span class="perm" style="background-color:#43A047">A</span> Allowed to load the chat';
+$lang['gr_pb']    = '<span class="perm" style="background-color:#43A047">B</span> Allowed to chat (text box enabled)';
+$lang['gr_pc']    = '<span class="perm" style="background-color:#E91E63">C</span> Full access to the Admin CP! Allowed to KickOut/Gag &amp; Ban';
+$lang['gr_pd']    = '<span class="perm" style="background-color:#E91E63">D</span> Read-only access to the Admin CP! Allowed to KickOut/Gag &amp; Ban';
+$lang['gr_pe']    = '<span class="perm" style="background-color:#E91E63">E</span> Allowed to KickOut/Gag only';
+$lang['gr_pf']    = '<span class="perm" style="background-color:#2196F3">F</span> Allowed to change colors';
+$lang['gr_pg']    = '<span class="perm" style="background-color:#2196F3">G</span> Allowed to change statuses';
+$lang['gr_ph']    = '<span class="perm" style="background-color:#2196F3">H</span> Allowed to upload avatars (<b>P</b> dependable)';
+$lang['gr_pi']    = '<span class="perm" style="background-color:#2196F3">I</span> Allowed to upload files';
+$lang['gr_pj']    = '<span class="perm" style="background-color:#2196F3">J</span> Allowed to post locations (GoogleMaps), YouTube and other external sources';
+$lang['gr_pk']    = '<span class="perm" style="background-color:#2196F3">K</span> Allowed to post text streams';
+$lang['gr_pl']    = '<span class="perm" style="background-color:#2196F3">L</span> Allowed to roll dice';
+$lang['gr_pm']    = '<span class="perm" style="background-color:#2196F3">M</span> Allowed to ignore (mute) other chatters';
+$lang['gr_pn']    = '<span class="perm" style="background-color:#2196F3">N</span> Allowed to see the list of emoticons';
+$lang['gr_po']    = '<span class="perm" style="background-color:#2196F3">O</span> Allowed to see the list of stickers &amp; stimoji (<b>N</b> dependable)';
+$lang['gr_pp']    = '<span class="perm" style="background-color:#2196F3">P</span> Allowed to see/pick preloaded avatars &amp; change their motto';
+$lang['gr_pq']    = '<span class="perm" style="background-color:#2196F3">Q</span> Allowed to submit polls';
+$lang['gr_pr']    = '<span class="perm" style="background-color:#2196F3">R</span> Allowed to load &lt;CUSTOM&gt; panelTab';
+$lang['gr_ps']    = '<span class="perm" style="background-color:#2196F3">S</span> Allowed to post source code';
+$lang['gr_pt']    = '<span class="perm" style="background-color:#2196F3">T</span> Appcode allowed - see Integration';
+$lang['gr_pu']    = '<span class="perm" style="background-color:#2196F3">U</span> Allowed to submit doodles';
+$lang['gr_pv']    = '<span class="perm" style="background-color:#2196F3">V</span> Allowed to submit Tenor GIFs - see Settings (<b>N</b> dependable)';
+$lang['gr_pw']    = '<span class="perm" style="background-color:#2196F3">W</span> Allowed to see and use the history button (if messages to DB is on)';
+$lang['gr_px']    = '<span class="perm" style="background-color:#2196F3">X</span> Allowed to see &lt;CUSTOM&gt; panelTop content';
+$lang['gr_py']    = '<span class="perm" style="background-color:#2196F3">Y</span> Allowed to send video &amp; voice messages';
+$lang['gr_y2']    = ' and initiate P2P calls';
+$lang['gr_pz']    = '<span class="perm" style="background-color:#2196F3">Z</span> Allowed to enter chat no matter if on/off';
+
+$lang['tit_gr']   = 'Group rules';
+$lang['dsk_ds']   = 'Create rules to move users from group to group automatically, based on their registration date and the number of submitted chat messages.';
+$lang['dsk_d2']   = 'Rules are applied in Z-Order, on loading the chat and per user. Users from an integrated forum/CMS are not affected.';
+$lang['dsk_ad']   = 'This feature runs queries against the database! Only <b>SuperAdmin</b> (id=1) can add, edit and delete rules.';
+$lang['grp_cg']   = 'If current group';
+$lang['usr_rg']   = 'User registered ↙';
+$lang['msg_ps']   = 'Chat messages ↗';
+$lang['grp_mv']   = 'Move to group';
+$lang['rul_mk']   = 'Make rule';
+$lang['rul_ad']   = 'Add rule';
+$lang['nop_mt']   = 'No matter';
+$lang['r_only']   = '<b>Permission D</b> read-only access. IP addresses and critical settings are <b>never</b> visible. <ol><li>Read-only access to Board/Statistics/Logs only</li><li>Read-only access to all ACP pages <b>except</b> content: Messages, Uploads, Doodles are <b>NOT</b> visible</li><li>Read-only access to all ACP pages <b>including</b> content: Messages, Uploads, Doodles are visible</li></ol>';
+
+
+/* Integration */
+
+$lang['intg_desc']   = 'This chat has to be installed in the database of the script you want to integrate with. For details on what to set as integration variables please refer to our knowledgebase or submit a support ticket.';
+$lang['intg_bbcms']  = 'Bulletin Board or CMS you want to integrate with';
+$lang['intg_noingt'] = 'No integration';
+$lang['intg_blabws'] = 'Another instance of this chat';
+$lang['intg_custom'] = 'Custom integration';
+$lang['intg_cookie'] = 'Session or other cookie set by your BB or CMS';
+$lang['intg_prefix'] = 'Table prefix of your BB/CMS database tables including the sign _ if exists e.g. phpbb_';
+$lang['intg_logout'] = 'Logout link. URL or relative path - BB/CMS users only. Leave it blank if you do not want to display a logout button';
+$lang['intg_pflink'] = 'Link to BB/CMS profiles in chat. A full URL or a relative path with keywords to be replaced: <b>EXTID</b> and/or <b>EXTNAME</b> e.g. <i>https://my-website.com/forum/user.php?userid=<b>EXTID</b></i>';
+$lang['intg_nolog']  = 'Where to redirect BB/CMS users that are not logged in. <i>account.php</i> would let them enter as guests or register chat accounts if allowed';
+$lang['appcodedsc']  = '<b>APPCODE</b><br /><br /><i>Warning! This is an experimental feature</i> that adds a QR code to scan under SETTINGS. Users from your main system, if in a group with granted <i>permission T</i>, enter the chat directly with <b>BlaB! Q</b> mobile app by scanning the APPCODE from the app.<br /><br />Please understand that the APPCODE is permanent - once applied changing usernames/groups etc has no effect on the user. To revoke all APPCODES alter the <i>COOKIE SALT</i> under SETTINGS.<br /><br />APPCODE description and a link to the app (HTML allowed).';
+
+
+/* Custom tab/top */
+
+$lang['ptop_desc']    = 'Display a custom (all tabs) panel-top block in the left panel - radio stream, social buttons etc. Affected by group permissions.';
+$lang['ptop_content'] = 'Custom panel-top content. Supports HTML, CSS and JavaScript';
+
+$lang['ctab_desc']    = 'Display a custom tab in the left panel. Due to the limited space the bottom/left button to switch to that custom tab may remove the ACP button - you will have to bookmark your Admin CP.  Affected by group permissions.';
+$lang['ctab_display'] = 'Display a custom tab in the left panel';
+$lang['ctab_title']   = 'Custom tab title';
+$lang['ctab_content'] = 'Custom tab content. Supports HTML, CSS and JavaScript';
+$lang['ctab_default'] = 'Display the custom tab by default when opening the panel';
+$lang['ctab_icon']    = 'A base64 SVG icon from the CSS file (default: svg_star)';
+
+/* Machines */
+
+$lang['machines'] = 'Machines';
+$lang['jbox']     = 'Time Machine';
+$lang['jbox_d']   = '<b>Time Machine</b> displays predefined messages in chat at intervals. A list of messages is called a sequence. Sequences can be combined, postponed, excluded in certain circumstances and formatted as regular messages or fancy announcements. Users get different messages based on group, room, sequence already seen etc.';
+$lang['seq_new']  = 'New sequence';
+$lang['seq_dall'] = 'Delete all sequences';
+$lang['seq_tit']  = 'Sequence name (A-Z0-9)';
+$lang['seq_enb']  = 'Sequence enabled. When in test mode available to SuperAdmin only (id:1)';
+$lang['seq_rdsc'] = 'Appears in the selected room only or in the room on focus';
+$lang['seq_room'] = 'Room on focus';
+$lang['seq_gdsc'] = 'Available to members of the selected group only or any group';
+$lang['seq_grp']  = 'Any group';
+$lang['seq_loop'] = 'Infinite loop';
+$lang['seq_shuf'] = 'Shuffle the items';
+$lang['seq_hrem'] = '<b>Room on focus</b>: remember posted items in temp. history';
+$lang['seq_intv'] = 'Interval in seconds (&gt;=10s)';
+$lang['seq_dela'] = 'Delay the sequence (seconds)';
+$lang['seq_rmbb'] = 'Do not run this sequence if chat page is reloaded (remember for XX seconds; revoke by changing the name of the sequence)';
+$lang['seq_tmpd'] = 'Message template (HTML allowed). When executing a sequence {TEXT} is replaced with a sequence item, {TIME} is replaced with the current time.';
+$lang['seq_elem'] = 'Sequence items - <b>one per line</b> (HTML allowed). {NAME} is replaced with the name of the user. Single letter items are skipped which doubles the interval between previous/next items.';
+
+$lang['rbox']     = 'TheGodFather';
+$lang['rbox_d']   = '<b>TheGodFather</b> scans all messages sent by users and posts a random phrase from a list when a keyword match is found. Encourage/discourage certain type of messages or use it combined with <b>Time Machine</b>. A keywords/phrases pair is called a subset. Subsets are applied alphabetically and the first match takes precedence - rename them to change the order.';
+$lang['lst_new']  = 'New subset';
+$lang['lst_dall'] = 'Delete all subsets';
+$lang['idx_tit']  = 'Subset name (A-Z0-9)';
+$lang['idx_enb']  = 'Subset enabled. When in test mode triggered by SuperAdmin only (id:1)';
+$lang['idx_rdsc'] = 'Triggered in the selected room only or in any room';
+$lang['idx_room'] = 'Any room';
+$lang['idx_gdsc'] = 'Triggered by members of the selected group only or any group';
+$lang['idx_grp']  = 'Any group';
+$lang['idx_pm']   = 'Triggered in the PM box';
+$lang['idx_kw']   = 'Keywords - comma separated list, case insensitive. Only UTF8 letters, digits and spaces are allowed. Put a dash (-) in front of a keyword to avoid matches such as <b>god</b> in The<b>God</b>Father.';
+$lang['idx_as']   = 'Phrases - one phrase per line - links, stickers and emoji are allowed as well as [b]bold[/b], [i]italic[/i], [br] = new line. Phrases are randomly selected when any keyword from the list above is found in a message.<br /><br /><b>FGC=http://url.com/123.php</b> - load content with <b>file_get_contents()</b> (php.ini: <i>allow_url_fopen=On</i>)<br /><b>RDR=http://url.com/123.php</b> - redirect with <b>header(location:url)</b> (<i>CORS: may not work crossdomain</i>)';
+
+$lang['nbox']     = 'News Machine';
+$lang['apikey']   = 'NewsApi key (https://newsapi.org)';
+$lang['news_d']   = '<b>News Machine</b> scans public messages and posts news on a predefined topic in a particular language or from a particular country when a keyword match is found. Can be combined with <b>Time Machine</b>. Keywords/news pairs are called subsets. Subsets are applied alphabetically <b>after TheGodFather</b> and the first match takes precedence. <b>News Machine</b> requires a 3rd party service to fetch the news. ';
+$lang['sst_new']  = 'New subset';
+$lang['sst_dall'] = 'Delete all subsets';
+$lang['fnews1']   = 'Use the built-in CRON service (CMD or hosting panel) or a 3rd-party online CRON to fetch the latest news every hour or daily. The security key in the URL (q=xxx) is set in ACP » Database.';
+$lang['fnews2']   = 'Fetch news manually';
+$lang['nsseen']   = 'Seen';
+$lang['akeydsc']  = 'Go to <span class="x_accent_fg">https://newsapi.org</span>, register and get your API key. Consider carefully the interval to fetch the news - you have a limited number of requests per day and each subset sends one request.';
+$lang['ss_tit']   = 'Subset name (A-Z0-9)';
+$lang['ss_enb']   = 'Subset enabled. When in test mode triggered by SuperAdmin only (id:1)';
+$lang['ss_rdsc']  = 'Triggered in the selected room only or in any room';
+$lang['ss_room']  = 'Any room';
+$lang['ss_gdsc']  = 'Triggered by members of the selected group only or any group';
+$lang['ss_grp']   = 'Any group';
+$lang['ss_kw']    = 'Keywords - comma separated list, case insensitive. Only UTF8 letters, digits and spaces are allowed. Put a dash (-) in front of a keyword to avoid matches such as <b>god</b> in The<b>God</b>Father.';
+$lang['ss_ps']    = 'How many news to fetch (10-100)';
+$lang['ss_cc']    = 'Language / Country code';
+$lang['ss_tp']    = 'Topic';
+$lang['ss_xx_a']  = 'Latest news from a country using the 2-letter country code or blank for no particular country. The topic is not used in this query. Accepted countries: ';
+$lang['ss_xx_b']  = 'Topic. Accepted languages (blank for no specific language): ';
+$lang['stype']    = 'Type of query';
+$lang['ss_bn']    = 'Latest news (Country/World)';
+$lang['ss_et']    = 'Everything (Topic/Language)';
+$lang['curdb']    = 'Database entries...';
+
+
+$lang['gbox']     = 'GIF Machine';
+$lang['tenorkey'] = 'Tenor API key (https://tenor.com/gifapi)';
+$lang['gifs_d']   = '<b>GIF Machine</b> scans public messages and posts GIFs on a predefined topic when a keyword match is found. Keywords/GIFs pairs are called subsets. Subsets are applied alphabetically <b>after News Machine</b> and the first match takes precedence. <b>GIF Machine</b> requires a 3rd party service to fetch URLs to the GIF images.';
+$lang['apikdsc']  = 'Go to <span class="x_accent_fg">https://tenor.com/gifapi</span>, register and get your API key. Fetch GIFs from the bottom of each subset page. Fetch new GIFs when you change the topic.';
+$lang['gss_new']  = 'New subset';
+$lang['gss_dall'] = 'Delete all subsets';
+$lang['gg_tit']   = 'Subset name (A-Z0-9)';
+$lang['gg_enb']   = 'Subset enabled. When in test mode triggered by SuperAdmin only (id:1)';
+$lang['gg_cc']    = 'Locale (2-char code: en,fr,de,es,pt)';
+$lang['gg_tp']    = 'Topic (used for <b>tenor.com</b> search query)';
+$lang['gg_ps']    = 'How many GIFs to fetch (50 max)';
+$lang['gg_rdsc']  = 'Triggered in the selected room only or in any room';
+$lang['gg_room']  = 'Any room';
+$lang['gg_gdsc']  = 'Triggered by members of the selected group only or any group';
+$lang['gg_grp']   = 'Any group';
+$lang['gg_kw']    = 'Keywords - comma separated list, case insensitive. Only UTF8 letters, digits and spaces are allowed. Put a dash (-) in front of a keyword to avoid matches such as <b>god</b> in The<b>God</b>Father.';
+$lang['fetchg']   = 'Fetch GIFs';
+
+?>

@@ -1,0 +1,640 @@
+<?php
+
+$mcach=neutral_query('SELECT * FROM '.$dbss['prfx']."_scache WHERE id='svgcache1' OR id='svgcache2' OR id='svgcache3' OR id='svgcache4' OR id='svgcache5' OR id='svgcache6'");
+while($row=neutral_fetch_array($mcach)){$vcach[$row['id']]=$row['value'];} 
+
+$allusr=neutral_query('SELECT COUNT(*) FROM '.$dbss['prfx'].'_users');
+$allusr=neutral_fetch_array($allusr);$allusr=(int)$allusr[0];
+
+$allmsg=neutral_query('SELECT COUNT(*) FROM '.$dbss['prfx'].'_messages WHERE userid>0');
+$allmsg=neutral_fetch_array($allmsg);$allmsg=(int)$allmsg[0];
+
+$allgrp='<span style="opacity:0.3">Pro</span>';$allupl='<span style="opacity:0.3">Pro</span>';$allddl='<span style="opacity:0.3">Pro</span>';
+
+//---
+
+$last_seen=array(); for($i=0;$i<10;$i++){$last_seen[]=array('','','');}
+$alrd_seen=array(); $tcnt=0;
+$res=neutral_query('SELECT a.id AS uid, a.name AS uname, a.timestamp AS tstamp, b.image AS avatar FROM '.$dbss['prfx'].'_iplog a LEFT JOIN '.$dbss['sprf'].'_uxtra b ON a.id=b.id ORDER BY a.timestamp DESC LIMIT 200 OFFSET 0');
+while($row=neutral_fetch_array($res)){
+if(!in_array($row['uid'],$alrd_seen)){
+if($tcnt>4){break;} $alrd_seen[]=$row['uid'];
+if(strlen($row['avatar'])>0){$avatar=htmlspecialchars($row['avatar']);}else{$avatar=$xpath_av_dir.'/001.svg';}
+$avatr='<img src="'.$avatar.'" style="width:30px;height:30px" alt="" />';
+$stamp=gmdate('M d H:i',$row['tstamp']+$settings['acp_offset']*60);
+$last_seen[$tcnt]=array('<span class="pointer x_accent_fg" onclick="self.location.href=\'admin.php?q=user&amp;id='.$row['uid'].'\'">'.$row['uname'].'</span>',$stamp,$avatr); $tcnt+=1;}}
+
+//---
+
+$tcnt=0; $top10rooms=array(); for($i=0;$i<10;$i++){$top10rooms[]=array('','');}
+$res=neutral_query('SELECT a.id AS rid,a.name AS rname,a.color AS rcolor,COUNT(b.id) AS msgnm FROM '.$dbss['prfx'].'_rooms a LEFT JOIN '.$dbss['prfx'].'_messages b ON a.id=b.roomid GROUP BY a.id ORDER BY msgnm DESC LIMIT 10 OFFSET 0');
+while($row=neutral_fetch_array($res)){
+$rname='<b class="pointer" style="color:#'.$row['rcolor'].'" onclick="self.location.href=\'admin.php?q=room&amp;room='.$row['rid'].'\'">'.htmlspecialchars($row['rname']).'</b>';
+$msgnm='<b style="text-align:center;width:45px;display:inline-block;padding:5px" class="pointer x_overal" onclick="self.location.href=\'admin.php?q=messages&amp;page=0&amp;room='.$row['rid'].'\'">'.$row['msgnm'].'</b>';
+$top10rooms[$tcnt]=array($rname,$msgnm); $tcnt+=1;}
+
+
+// ---
+
+$tcnt=0; $top10users=array(); for($i=0;$i<10;$i++){$top10users[]=array('','','');}
+$res=neutral_query('SELECT a.userid AS uid,a.username AS uname,COUNT(a.id) AS msgnm, b.image AS avatar FROM '.$dbss['prfx'].'_messages a LEFT JOIN '.$dbss['sprf'].'_uxtra b ON a.userid=b.id WHERE a.userid>0 GROUP BY a.userid,a.username,b.image ORDER BY msgnm DESC LIMIT 10 OFFSET 0');
+while($row=neutral_fetch_array($res)){
+if(strlen($row['avatar'])>0){$avatar=htmlspecialchars($row['avatar']);}else{$avatar=$xpath_av_dir.'/001.svg';}
+$avatr='<img src="'.$avatar.'" style="width:30px;height:30px" alt="" />';
+$uname='<span class="pointer x_accent_fg" onclick="self.location.href=\'admin.php?q=user&amp;id='.$row['uid'].'\'">'.$row['uname'].'</span>';
+$msgnm='<b style="text-align:center;width:45px;display:inline-block;padding:5px" class="pointer x_overal" onclick="self.location.href=\'?q=messages&page=0&room=0&pmsg='.$row['uid'].'\'">'.$row['msgnm'].'</b>'; 
+$top10users[$tcnt]=array($uname,$msgnm,$avatr); $tcnt+=1;}
+
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['stats'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js?xyz=<?php print $settings['forcereload'];?>"></script>
+</head>
+
+<body class="x_global x_overal">
+
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php'" class="pointer svg_stat">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['stats'];?></h2>
+<hr />
+
+<div style="overflow-x:auto">
+
+<div style="margin-bottom:10px;text-align:center">
+<input id="bbl1" type="button" class="round4 x_bcolor_bg" style="width:49%" value="<?php print $lang['stats'];?>" onclick="de('bbl2').className='round4 x_bcolor_bg';this.className='round4 x_accent_bg';de('tbl1').style.display='block';de('tbl2').style.display='none'" />
+<input id="bbl2" type="button" class="round4 x_bcolor_bg" style="width:49%" value="TOP 5" onclick="de('bbl1').className='round4 x_bcolor_bg';this.className='round4 x_accent_bg';de('tbl2').style.display='block';de('tbl1').style.display='none'" />
+</div>
+
+<table id="tbl1" style="display:none">
+<tr class="x_bcolor_bg"><td colspan="2" style="width:49%;text-align:center;font-weight:bold"><?php print $lang['stats'];?></td><td rowspan="7">&nbsp;</td><td colspan="3" style="width:49%;text-align:center;font-weight:bold"><?php print $lang['l_seen'];?></td></tr>
+<tr class="x_bcolor_bg"><td style="width:40%;text-align:right"><b><?php print $lang['users'];?></b></td><td><b onclick="self.location.href='admin.php?q=users'" style="text-align:center;width:45px;display:inline-block;padding:5px" class="pointer x_overal"><?php print $allusr;?></b></td><td style="text-align:right"><?php print $last_seen[0][2];?></td><td><?php print $last_seen[0][0];?></td><td style="text-align:center"><?php print $last_seen[0][1];?></td></tr>
+<tr class="x_bcolor_bg"><td style="width:40%;text-align:right"><b><?php print $lang['groups'];?></b></td><td><b onclick="self.location.href='admin.php?q=vpro'" style="text-align:center;width:45px;display:inline-block;padding:5px" class="pointer x_overal"><?php print $allgrp;?></b></td><td style="text-align:right"><?php print $last_seen[1][2];?></td><td><?php print $last_seen[1][0];?></td><td style="text-align:center"><?php print $last_seen[1][1];?></td></tr>
+<tr class="x_bcolor_bg"><td style="width:40%;text-align:right"><b><?php print $lang['messages'];?></b></td><td><b onclick="self.location.href='admin.php?q=messages'" style="text-align:center;width:45px;display:inline-block;padding:5px" class="pointer x_overal"><?php print $allmsg;?></b></td><td style="text-align:right"><?php print $last_seen[2][2];?></td><td><?php print $last_seen[2][0];?></td><td style="text-align:center"><?php print $last_seen[2][1];?></td></tr>
+<tr class="x_bcolor_bg"><td style="width:40%;text-align:right"><b><?php print $lang['files'];?></b></td><td><b onclick="self.location.href='admin.php?q=vpro'" style="text-align:center;width:45px;display:inline-block;padding:5px" class="pointer x_overal"><?php print $allupl;?></b></td><td style="text-align:right"><?php print $last_seen[3][2];?></td><td><?php print $last_seen[3][0];?></td><td style="text-align:center"><?php print $last_seen[3][1];?></td></tr>
+<tr class="x_bcolor_bg"><td style="width:40%;text-align:right"><b><?php print $lang['paint'];?></b></td><td><b onclick="self.location.href='admin.php?q=vpro'" style="text-align:center;width:45px;display:inline-block;padding:5px" class="pointer x_overal"><?php print $allddl;?></b></td><td style="text-align:right"><?php print $last_seen[4][2];?></td><td><?php print $last_seen[4][0];?></td><td style="text-align:center"><?php print $last_seen[4][1];?></td></tr>
+<tr class="x_bcolor_bg"><td colspan="2"></td><td colspan="3"></td></tr>
+
+</table>
+
+<table id="tbl2" style="display:none">
+
+<tr class="x_bcolor_bg"><td colspan="2" style="width:49%;text-align:center;font-weight:bold"><?php print $lang['top5r'];?></td><td rowspan="7">&nbsp;</td><td colspan="3" style="width:49%;text-align:center;font-weight:bold"><?php print $lang['top5u'];?></td></tr>
+<tr class="x_bcolor_bg"><td style="width:40%;text-align:right"><?php print $top10rooms[0][0];?></td><td><?php print $top10rooms[0][1];?></td><td><?php print $top10users[0][2];?></td><td style="width:40%"><?php print $top10users[0][0];?></td><td><?php print $top10users[0][1];?></td></tr>
+<tr class="x_bcolor_bg"><td style="width:40%;text-align:right"><?php print $top10rooms[1][0];?></td><td><?php print $top10rooms[1][1];?></td><td><?php print $top10users[1][2];?></td><td><?php print $top10users[1][0];?></td><td><?php print $top10users[1][1];?></td></tr>
+<tr class="x_bcolor_bg"><td style="width:40%;text-align:right"><?php print $top10rooms[2][0];?></td><td><?php print $top10rooms[2][1];?></td><td><?php print $top10users[2][2];?></td><td><?php print $top10users[2][0];?></td><td><?php print $top10users[2][1];?></td></tr>
+<tr class="x_bcolor_bg"><td style="width:40%;text-align:right"><?php print $top10rooms[3][0];?></td><td><?php print $top10rooms[3][1];?></td><td><?php print $top10users[3][2];?></td><td><?php print $top10users[3][0];?></td><td><?php print $top10users[3][1];?></td></tr>
+<tr class="x_bcolor_bg"><td style="width:40%;text-align:right"><?php print $top10rooms[4][0];?></td><td><?php print $top10rooms[4][1];?></td><td><?php print $top10users[4][2];?></td><td><?php print $top10users[4][0];?></td><td><?php print $top10users[4][1];?></td></tr>
+<tr class="x_bcolor_bg"><td colspan="2"></td><td colspan="3"></td></tr>
+
+</table></div>
+
+<br /><hr />
+
+<!-- begin stats block -->
+
+<?php
+
+$tzone=(int)$settings['acp_offset']; $tzone=(int)($tzone/60);
+if($tzone>14 || $tzone<-12){$tzone=0;}
+if($tzone>-1){$tzone='+'.$tzone.':00';}else{$tzone=$tzone.':00';}
+
+neutral_query("set time_zone='$tzone'");
+
+$svgcache=1; $cache_info=str_replace('%XXX%',gmdate('Y-m-d H:i',$settings['svgtstamp']+3600+$settings['acp_offset']*60),$lang['svgcache']);
+if($timestamp-$settings['svgtstamp']>3600){ $svgcache=0; $cache_info='';
+neutral_query('UPDATE '.$dbss['prfx'].'_settings SET value='.$timestamp.' WHERE id=\'svgtstamp\'');}
+
+
+?>
+
+<div style="margin-bottom:10px;text-align:center">
+<input id="svis" type="button" class="round4 x_bcolor_bg" style="width:49%" value="<?php print $lang['svg_vis'];?>" onclick="hide_diag();de('smsg').className='round4 x_bcolor_bg';this.className='round4 x_accent_bg';de('diag1').style.display='block';de('diag2').style.display='block';de('diag3').style.display='block'" />
+<input id="smsg" type="button" class="round4 x_bcolor_bg" style="width:49%" value="<?php print $lang['svg_msg'];?>" onclick="hide_diag();de('svis').className='round4 x_bcolor_bg';this.className='round4 x_accent_bg';de('diag4').style.display='block';de('diag5').style.display='block';de('diag6').style.display='block'" />
+</div>
+
+<div class="x_bcolor_bg" style="overflow-x:auto;padding:15px">
+
+<?php
+
+$color_net       = '#666';
+$color_text      = '#aaa';
+$color_bg_global = '#444';
+$color_info_line = '#222';
+
+if($settings['acp_css']=='2.css'){
+$color_net       = '#fff';
+$color_text      = '#555';
+$color_bg_global = '#ddd';
+$color_info_line = '#bbb';}
+
+if($settings['acp_css']=='3.css'){
+$color_net       = '#646464';
+$color_text      = '#DBDEC8';
+$color_bg_global = '#40413A';
+$color_info_line = '#30312A';}
+
+
+$size_net        = '0.5px';
+$size_circ_init  = '8px';
+$size_circ_over  = '10px';
+$size_circ_aftr  = '6px';
+$size_line       = '3px';
+
+$info_init_left=$lang['svg_hlp'];
+$info_over_prfx_v=$lang['svg_vis'].': ';
+$info_over_prfx_m=$lang['svg_msg'].': ';
+
+$months = array (1=>'Jan',2=>'Feb',3=>'Mar',4=>'Apr',5=>'May',6=>'Jun',7=>'Jul',8=>'Aug',9=>'Sep',10=>'Oct',11=>'Nov',12=>'Dec');
+
+?>
+
+<!-- begin svg 1 -->
+<?php 
+
+$svgprefix='s1';
+$color_line      = '#8BC34A';
+$color_circ_init = '#FF9800';
+$color_circ_over = '#03A9F4';
+$color_circ_aftr = '#666666';
+$info_init_rght='   '.$lang['svg_shrs'];
+
+if($svgcache<1){
+$elements=array();
+
+$maxvalue=0;
+$result=neutral_query('SELECT SUBSTRING(CAST(FROM_UNIXTIME(timestamp) AS DATETIME),1,13) AS datime, COUNT(DISTINCT id) AS dvalue FROM '.$dbss['prfx'].'_iplog GROUP BY datime ORDER BY datime DESC LIMIT 30 OFFSET 0');
+while($row=neutral_fetch_array($result)){if($row['dvalue']>$maxvalue){$maxvalue=$row['dvalue'];}}
+if(neutral_num_rows($result)>0){neutral_data_seek($result);}
+
+$i=0; while($row=neutral_fetch_array($result)){
+$coef=(int)$row['dvalue'];$coef*=100;$coef/=$maxvalue;$coef=(int)$coef;
+$tr_datime=$months[(int)substr($row['datime'],5,2)];
+$tr_datime=$tr_datime.' '.substr($row['datime'],8,10).':--';
+$elements[$i][0]=$coef;
+$elements[$i][1]=$row['dvalue'];
+$elements[$i][2]=$tr_datime;
+$i+=1;} 
+
+$elements=array_reverse($elements);
+$svgcache2db1=serialize($elements);
+$svgcache2db1=neutral_escape($svgcache2db1,99999,'str');
+neutral_query('UPDATE '.$dbss['prfx']."_scache SET value='$svgcache2db1' WHERE id='svgcache1'");
+}else{$elements=unserialize($vcach['svgcache1']);}
+
+$net=''; $circ=''; $line=''; $point=false;
+
+for($i=10;$i<620;$i+=20){$net.='<path d="m'.$i.' 10 L '.$i.' 110"  stroke="'.$color_net.'" stroke-width="'.$size_net.'"/>'."\n";}
+for($i=10;$i<120;$i+=20){$net.='<path d="m10 '.$i.' L 610 '.$i.'"  stroke="'.$color_net.'" stroke-width="'.$size_net.'"/>'."\n";}
+
+for($i=0;$i<count($elements);$i++){
+$x=$i*20+20; $y=100-$elements[$i][0]+10;  $tooltip1=$elements[$i][1]; $tooltip2=$elements[$i][2];
+if($point){$line.='<path d="m'.$point.' L '.$x.' '.$y.'"  stroke="'.$color_line.'" stroke-width="'.$size_line.'"/>'."\n";}
+$circ.='<circle cx="'.$x.'" cy="'.$y.'" r="'.$size_circ_init.'" fill="'.$color_circ_init.'" onmouseover="'.$svgprefix.'circ_over(this); '.$svgprefix.'setTooltip(\''.$tooltip1.'\',\''.$tooltip2.'\')" onmouseout="'.$svgprefix.'circ_out(this); '.$svgprefix.'setTooltip(\'\',\'\')"  />'."\n";
+$point=$x.' '.$y;
+}
+
+?>
+<svg id="diag1" height="150" width="620" viewBox="0 0 620 150" style="display:none">
+
+<script type="text/ecmascript">
+function <?php print $svgprefix;?>setTooltip(t1,t2){
+tt1=de('<?php print $svgprefix;?>tooltip1');
+tt2=de('<?php print $svgprefix;?>tooltip2');
+if(t1.length>0){tt1.textContent='<?php print $info_over_prfx_v;?> '+t1} else{tt1.textContent='<?php print $info_init_left;?>';}
+if(t2.length>0){tt2.textContent=t2} else{tt2.textContent='<?php print $info_init_rght;?>';}}
+
+function <?php print $svgprefix;?>circ_over(x){
+x.setAttribute('r','<?php print $size_circ_over;?>');
+x.setAttribute('fill','<?php print $color_circ_over;?>');}
+
+function <?php print $svgprefix;?>circ_out(x){
+x.setAttribute('r','<?php print $size_circ_aftr;?>');
+x.setAttribute('fill','<?php print $color_circ_aftr;?>');}
+</script>
+
+<rect height="145" width="620" y="0" x="0" rx="2" ry="2" fill="<?php print $color_bg_global;?>"/>
+
+<?php print $net."\n".$line."\n".$circ; ?>
+
+<rect height="19" width="600" y="120" x="10" rx="2" ry="2" fill="<?php print $color_info_line;?>" opacity="0.5"/>
+<text id="<?php print $svgprefix;?>tooltip1" font-size="12px" font-family="monospace" y="134" x="15" fill="<?php print $color_text;?>"><?php print $info_init_left;?></text>
+<text id="<?php print $svgprefix;?>tooltip2" xml:space="preserve" font-size="12px" font-family="monospace" y="134" x="520" fill="<?php print $color_text;?>"><?php print $info_init_rght;?></text>
+
+</svg>
+<!-- end svg 1 -->
+
+<!-- begin svg 2 -->
+<?php 
+
+$svgprefix='s2';
+$color_line      = '#607D8B';
+$color_circ_init = '#AD1457';
+$color_circ_over = '#FFC107';
+$color_circ_aftr = '#666666';
+$info_init_rght='    '.$lang['svg_sday'];
+
+if($svgcache<1){
+$elements=array();
+
+$maxvalue=0;
+$result=neutral_query('SELECT CAST(FROM_UNIXTIME(timestamp) AS DATE) AS datime, COUNT(DISTINCT id) AS dvalue FROM '.$dbss['prfx'].'_iplog GROUP BY datime ORDER BY datime DESC LIMIT 30 OFFSET 0');
+while($row=neutral_fetch_array($result)){if($row['dvalue']>$maxvalue){$maxvalue=$row['dvalue'];}}
+if(neutral_num_rows($result)>0){neutral_data_seek($result);}
+
+$i=0; while($row=neutral_fetch_array($result)){
+$coef=(int)$row['dvalue'];$coef*=100;$coef/=$maxvalue;$coef=(int)$coef;
+$tr_datime=$months[(int)substr($row['datime'],5,2)];
+$tr_datime='      '.$tr_datime.' '.substr($row['datime'],8,10);
+$elements[$i][0]=$coef;
+$elements[$i][1]=$row['dvalue'];
+$elements[$i][2]=$tr_datime;
+$i+=1;} 
+
+$elements=array_reverse($elements);
+$svgcache2db2=serialize($elements);
+$svgcache2db2=neutral_escape($svgcache2db2,99999,'str');
+neutral_query('UPDATE '.$dbss['prfx']."_scache SET value='$svgcache2db2' WHERE id='svgcache2'");
+}else{$elements=unserialize($vcach['svgcache2']);}
+
+$net=''; $circ=''; $line=''; $point=false;
+
+for($i=10;$i<620;$i+=20){$net.='<path d="m'.$i.' 10 L '.$i.' 110"  stroke="'.$color_net.'" stroke-width="'.$size_net.'"/>'."\n";}
+for($i=10;$i<120;$i+=20){$net.='<path d="m10 '.$i.' L 610 '.$i.'"  stroke="'.$color_net.'" stroke-width="'.$size_net.'"/>'."\n";}
+
+for($i=0;$i<count($elements);$i++){
+$x=$i*20+20; $y=100-$elements[$i][0]+10;  $tooltip1=$elements[$i][1]; $tooltip2=$elements[$i][2];
+if($point){$line.='<path d="m'.$point.' L '.$x.' '.$y.'"  stroke="'.$color_line.'" stroke-width="'.$size_line.'"/>'."\n";}
+$circ.='<circle cx="'.$x.'" cy="'.$y.'" r="'.$size_circ_init.'" fill="'.$color_circ_init.'" onmouseover="'.$svgprefix.'circ_over(this); '.$svgprefix.'setTooltip(\''.$tooltip1.'\',\''.$tooltip2.'\')" onmouseout="'.$svgprefix.'circ_out(this); '.$svgprefix.'setTooltip(\'\',\'\')"  />'."\n";
+$point=$x.' '.$y;
+}
+
+?>
+<svg id="diag2" height="150" width="620" viewBox="0 0 620 150" style="display:none">
+
+<script type="text/ecmascript">
+function <?php print $svgprefix;?>setTooltip(t1,t2){
+tt1=de('<?php print $svgprefix;?>tooltip1');
+tt2=de('<?php print $svgprefix;?>tooltip2');
+if(t1.length>0){tt1.textContent='<?php print $info_over_prfx_v;?> '+t1} else{tt1.textContent='<?php print $info_init_left;?>';}
+if(t2.length>0){tt2.textContent=t2} else{tt2.textContent='<?php print $info_init_rght;?>';}}
+
+function <?php print $svgprefix;?>circ_over(x){
+x.setAttribute('r','<?php print $size_circ_over;?>');
+x.setAttribute('fill','<?php print $color_circ_over;?>');}
+
+function <?php print $svgprefix;?>circ_out(x){
+x.setAttribute('r','<?php print $size_circ_aftr;?>');
+x.setAttribute('fill','<?php print $color_circ_aftr;?>');}
+</script>
+
+<rect height="145" width="620" y="0" x="0" rx="2" ry="2" fill="<?php print $color_bg_global;?>"/>
+
+<?php print $net."\n".$line."\n".$circ; ?>
+
+<rect height="19" width="600" y="120" x="10" rx="2" ry="2" fill="<?php print $color_info_line;?>" opacity="0.5"/>
+<text id="<?php print $svgprefix;?>tooltip1" font-size="12px" font-family="monospace" y="134" x="15" fill="<?php print $color_text;?>"><?php print $info_init_left;?></text>
+<text id="<?php print $svgprefix;?>tooltip2" xml:space="preserve" font-size="12px" font-family="monospace" y="134" x="520" fill="<?php print $color_text;?>"><?php print $info_init_rght;?></text>
+
+</svg>
+<!-- end svg 2 -->
+
+<!-- begin svg 3 -->
+<?php 
+
+$svgprefix='s3';
+$color_line      = '#FFC107';
+$color_circ_init = '#009688';
+$color_circ_over = '#F4511E';
+$color_circ_aftr = '#666666';
+$info_init_rght='  '.$lang['svg_smnt'];
+
+if($svgcache<1){
+$elements=array();
+
+$maxvalue=0;
+$result=neutral_query('SELECT SUBSTRING(CAST(FROM_UNIXTIME(timestamp) AS DATETIME),1,7) AS datime, COUNT(DISTINCT id) AS dvalue FROM '.$dbss['prfx'].'_iplog GROUP BY datime ORDER BY datime DESC LIMIT 30 OFFSET 0');
+while($row=neutral_fetch_array($result)){if($row['dvalue']>$maxvalue){$maxvalue=$row['dvalue'];}}
+if(neutral_num_rows($result)>0){neutral_data_seek($result);}
+
+$i=0; while($row=neutral_fetch_array($result)){
+$coef=(int)$row['dvalue'];$coef*=100;$coef/=$maxvalue;$coef=(int)$coef;
+$tr_datime=$months[(int)substr($row['datime'],5,2)];
+$tr_datime='         '.$tr_datime;
+$elements[$i][0]=$coef;
+$elements[$i][1]=$row['dvalue'];
+$elements[$i][2]=$tr_datime;
+$i+=1;} 
+
+$elements=array_reverse($elements);
+$svgcache2db3=serialize($elements);
+$svgcache2db3=neutral_escape($svgcache2db3,99999,'str');
+neutral_query('UPDATE '.$dbss['prfx']."_scache SET value='$svgcache2db3' WHERE id='svgcache3'");
+}else{$elements=unserialize($vcach['svgcache3']);}
+
+$net=''; $circ=''; $line=''; $point=false;
+
+for($i=10;$i<620;$i+=20){$net.='<path d="m'.$i.' 10 L '.$i.' 110"  stroke="'.$color_net.'" stroke-width="'.$size_net.'"/>'."\n";}
+for($i=10;$i<120;$i+=20){$net.='<path d="m10 '.$i.' L 610 '.$i.'"  stroke="'.$color_net.'" stroke-width="'.$size_net.'"/>'."\n";}
+
+for($i=0;$i<count($elements);$i++){
+$x=$i*20+20; $y=100-$elements[$i][0]+10;  $tooltip1=$elements[$i][1]; $tooltip2=$elements[$i][2];
+if($point){$line.='<path d="m'.$point.' L '.$x.' '.$y.'"  stroke="'.$color_line.'" stroke-width="'.$size_line.'"/>'."\n";}
+$circ.='<circle cx="'.$x.'" cy="'.$y.'" r="'.$size_circ_init.'" fill="'.$color_circ_init.'" onmouseover="'.$svgprefix.'circ_over(this); '.$svgprefix.'setTooltip(\''.$tooltip1.'\',\''.$tooltip2.'\')" onmouseout="'.$svgprefix.'circ_out(this); '.$svgprefix.'setTooltip(\'\',\'\')"  />'."\n";
+$point=$x.' '.$y;
+}
+
+?>
+<svg id="diag3" height="150" width="620" viewBox="0 0 620 150" style="display:none">
+
+<script type="text/ecmascript">
+function <?php print $svgprefix;?>setTooltip(t1,t2){
+tt1=de('<?php print $svgprefix;?>tooltip1');
+tt2=de('<?php print $svgprefix;?>tooltip2');
+if(t1.length>0){tt1.textContent='<?php print $info_over_prfx_v;?> '+t1} else{tt1.textContent='<?php print $info_init_left;?>';}
+if(t2.length>0){tt2.textContent=t2} else{tt2.textContent='<?php print $info_init_rght;?>';}}
+
+function <?php print $svgprefix;?>circ_over(x){
+x.setAttribute('r','<?php print $size_circ_over;?>');
+x.setAttribute('fill','<?php print $color_circ_over;?>');}
+
+function <?php print $svgprefix;?>circ_out(x){
+x.setAttribute('r','<?php print $size_circ_aftr;?>');
+x.setAttribute('fill','<?php print $color_circ_aftr;?>');}
+</script>
+
+<rect height="145" width="620" y="0" x="0" rx="2" ry="2" fill="<?php print $color_bg_global;?>"/>
+
+<?php print $net."\n".$line."\n".$circ; ?>
+
+<rect height="19" width="600" y="120" x="10" rx="2" ry="2" fill="<?php print $color_info_line;?>" opacity="0.5"/>
+<text id="<?php print $svgprefix;?>tooltip1" font-size="12px" font-family="monospace" y="134" x="15" fill="<?php print $color_text;?>"><?php print $info_init_left;?></text>
+<text id="<?php print $svgprefix;?>tooltip2" xml:space="preserve" font-size="12px" font-family="monospace" y="134" x="520" fill="<?php print $color_text;?>"><?php print $info_init_rght;?></text>
+
+</svg>
+<!-- end svg 3 -->
+
+<!-- begin svg 4 -->
+<?php 
+
+$svgprefix='s4';
+$color_line      = '#F4511E';
+$color_circ_init = '#9C27B0';
+$color_circ_over = '#03A9F4';
+$color_circ_aftr = '#666666';
+$info_init_rght='   '.$lang['svg_mhrs'];
+
+if($svgcache<1){
+$elements=array();
+
+$maxvalue=0;
+$result=neutral_query('SELECT SUBSTRING(CAST(FROM_UNIXTIME(timestamp) AS DATETIME),1,13) AS datime, COUNT(DISTINCT id) AS dvalue FROM '.$dbss['prfx'].'_messages GROUP BY datime ORDER BY datime DESC LIMIT 30 OFFSET 0');
+while($row=neutral_fetch_array($result)){if($row['dvalue']>$maxvalue){$maxvalue=$row['dvalue'];}}
+if(neutral_num_rows($result)>0){neutral_data_seek($result);}
+
+$i=0; while($row=neutral_fetch_array($result)){
+$coef=(int)$row['dvalue'];$coef*=100;$coef/=$maxvalue;$coef=(int)$coef;
+$tr_datime=$months[(int)substr($row['datime'],5,2)];
+$tr_datime=$tr_datime.' '.substr($row['datime'],8,10).':--';
+$elements[$i][0]=$coef;
+$elements[$i][1]=$row['dvalue'];
+$elements[$i][2]=$tr_datime;
+$i+=1;} 
+
+$elements=array_reverse($elements);
+$svgcache2db4=serialize($elements);
+$svgcache2db4=neutral_escape($svgcache2db4,99999,'str');
+neutral_query('UPDATE '.$dbss['prfx']."_scache SET value='$svgcache2db4' WHERE id='svgcache4'");
+}else{$elements=unserialize($vcach['svgcache4']);}
+
+$net=''; $circ=''; $line=''; $point=false;
+
+for($i=10;$i<620;$i+=20){$net.='<path d="m'.$i.' 10 L '.$i.' 110"  stroke="'.$color_net.'" stroke-width="'.$size_net.'"/>'."\n";}
+for($i=10;$i<120;$i+=20){$net.='<path d="m10 '.$i.' L 610 '.$i.'"  stroke="'.$color_net.'" stroke-width="'.$size_net.'"/>'."\n";}
+
+for($i=0;$i<count($elements);$i++){
+$x=$i*20+20; $y=100-$elements[$i][0]+10;  $tooltip1=$elements[$i][1]; $tooltip2=$elements[$i][2];
+if($point){$line.='<path d="m'.$point.' L '.$x.' '.$y.'"  stroke="'.$color_line.'" stroke-width="'.$size_line.'"/>'."\n";}
+$circ.='<circle cx="'.$x.'" cy="'.$y.'" r="'.$size_circ_init.'" fill="'.$color_circ_init.'" onmouseover="'.$svgprefix.'circ_over(this); '.$svgprefix.'setTooltip(\''.$tooltip1.'\',\''.$tooltip2.'\')" onmouseout="'.$svgprefix.'circ_out(this); '.$svgprefix.'setTooltip(\'\',\'\')"  />'."\n";
+$point=$x.' '.$y;
+}
+
+?>
+<svg id="diag4" height="150" width="620" viewBox="0 0 620 150" style="display:none">
+
+<script type="text/ecmascript">
+function <?php print $svgprefix;?>setTooltip(t1,t2){
+tt1=de('<?php print $svgprefix;?>tooltip1');
+tt2=de('<?php print $svgprefix;?>tooltip2');
+if(t1.length>0){tt1.textContent='<?php print $info_over_prfx_m;?> '+t1} else{tt1.textContent='<?php print $info_init_left;?>';}
+if(t2.length>0){tt2.textContent=t2} else{tt2.textContent='<?php print $info_init_rght;?>';}}
+
+function <?php print $svgprefix;?>circ_over(x){
+x.setAttribute('r','<?php print $size_circ_over;?>');
+x.setAttribute('fill','<?php print $color_circ_over;?>');}
+
+function <?php print $svgprefix;?>circ_out(x){
+x.setAttribute('r','<?php print $size_circ_aftr;?>');
+x.setAttribute('fill','<?php print $color_circ_aftr;?>');}
+</script>
+
+<rect height="145" width="620" y="0" x="0" rx="2" ry="2" fill="<?php print $color_bg_global;?>"/>
+
+<?php print $net."\n".$line."\n".$circ; ?>
+
+<rect height="19" width="600" y="120" x="10" rx="2" ry="2" fill="<?php print $color_info_line;?>" opacity="0.5"/>
+<text id="<?php print $svgprefix;?>tooltip1" font-size="12px" font-family="monospace" y="134" x="15" fill="<?php print $color_text;?>"><?php print $info_init_left;?></text>
+<text id="<?php print $svgprefix;?>tooltip2" xml:space="preserve" font-size="12px" font-family="monospace" y="134" x="520" fill="<?php print $color_text;?>"><?php print $info_init_rght;?></text>
+
+</svg>
+<!-- end svg 4 -->
+
+<!-- begin svg 5 -->
+<?php 
+
+$svgprefix='s5';
+$color_line      = '#03A9F4';
+$color_circ_init = '#F4511E';
+$color_circ_over = '#43A047';
+$color_circ_aftr = '#666666';
+$info_init_rght='    '.$lang['svg_mday'];
+
+if($svgcache<1){
+$elements=array();
+
+$maxvalue=0;
+$result=neutral_query('SELECT CAST(FROM_UNIXTIME(timestamp) AS DATE) AS datime, COUNT(DISTINCT id) AS dvalue FROM '.$dbss['prfx'].'_messages GROUP BY datime ORDER BY datime DESC LIMIT 30 OFFSET 0');
+while($row=neutral_fetch_array($result)){if($row['dvalue']>$maxvalue){$maxvalue=$row['dvalue'];}}
+if(neutral_num_rows($result)>0){neutral_data_seek($result);}
+
+$i=0; while($row=neutral_fetch_array($result)){
+$coef=(int)$row['dvalue'];$coef*=100;$coef/=$maxvalue;$coef=(int)$coef;
+$tr_datime=$months[(int)substr($row['datime'],5,2)];
+$tr_datime='      '.$tr_datime.' '.substr($row['datime'],8,10);
+$elements[$i][0]=$coef;
+$elements[$i][1]=$row['dvalue'];
+$elements[$i][2]=$tr_datime;
+$i+=1;} 
+
+$elements=array_reverse($elements);
+$svgcache2db5=serialize($elements);
+$svgcache2db5=neutral_escape($svgcache2db5,99999,'str');
+neutral_query('UPDATE '.$dbss['prfx']."_scache SET value='$svgcache2db5' WHERE id='svgcache5'");
+}else{$elements=unserialize($vcach['svgcache5']);}
+
+$net=''; $circ=''; $line=''; $point=false;
+
+for($i=10;$i<620;$i+=20){$net.='<path d="m'.$i.' 10 L '.$i.' 110"  stroke="'.$color_net.'" stroke-width="'.$size_net.'"/>'."\n";}
+for($i=10;$i<120;$i+=20){$net.='<path d="m10 '.$i.' L 610 '.$i.'"  stroke="'.$color_net.'" stroke-width="'.$size_net.'"/>'."\n";}
+
+for($i=0;$i<count($elements);$i++){
+$x=$i*20+20; $y=100-$elements[$i][0]+10;  $tooltip1=$elements[$i][1]; $tooltip2=$elements[$i][2];
+if($point){$line.='<path d="m'.$point.' L '.$x.' '.$y.'"  stroke="'.$color_line.'" stroke-width="'.$size_line.'"/>'."\n";}
+$circ.='<circle cx="'.$x.'" cy="'.$y.'" r="'.$size_circ_init.'" fill="'.$color_circ_init.'" onmouseover="'.$svgprefix.'circ_over(this); '.$svgprefix.'setTooltip(\''.$tooltip1.'\',\''.$tooltip2.'\')" onmouseout="'.$svgprefix.'circ_out(this); '.$svgprefix.'setTooltip(\'\',\'\')"  />'."\n";
+$point=$x.' '.$y;
+}
+
+?>
+<svg id="diag5" height="150" width="620" viewBox="0 0 620 150" style="display:none">
+
+<script type="text/ecmascript">
+function <?php print $svgprefix;?>setTooltip(t1,t2){
+tt1=de('<?php print $svgprefix;?>tooltip1');
+tt2=de('<?php print $svgprefix;?>tooltip2');
+if(t1.length>0){tt1.textContent='<?php print $info_over_prfx_m;?> '+t1} else{tt1.textContent='<?php print $info_init_left;?>';}
+if(t2.length>0){tt2.textContent=t2} else{tt2.textContent='<?php print $info_init_rght;?>';}}
+
+function <?php print $svgprefix;?>circ_over(x){
+x.setAttribute('r','<?php print $size_circ_over;?>');
+x.setAttribute('fill','<?php print $color_circ_over;?>');}
+
+function <?php print $svgprefix;?>circ_out(x){
+x.setAttribute('r','<?php print $size_circ_aftr;?>');
+x.setAttribute('fill','<?php print $color_circ_aftr;?>');}
+</script>
+
+<rect height="145" width="620" y="0" x="0" rx="2" ry="2" fill="<?php print $color_bg_global;?>"/>
+
+<?php print $net."\n".$line."\n".$circ; ?>
+
+<rect height="19" width="600" y="120" x="10" rx="2" ry="2" fill="<?php print $color_info_line;?>" opacity="0.5"/>
+<text id="<?php print $svgprefix;?>tooltip1" font-size="12px" font-family="monospace" y="134" x="15" fill="<?php print $color_text;?>"><?php print $info_init_left;?></text>
+<text id="<?php print $svgprefix;?>tooltip2" xml:space="preserve" font-size="12px" font-family="monospace" y="134" x="520" fill="<?php print $color_text;?>"><?php print $info_init_rght;?></text>
+
+</svg>
+<!-- end svg 5 -->
+
+<!-- begin svg 6 -->
+<?php 
+
+$svgprefix='s6';
+$color_line      = '#E91E63';
+$color_circ_init = '#2196F3';
+$color_circ_over = '#FFC107';
+$color_circ_aftr = '#666666';
+$info_init_rght='  '.$lang['svg_mmnt'];
+
+if($svgcache<1){
+$elements=array();
+
+$maxvalue=0;
+$result=neutral_query('SELECT SUBSTRING(CAST(FROM_UNIXTIME(timestamp) AS DATETIME),1,7) AS datime, COUNT(DISTINCT id) AS dvalue FROM '.$dbss['prfx'].'_messages GROUP BY datime ORDER BY datime DESC LIMIT 30 OFFSET 0');
+while($row=neutral_fetch_array($result)){if($row['dvalue']>$maxvalue){$maxvalue=$row['dvalue'];}}
+if(neutral_num_rows($result)>0){neutral_data_seek($result);}
+
+$i=0; while($row=neutral_fetch_array($result)){
+$coef=(int)$row['dvalue'];$coef*=100;$coef/=$maxvalue;$coef=(int)$coef;
+$tr_datime=$months[(int)substr($row['datime'],5,2)];
+$tr_datime='         '.$tr_datime;
+$elements[$i][0]=$coef;
+$elements[$i][1]=$row['dvalue'];
+$elements[$i][2]=$tr_datime;
+$i+=1;} 
+
+$elements=array_reverse($elements);
+$svgcache2db6=serialize($elements);
+$svgcache2db6=neutral_escape($svgcache2db6,99999,'str');
+neutral_query('UPDATE '.$dbss['prfx']."_scache SET value='$svgcache2db6' WHERE id='svgcache6'");
+}else{$elements=unserialize($vcach['svgcache6']);}
+
+$net=''; $circ=''; $line=''; $point=false;
+
+for($i=10;$i<620;$i+=20){$net.='<path d="m'.$i.' 10 L '.$i.' 110"  stroke="'.$color_net.'" stroke-width="'.$size_net.'"/>'."\n";}
+for($i=10;$i<120;$i+=20){$net.='<path d="m10 '.$i.' L 610 '.$i.'"  stroke="'.$color_net.'" stroke-width="'.$size_net.'"/>'."\n";}
+
+for($i=0;$i<count($elements);$i++){
+$x=$i*20+20; $y=100-$elements[$i][0]+10;  $tooltip1=$elements[$i][1]; $tooltip2=$elements[$i][2];
+if($point){$line.='<path d="m'.$point.' L '.$x.' '.$y.'"  stroke="'.$color_line.'" stroke-width="'.$size_line.'"/>'."\n";}
+$circ.='<circle cx="'.$x.'" cy="'.$y.'" r="'.$size_circ_init.'" fill="'.$color_circ_init.'" onmouseover="'.$svgprefix.'circ_over(this); '.$svgprefix.'setTooltip(\''.$tooltip1.'\',\''.$tooltip2.'\')" onmouseout="'.$svgprefix.'circ_out(this); '.$svgprefix.'setTooltip(\'\',\'\')"  />'."\n";
+$point=$x.' '.$y;
+}
+
+?>
+<svg id="diag6" height="150" width="620" viewBox="0 0 620 150" style="display:none">
+
+<script type="text/ecmascript">
+function <?php print $svgprefix;?>setTooltip(t1,t2){
+tt1=de('<?php print $svgprefix;?>tooltip1');
+tt2=de('<?php print $svgprefix;?>tooltip2');
+if(t1.length>0){tt1.textContent='<?php print $info_over_prfx_m;?> '+t1} else{tt1.textContent='<?php print $info_init_left;?>';}
+if(t2.length>0){tt2.textContent=t2} else{tt2.textContent='<?php print $info_init_rght;?>';}}
+
+function <?php print $svgprefix;?>circ_over(x){
+x.setAttribute('r','<?php print $size_circ_over;?>');
+x.setAttribute('fill','<?php print $color_circ_over;?>');}
+
+function <?php print $svgprefix;?>circ_out(x){
+x.setAttribute('r','<?php print $size_circ_aftr;?>');
+x.setAttribute('fill','<?php print $color_circ_aftr;?>');}
+</script>
+
+<rect height="145" width="620" y="0" x="0" rx="2" ry="2" fill="<?php print $color_bg_global;?>"/>
+
+<?php print $net."\n".$line."\n".$circ; ?>
+
+<rect height="19" width="600" y="120" x="10" rx="2" ry="2" fill="<?php print $color_info_line;?>" opacity="0.5"/>
+<text id="<?php print $svgprefix;?>tooltip1" font-size="12px" font-family="monospace" y="134" x="15" fill="<?php print $color_text;?>"><?php print $info_init_left;?></text>
+<text id="<?php print $svgprefix;?>tooltip2" xml:space="preserve" font-size="12px" font-family="monospace" y="134" x="520" fill="<?php print $color_text;?>"><?php print $info_init_rght;?></text>
+
+</svg>
+<!-- end svg 6 -->
+<!-- end stats block -->
+
+</div>
+
+<?php if($svgcache>0){print '<div style="text-align:right">'.$cache_info.'</div>';}?>
+
+<br /><hr />
+
+</div>
+
+<?php include 'admin/menu.pxtm'; ?>
+
+<script>
+
+function hide_diag(){
+de('diag1').style.display='none';
+de('diag2').style.display='none';
+de('diag3').style.display='none';
+de('diag4').style.display='none';
+de('diag5').style.display='none';
+de('diag6').style.display='none';}
+
+de('bbl1').className='round4 x_accent_bg';
+de('tbl1').style.display='block';
+
+de('smsg').className='round4 x_accent_bg';
+de('diag4').style.display='block';
+de('diag5').style.display='block';
+de('diag6').style.display='block';
+
+</script>
+</body></html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['customj1'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js?xyz=<?php print $settings['forcereload'];?>"></script>
+</head>
+
+<body class="x_global x_overal">
+<form action="admin.php" method="post" autocomplete="off">
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php?q=settings'" class="pointer svg_sett">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['customj1'];?></h2>
+<hr />
+
+<div><?php print $lang['customj2'];?></div>
+<br /><hr />
+
+<textarea name="customjs" class="x_bcolor_bg" style="height:300px"><?php $x=htmlspecialchars($settings['customjs']); print $x; ?></textarea>
+
+<br />&nbsp;<br />
+
+<br /><hr />
+
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+
+</div>
+</form>
+
+<?php include 'admin/menu.pxtm'; ?>
+
+</body></html>

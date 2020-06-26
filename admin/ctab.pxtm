@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: cTab <?php print $lang['settings'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+<form action="admin.php" method="post" autocomplete="off">
+
+<div class="holder">
+
+
+<h2 onclick="self.location.href='admin.php?q=settings'" class="pointer svg_sett">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+cTab <?php print $lang['settings'];?></h2>
+<hr />
+
+<div class="left"><?php print $lang['ctab_display'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="ctab_display">
+<?php if($settings['ctab_display']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['on'];?></option>
+<?php if($settings['ctab_display']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['off'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['ctab_default'];?></div>
+<div class="right">
+<select class="x_accent_bb s250" name="ctab_default">
+<?php if($settings['ctab_default']==1){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="1"<?php print $sel;?>><?php print $lang['on'];?></option>
+<?php if($settings['ctab_default']==0){$sel=' selected="selected"';}else{$sel='';}?>
+<option value="0"<?php print $sel;?>><?php print $lang['off'];?></option>
+</select>
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['ctab_icon'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="32" name="ctab_icon" value="<?php $x=htmlspecialchars($settings['ctab_icon']); print $x;?>" />
+</div>
+<br /><hr />
+
+<div class="left"><?php print $lang['ctab_title'];?></div>
+<div class="right">
+<input type="text" class="x_accent_bb s250" maxlength="16" name="ctab_title" value="<?php $x=htmlspecialchars($settings['ctab_title']); print $x;?>" />
+</div>
+<br /><hr />
+
+<?php print $lang['ctab_content'];?><br />&nbsp;<br />
+<textarea name="ctab_content" class="x_bcolor_bg" style="height:300px"><?php $x=htmlspecialchars($settings['ctab_content']);print $x; ?></textarea>
+
+<br /><hr />
+
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+
+</div>
+
+<br />
+
+</form>
+<?php include 'admin/menu.pxtm'; ?>
+
+</body></html>

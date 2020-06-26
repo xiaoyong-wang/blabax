@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: GDPR <?php print $lang['settings'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+</head>
+
+<body class="x_global x_overal">
+<form action="admin.php" method="post" autocomplete="off">
+<div class="holder">
+
+<h2 onclick="self.location.href='admin.php?q=settings'" class="pointer svg_sett">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+GDPR <?php print $lang['settings'];?></h2>
+<hr />
+
+<div><?php print $lang['annonce'];?></div>
+<br /><hr />
+
+<textarea name="announce" class="x_bcolor_bg" style="height:300px"><?php $x=htmlspecialchars($settings['announce']); print $x; ?></textarea>
+
+<br />&nbsp;<br />
+
+<script>
+m1=typeof window.orientation; m2='ontouchstart' in document.documentElement;
+if( m1 == 'undefined' && m2 == false){document.write('<input type="button" class="round4 x_accent_bg" style="float:right;width:150px;font-weight:bold;margin:1px" type="button" value="<?php print $lang['pgdpr'];?>" onclick="gdp.innerHTML=document.forms[0].announce.value" />')}
+</script>
+
+<input class="round4 x_bcolor_bg" style="width:150px;font-weight:bold;margin:1px" type="button" onclick="if(typeof window.atob=='function'){lgl=window.b64d('PGRpdiBzdHlsZT0icG9zaXRpb246Zml4ZWQ7IGJvdHRvbTo1cHg7IGxlZnQ6NXB4OyByaWdodDo1cHg7IGNvbG9yOiNmZmY7IGJhY2tncm91bmQtY29sb3I6I2JmNGQ0ZDsgYm9yZGVyLXJhZGl1czo1cHg7IG92ZXJmbG93OmF1dG8iPg0KDQo8ZGl2IHN0eWxlPSJtYXJnaW46MjBweDsgdGV4dC1hbGlnbjpqdXN0aWZ5Ij4NCldlIGRvIDxiPm5vdDwvYj4gdXNlIDNyZC1wYXJ0eSBjb29raWVzIGFuZCB3ZSBkbyA8Yj5ub3Q8L2I+IHNoYXJlIGFueSBpbmZvcm1hdGlvbiBhYm91dCB5b3Ugd2l0aCAzcmQtcGFydGllcy4gT3VyIGNoYXQgIHdpbGwgc2V0IGEgY29va2llIG9uIHlvdXIgZGV2aWNlIHdoZW4geW91IGxvZ2luLiAgTG9naW4gY29va2llcyBhcmUgZGVsZXRlZCBvbiBsb2dvdXQuIA0KDQo8ZGl2IHN0eWxlPSJmbG9hdDpyaWdodDsgY3Vyc29yOnBvaW50ZXIiIG9uY2xpY2s9ImlmKHdpbmRvdy5sb2NhdGlvbi5ocmVmLnRvU3RyaW5nKCkuc2VhcmNoKCdhZG1pbi5waHAnKTwxKXt3aW5kb3cubG9jYXRpb24uaHJlZj0naW5kZXgucGhwP2FjY2VwdGFubm91bmNlPTEnfWVsc2V7c2hvd19oaWRlKCl9Ij48Yj5ISURFIFRISVMgTUVTU0FHRTwvYj48L2Rpdj4NCg0KPGJyICBzdHlsZT0iY2xlYXI6Ym90aCIgLz4NCg0KPC9kaXY+DQo8L2Rpdj4=');document.forms[0].announce.value=lgl}" value="<?php print $lang['templ'];?> A" />
+<input class="round4 x_bcolor_bg" style="width:150px;font-weight:bold;margin:1px" type="button" onclick="if(typeof window.atob=='function'){lgl=window.b64d('PGRpdiBzdHlsZT0icG9zaXRpb246Zml4ZWQ7IGJvdHRvbTowOyBsZWZ0OjA7IHRvcDowOyByaWdodDowOyBiYWNrZ3JvdW5kLWNvbG9yOiMwMDA7IG9wYWNpdHk6MC43Ij48L2Rpdj4NCg0KPGRpdiBzdHlsZT0icG9zaXRpb246Zml4ZWQ7IGJvdHRvbTo1cHg7IGxlZnQ6NXB4OyByaWdodDo1cHg7IGNvbG9yOiNmZmY7IGJhY2tncm91bmQtY29sb3I6IzNGNTFCNTsgYm9yZGVyLXJhZGl1czo1cHg7IG1heC1oZWlnaHQ6NzUlOyBvdmVyZmxvdzphdXRvIj4NCg0KPGRpdiBzdHlsZT0ibWFyZ2luOjMwcHggMjBweCAyMHB4IDIwcHg7IHRleHQtYWxpZ246anVzdGlmeSI+DQpXZSBkbyA8Yj5ub3Q8L2I+IHVzZSAzcmQtcGFydHkgY29va2llcyBhbmQgd2UgZG8gPGI+bm90PC9iPiBzaGFyZSBhbnkgaW5mb3JtYXRpb24gYWJvdXQgeW91IHdpdGggM3JkLXBhcnRpZXMuIE91ciBjaGF0IHdpbGwgc3RvcmUgeW91ciBJUCBhZGRyZXNzIGluIGEgbG9nIGFuZCAgd2lsbCBzZXQgYSBsb2dpbiBjb29raWUgb24geW91ciBkZXZpY2UuICBMb2dpbiBjb29raWVzIGFyZSBkZWxldGVkIG9uIGxvZ291dC4gSWYgeW91IHJlZ2lzdGVyLCB5b3VyIGVtYWlsIHdpbGwgYmUgc3RvcmVkIGluIG91ciBkYXRhYmFzZS4gWW91ciBlbWFpbCB3aWxsIG9ubHkgYmUgdXNlZCB0byByZXNldCBhIGZvcmdvdHRlbiBwYXNzd29yZC4gSWYgeW91IGZlZWwgdW5jZXJ0YWluIGFib3V0IHN1Ym1pdHRpbmcgeW91ciBlbWFpbCB3ZSBlbmNvdXJhZ2UgeW91IHRvIHVzZSBhIHRlbXBvcmFyeSBlbWFpbCBzdWNoIGFzIDxiPkZ1bm55RW1haWxAbWFpbGluYXRvci5jb208L2I+LiANCg0KPGJyIC8+PGJyIC8+DQoNCjxkaXYgc3R5bGU9InRleHQtYWxpZ246cmlnaHQ7IGN1cnNvcjpwb2ludGVyIiBvbmNsaWNrPSJpZih3aW5kb3cubG9jYXRpb24uaHJlZi50b1N0cmluZygpLnNlYXJjaCgnYWRtaW4ucGhwJyk8MSl7d2luZG93LmxvY2F0aW9uLmhyZWY9J2luZGV4LnBocD9hY2NlcHRhbm5vdW5jZT0xJ31lbHNle3Nob3dfaGlkZSgpfSI+PGI+QUNDRVBUICZhbXA7IENPTlRJTlVFPC9iPjwvZGl2Pg0KDQo8L2Rpdj4NCjwvZGl2Pg==');document.forms[0].announce.value=lgl}" value="<?php print $lang['templ'];?> B" />
+<input class="round4 x_bcolor_bg" style="width:150px;font-weight:bold;margin:1px" type="button" onclick="if(typeof window.atob=='function'){lgl=window.b64d('PGRpdiBzdHlsZT0icG9zaXRpb246Zml4ZWQ7IGJvdHRvbTowOyBsZWZ0OjA7IHRvcDowOyByaWdodDowOyBiYWNrZ3JvdW5kLWNvbG9yOiMwMDA7IG9wYWNpdHk6MC43Ij48L2Rpdj4NCg0KPGRpdiBzdHlsZT0icG9zaXRpb246Zml4ZWQ7IGJvdHRvbTo1cHg7IGxlZnQ6NXB4OyByaWdodDo1cHg7IGNvbG9yOiMwMDA7IGJhY2tncm91bmQtY29sb3I6I2NjYzsgbWF4LWhlaWdodDogNzUlOyBvdmVyZmxvdzphdXRvIj4NCg0KPGRpdiBzdHlsZT0ibWFyZ2luOjMwcHggMjBweCAyMHB4IDIwcHg7dGV4dC1hbGlnbjpqdXN0aWZ5Ij4NCldlIGRvIDxiPm5vdDwvYj4gdXNlIHRyYWNrZXJzIGFuZCB3ZSBkbyA8Yj5ub3Q8L2I+IHNoYXJlIGFueSBpbmZvcm1hdGlvbiBhYm91dCB5b3Ugd2l0aCAzcmQtcGFydGllcy4gT3VyIGNoYXQgd2lsbCBzdG9yZSB5b3VyIElQIGFkZHJlc3MgaW4gYSBsb2cgYW5kICB3aWxsIHNldCBhIGxvZ2luIGNvb2tpZSBvbiB5b3VyIGRldmljZS4gIExvZ2luIGNvb2tpZXMgYXJlIGRlbGV0ZWQgb24gbG9nb3V0LiBJZiB5b3UgcmVnaXN0ZXIsIHlvdXIgZW1haWwgd2lsbCBiZSBzdG9yZWQgaW4gb3VyIGRhdGFiYXNlLiBZb3VyIGVtYWlsIHdpbGwgb25seSBiZSB1c2VkIHRvIHJlc2V0IGEgZm9yZ290dGVuIHBhc3N3b3JkLiBJZiB5b3UgZmVlbCB1bmNlcnRhaW4gYWJvdXQgc3VibWl0dGluZyB5b3VyIGVtYWlsIHdlIGVuY291cmFnZSB5b3UgdG8gdXNlIGEgdGVtcG9yYXJ5IGVtYWlsIHN1Y2ggYXMgPGI+RnVubnlFbWFpbEBtYWlsaW5hdG9yLmNvbTwvYj4uIA0KDQo8YnIgLz48YnIgLz4NCg0KWW91IGFuZCB5b3VyIGZlbGxvdyBjaGF0dGVycyBtYXkgcG9zdCBpbiBjaGF0IGNvbnRlbnQgZnJvbSBvdGhlciB3ZWJzaXRlcyBzdWNoIGFzIDxiIHN0eWxlPSJmb250LXNpemU6MTIwJSI+WW91dHViZTwvYj4gYW5kIDxiIHN0eWxlPSJmb250LXNpemU6MTIwJSI+VmltZW88L2I+IHZpZGVvcywgPGIgc3R5bGU9ImZvbnQtc2l6ZToxMjAlIj5Tb3VuZENsb3VkPC9iPiBtdXNpYywgPGIgc3R5bGU9ImZvbnQtc2l6ZToxMjAlIj5Hb29nbGU8L2I+IG1hcHMsIDxiIHN0eWxlPSJmb250LXNpemU6MTIwJSI+R2lwaHk8L2I+IEdJRlMsIDxiIHN0eWxlPSJmb250LXNpemU6MTIwJSI+QXVkaW9ib29tPC9iPiBwb2RjYXN0cyBldGMuIFRoaXMgZXh0ZXJuYWwgY29udGVudCBpcyBvbmx5IGxvYWRlZCBpZiB5b3UgZXhwbGljaXRseSBjbGljayBvbiBhIHNtYWxsIGNvbG9yZWQgcmVjdGFuZ2xlIHdpdGggdGhlIG5hbWUgb2YgdGhlIG1lbnRpb25lZCBhYm92ZSB3ZWJzaXRlcy4NCg0KPGJyIC8+PGJyIC8+DQoNCjxpbnB1dCB0eXBlPSJidXR0b24iIHZhbHVlPSJBQ0NFUFQgJmFtcDsgQ09OVElOVUUiIHN0eWxlPSJmb250LXdlaWdodDpib2xkOyBwYWRkaW5nOjIwcHg7IGN1cnNvcjpwb2ludGVyOyBjb2xvcjojZmZmOyBiYWNrZ3JvdW5kLWNvbG9yOiMzMzM7IHdpZHRoOjEwMCU7aGVpZ2h0OjYwcHgiIG9uY2xpY2s9ImlmKHdpbmRvdy5sb2NhdGlvbi5ocmVmLnRvU3RyaW5nKCkuc2VhcmNoKCdhZG1pbi5waHAnKTwxKXt3aW5kb3cubG9jYXRpb24uaHJlZj0naW5kZXgucGhwP2FjY2VwdGFubm91bmNlPTEnfWVsc2V7c2hvd19oaWRlKCl9Ij4NCg0KPC9kaXY+DQo8L2Rpdj4=');document.forms[0].announce.value=lgl}" value="<?php print $lang['templ'];?> C" />
+
+<br /><hr />
+
+<input type="submit" class="round4 x_bcolor_bg" style="width:100%;font-weight:bold;height:50px" value="<?php print $lang['submit'];?>" />
+
+</div>
+</form>
+<script>
+function eucookie(){
+x='<div style="position:fixed; top:0px; left:0px; width:100%;  padding:8px; color:#fff; background-color:#F44336; text-align:center">'
+x+='Our site uses cookies to enhance your experience.  To enjoy the site as intended please <span style="cursor:pointer" onclick="window.location.href=\'index.php?acceptannounce=1\'"><b>ACCEPT COOKIES</b></span>.'
+x+='</div>'
+document.forms[0].announce.value=x
+}
+
+</script>
+<?php include 'admin/menu.pxtm'; ?>
+
+</body></html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><title>ACP: <?php print $lang['mapps'];?></title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="admin/<?php print $settings['acp_css'];?>" />
+<script src="admin/admin.js"></script>
+<script src="incl/qrcode.js"></script>
+</head>
+
+<body class="x_global x_overal">
+
+<div id="nossl" class="holder pointer" onclick="location.protocol='https:'"><div class="x_accent_bg round4" style="margin-top:100px;padding:20px;text-align:center"><?php print $lang['andr9'];?></div></div>
+<div id="okssl" class="holder" style="display:none">
+
+<h2 onclick="self.location.href='admin.php?q=settings'" class="pointer svg_sett">
+<span style="float:right;height:40px;width:40px" class="svg_upup"></span>
+<?php print $lang['mapps'];?></h2>
+<hr />
+
+<div><?php print $lang['mappd1'];?><br /><br /><b><?php print $lang['mappd2'];?></b></div>
+<br /><hr />
+
+<div class="left">
+<div id="blabq" style="float:right;margin:0 0 20px 20px"></div>
+<?php print $lang['mapp_q'];?></div>
+<br /><hr />
+
+<div class="left">
+<textarea id="blabg" class="x_bcolor_bg" style="float:left;width:220px;height:90px;margin:0 20px 20px 0"  readonly="readonly" onclick="this.select()"></textarea>
+<?php print $lang['mapp_g'];?></div>
+<br /><hr />
+
+</div>
+
+<script>
+
+appurlq=self.location.href.toString() 
+appurlq=appurlq.split('/admin.php'); appurlq=appurlq[0]
+appurlq='blabws:'+appurlq
+
+var qr = new JSQR();
+var code = new qr.Code();
+code.encodeMode = code.ENCODE_MODE.BYTE;
+code.version = code.DEFAULT;
+code.errorCorrection = code.ERROR_CORRECTION.H;
+
+var input = new qr.Input();
+input.dataType = input.DATA_TYPE.TEXT;
+input.data = {"text": appurlq};
+
+var matrix = new qr.Matrix(input,code);
+var canvas = document.createElement('canvas');
+canvas.setAttribute('width', matrix.pixelWidth);
+canvas.setAttribute('height', matrix.pixelWidth);
+canvas.getContext('2d').fillStyle = 'rgb(0,0,0)';
+matrix.draw(canvas,0,0);
+
+canvas.toBlob(function(blob){canvas_url=URL.createObjectURL(blob);
+document.getElementById('blabq').innerHTML='<img src="'+canvas_url+'" alt="" style="padding:5px;background-color:#fff" />'})
+
+// ---
+
+appurlg=self.location.href.toString()
+appurlg=appurlg.split('admin.php')
+appurlg=appurlg[0]+'index.php?mobileapp=3'
+document.getElementById('blabg').innerHTML=appurlg
+
+if(location.protocol == "https:"){
+document.getElementById('nossl').style.display='none'
+document.getElementById('okssl').style.display='block'
+}
+
+</script>
+
+<?php include 'admin/menu.pxtm'; ?>
+
+</body></html>

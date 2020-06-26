@@ -1,0 +1,51 @@
+
+<input type="button" id="menu_button" title="ESC = <?php print $lang['menu'];?>" class="x_accent_bg pointer x_circle svg_menu" value="&nbsp;" onclick="show_hide()" />
+
+<div id="hidescreen_tran" class="x_bcolor_bg" onclick="show_hide()"></div>
+
+<div id="menu_box" class="x_bcolor_bg">
+<div style="padding-left:0;cursor:default">BlaB! AX <?php print $version;?></div>
+<div class="svg_dash" onclick="self.location.href='admin.php'"><?php print $lang['dash'];?></div>
+<div class="svg_stat" onclick="self.location.href='admin.php?q=stats'"><?php print $lang['stats'];?></div>
+<div class="svg_logs" onclick="self.location.href='admin.php?q=logs'"><?php print $lang['logs'];?></div>
+<div class="svg_sett" onclick="self.location.href='admin.php?q=settings'"><?php print $lang['settings'];?></div>
+<div class="svg_styl" onclick="self.location.href='admin.php?q=style'"><?php print $lang['style'];?></div>
+<div class="svg_room" onclick="self.location.href='admin.php?q=rooms'"><?php print $lang['rooms'];?></div>
+<div class="svg_mssg" onclick="self.location.href='admin.php?q=messages'"><?php print $lang['messages'];?></div>
+<div class="svg_usrs" onclick="self.location.href='admin.php?q=users'"><?php print $lang['users'];?></div>
+<div class="svg_cron" onclick="self.location.href='admin.php?q=dbopt'"><?php print $lang['dbopt'];?></div>
+<div class="svg_vpro" onclick="self.location.href='admin.php?q=vpro'">AX/WS Pro</div>
+<div class="svg_exit" onclick="if(window.opener){self.close()}else{self.location.href='./'}"><?php print $lang['exit'];?></div>
+</div>
+
+<div id="hidescreen_prev" class="x_bcolor_bg" onclick="close_preview()"></div>
+<div id="preview" class="x_accent_bg"></div>
+
+<?php 
+$ok=0;
+if(isset($_GET['ok'])){$ok=(int)$_GET['ok'];}
+if(($timestamp-$ok)<2){ ?>
+<div id="sayok" class="x_overal" style="position:fixed;top:0;bottom:0;left:0;right:0;text-align:center;padding-top:50px">
+<div class="round4 x_bcolor_bg" style="margin:50px;padding:30px"><?php print $lang['form_ok'];?></div></div>
+<script> x=de('sayok'); setTimeout('x.style.display="none"',500) </script>
+<?php }?>
+
+<div id="gdpr_preview"></div>
+
+<script>
+men=de('menu_box')
+hsc=de('hidescreen_tran');
+gdp=de('gdpr_preview');
+mpr=de('preview');
+hst=de('hidescreen_prev');
+men.style.display='none'
+
+document.onkeyup=function(event){if(event.keyCode==27){show_hide()}}
+document.addEventListener("touchstart", ttouch1)
+document.addEventListener("touchend", ttouch2)
+
+if(window.innerWidth>800){
+document.body.style.marginLeft='160px'
+men.style.display='block'}
+
+</script>
